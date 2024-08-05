@@ -1,0 +1,65 @@
+### WAN ###
+
+underlay_routing_protocol: ebgp
+
+mgmt_interface: Management1
+
+type: wan_router
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Global
+    cv_pathfinder_site: SITE1
+    loopback_ipv4_pool: 10.101.254.0/25
+    vtep_loopback_ipv4_pool: 10.101.255.0/25
+    uplink_ipv4_pool: 10.101.0.128/25
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [border1-site1, border2-site1]
+    uplink_type: p2p-vrfs
+    # filter:
+    #   always_include_vrfs_in_tenants:
+    #     - avd-testing
+    wan_ha:
+      enabled: true
+  node_groups:
+    - group: WAN-SITE1
+      bgp_as: 65000
+      nodes:
+        - name: wan1-site1
+          id: 1
+          mgmt_ip: 192.168.66.23/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.5.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: SITE1-MPLS-5
+              peer_ip: 172.18.5.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.5.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: SITE1-INET-5
+              peer_ip: 100.64.5.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+        - name: wan2-site1
+          id: 2
+          mgmt_ip: 192.168.66.24/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.6.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: SITE1-MPLS-6
+              peer_ip: 172.18.6.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.6.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: SITE1-INET-6
+              peer_ip: 100.64.6.1
+              static_routes:
+                - prefix: 100.64.0.0/16

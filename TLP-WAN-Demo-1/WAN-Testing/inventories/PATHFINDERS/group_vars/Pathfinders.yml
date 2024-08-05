@@ -1,0 +1,60 @@
+---
+# WAN Pathfinder Nodes
+
+fabric_name: Pathfinders
+mgmt_interface: Management1
+
+type: wan_rr
+
+wan_rr: # dynamic_key: node_type
+  defaults:
+    data_plane_cpu_allocation_max: 1
+    loopback_ipv4_pool: 10.10.0.0/30
+    vtep_loopback_ipv4_pool: 10.255.0.0/30
+    bgp_as: 65000
+  nodes:
+    - name: pf1
+      id: 1
+      mgmt_ip: 192.168.66.31/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.18.1.2/24
+          wan_carrier: mpls-sp-1
+          wan_circuit_id: PF-MPLS-1
+          peer_ip: 172.18.1.1
+          static_routes:
+            - prefix: 172.18.0.0/16
+        - name: Ethernet2
+          ip_address: 100.64.1.2/24
+          wan_carrier: isp-1
+          wan_circuit_id: PF-INET-1
+          peer_ip: 100.64.1.1
+          static_routes:
+            - prefix: 0.0.0.0/0
+    - name: pf2
+      id: 2
+      mgmt_ip: 192.168.66.32/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: dhcp
+          wan_carrier: mpls-sp-1
+          wan_circuit_id: PF-MPLS-5
+          peer_ip: 172.18.2.1
+          static_routes:
+            - prefix: 172.18.0.0/16
+        - name: Ethernet2
+          ip_address: 100.64.2.2/24
+          wan_carrier: isp-1
+          wan_circuit_id: PF-INET-5
+          peer_ip: 100.64.2.1
+          static_routes:
+            - prefix: 0.0.0.0/0
+
+tenants: # dynamic_key: network_services
+  - name: avd-testing
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: guest
+        vrf_vni: 10
+      - name: data
+        vrf_vni: 20

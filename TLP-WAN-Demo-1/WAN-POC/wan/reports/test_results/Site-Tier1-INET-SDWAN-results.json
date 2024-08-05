@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Site-Tier1-INET-SDWAN",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "success",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet1"
+  },
+  {
+    "name": "Site-Tier1-INET-SDWAN",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "success",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback0 - Router_ID"
+  },
+  {
+    "name": "Site-Tier1-INET-SDWAN",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vxlan Interface Status & Line Protocol == 'up'",
+    "result": "success",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vxlan1"
+  },
+  {
+    "name": "Site-Tier1-INET-SDWAN",
+    "test": "VerifyNTP",
+    "categories": [
+      "NTP"
+    ],
+    "description": "Synchronised with NTP server",
+    "result": "success",
+    "messages": [],
+    "error": "None",
+    "custom_field": "NTP"
+  },
+  {
+    "name": "Site-Tier1-INET-SDWAN",
+    "test": "VerifyReloadCause",
+    "categories": [
+      "Reload Cause"
+    ],
+    "description": "Reload Cause - Reload requested by the user",
+    "result": "success",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Reload Cause"
+  }
+]

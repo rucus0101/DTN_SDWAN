@@ -1,0 +1,74 @@
+custom_structured_configuration_ethernet_interfaces:
+  - name: Ethernet1
+    peer: pf1
+    peer_interface: Ethernet1
+    description: p2p_pf1_Ethernet1
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.1.1/24
+  - name: Ethernet2
+    peer: pf2
+    peer_interface: Ethernet1
+    description: p2p_pf2_Ethernet1
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.2.1/24
+    dhcp_server_ipv4: true
+  - name: Ethernet3
+    peer: wan1-dc1
+    peer_interface: Ethernet3
+    description: p2p_wan1-dc1_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.3.1/24
+  - name: Ethernet4
+    peer: wan2-dc1
+    peer_interface: Ethernet3
+    description: p2p_wan2-dc1_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.4.1/24
+  - name: Ethernet5
+    peer: wan1-site1
+    peer_interface: Ethernet3
+    description: p2p_wan1-site1_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.5.1/24
+  - name: Ethernet6
+    peer: wan2-site1
+    peer_interface: Ethernet3
+    description: p2p_wan2-site1_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.6.1/24
+  - name: Ethernet7
+    peer: wan1-site2
+    peer_interface: Ethernet3
+    description: p2p_wan1-site2_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.7.1/24
+  - name: Ethernet8
+    peer: wan1-site3
+    peer_interface: Ethernet3
+    description: p2p_wan1-site3_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 172.18.8.1/24
+
+custom_structured_configuration_dhcp_servers:
+  - vrf: default
+    subnets:
+      - subnet: "172.18.2.0/24"
+        ranges:
+          - start: 172.18.2.2
+            end: 172.18.2.2

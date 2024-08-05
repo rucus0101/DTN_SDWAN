@@ -1,0 +1,1025 @@
+---
+
+wan_mode: cv-pathfinder
+wan_stun_dtls_disable: true
+cv_pathfinder_regions:
+  - name: Region1
+    id: 1
+    sites:
+      - name: REGION1_SITE1
+        id: 101
+        location: San Jose, CA
+      - name: REGION1_SITE2
+        location: New Orleans, LA
+        id: 102
+      - name: REGION1_HUB
+        id: 111
+        location: New York, New York
+      - name: PATHFINDERS
+        id: 255
+        location: Singapore, Singapore
+  - name: Region2
+    id: 2
+    sites:
+      - name: REGION2_SITE1
+        id: 103
+        location: Narita, Japan
+      - name: REGION2_SITE2
+        id: 104
+        location: Hong Kong, China
+      - name: REGION2_HUB
+        id: 112
+        location: Manilla, Phillippines
+
+# cv_pathfinder_regions:
+#   - name: Global
+#     id: 1
+#     sites:
+#       - name: REGION1_SITE1
+#         id: 101
+#       - name: REGION1_SITE2
+#         id: 102
+#       - name: REGION1_HUB
+#         id: 111
+#       - name: REGION2_SITE1
+#         id: 103
+#       - name: REGION2_SITE2
+#         id: 104
+#       - name: REGION2_HUB
+#         id: 112
+
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    bfd_timers:
+      interval: 15000
+      min_rx: 15000
+      multiplier: 3   
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 10.0.0.0/9
+    
+
+wan_route_servers:
+  - hostname: pf1
+    vtep_ip: 10.255.0.1
+    path_groups:
+      - name: gmpls1
+        interfaces:
+          - name: Ethernet1/1
+            public_ip: 172.16.51.2
+      - name: gmpls2
+        interfaces:
+          - name: Ethernet1/2
+            public_ip: 172.16.51.6
+      - name: rmpls1
+        interfaces:
+          - name: Ethernet1/5
+            public_ip: 172.16.51.10
+      - name: rmpls2
+        interfaces:
+          - name: Ethernet1/6
+            public_ip: 172.16.51.14
+      - name: rmpls3
+        interfaces:
+          - name: Ethernet1/7
+            public_ip: 172.16.51.18
+      - name: rmpls4
+        interfaces:
+          - name: Ethernet1/8
+            public_ip: 172.16.51.22
+    
+
+  - hostname: pf2
+    vtep_ip: 10.255.0.2
+    path_groups:
+      - name: gmpls1
+        interfaces:
+          - name: Ethernet1/1
+            public_ip: 172.16.52.2
+      - name: gmpls2
+        interfaces:
+          - name: Ethernet1/2
+            public_ip: 172.16.52.6
+      - name: rmpls1
+        interfaces:
+          - name: Ethernet1/5
+            public_ip: 172.16.52.10
+      - name: rmpls2
+        interfaces:
+          - name: Ethernet1/6
+            public_ip: 172.16.52.14
+      - name: rmpls3
+        interfaces:
+          - name: Ethernet1/7
+            public_ip: 172.16.52.18
+      - name: rmpls4
+        interfaces:
+          - name: Ethernet1/8
+            public_ip: 172.16.52.22
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: rmpls1
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 101
+  - name: rmpls2
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 102
+  - name: rmpls3
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 103
+  - name: rmpls4
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 104
+  - name: gmpls1
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 111
+  - name: gmpls2
+    ipsec:
+      static_peers: true
+      dynamic_peers: true
+    dps_keepalive:
+      interval: 50
+      failure_threshold: 3
+    id: 112
+
+wan_carriers:
+  - name: rmpls1
+    path_group: rmpls1
+    trusted: true
+  - name: rmpls2
+    path_group: rmpls2
+    trusted: true
+  - name: rmpls3
+    path_group: rmpls3
+    trusted: true
+  - name: rmpls4
+    path_group: rmpls4
+    trusted: true
+  - name: gmpls1
+    path_group: gmpls1
+    trusted: true
+  - name: gmpls2
+    path_group: gmpls2
+    trusted: true
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
+    - name: customer1
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 254
+    - name: customer2
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 2
+    - name: customer3
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 3
+    - name: customer4
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 4
+    - name: customer5
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 5
+    - name: customer6
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 6
+    - name: customer7
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 7  
+    - name: customer8
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 8
+    - name: customer9
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 9
+    - name: customer10
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 10
+    - name: customer11
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 11
+    - name: customer12
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 12
+    - name: customer13
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 13
+    - name: customer14
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 14
+    - name: customer15
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 15
+    - name: customer16
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 16
+    - name: customer17
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 17
+    - name: customer18
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 18
+    - name: customer19
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 19
+    - name: customer20
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 20
+    - name: customer21
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 21
+    - name: customer22
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 22
+    - name: customer23
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 23
+    - name: customer24
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 24
+    - name: customer25
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 25
+    - name: customer26
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 26
+    - name: customer27
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 27
+    - name: customer28
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 28
+    - name: customer29
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 29
+    - name: customer30
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 30
+    - name: customer31
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 31
+    - name: customer32
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 32
+    - name: customer33
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 33
+    - name: customer34
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 34
+    - name: customer35
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 35
+    - name: customer36
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 36
+    - name: customer37
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 37
+    - name: customer38
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 38
+    - name: customer39
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 39
+    - name: customer40
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 40
+    - name: customer41
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 41
+    - name: customer42
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 42
+    - name: customer43
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 43
+    - name: customer44
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 44
+    - name: customer45
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 45
+    - name: customer46
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 46
+    - name: customer47
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 47
+    - name: customer48
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 48
+    - name: customer49
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 49
+    - name: customer50
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 50
+    - name: customer51
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 51
+    - name: customer52
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 52
+    - name: customer53
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 53
+    - name: customer54
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 54
+    - name: customer55
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 55
+    - name: customer56
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 56
+    - name: customer57
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 57
+    - name: customer58
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 58
+    - name: customer59
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 59
+    - name: customer60
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 60
+    - name: customer61
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 61
+    - name: customer62
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 62
+    - name: customer63
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 63
+    - name: customer64
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 64
+    - name: customer65
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 65
+    - name: customer66
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 66
+    - name: customer67
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 67
+    - name: customer68
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 68
+    - name: customer69
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 69
+    - name: customer70
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 70
+    - name: customer71
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 71
+    - name: customer72
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 72
+    - name: customer73
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 73
+    - name: customer74
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 74
+    - name: customer75
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 75
+    - name: customer76
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 76
+    - name: customer77
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 77
+    - name: customer78
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 78
+    - name: customer79
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 79
+    - name: customer80
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 80
+    - name: customer81
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 81
+    - name: customer82
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 82
+    - name: customer83
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 83
+    - name: customer84
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 84
+    - name: customer85
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 85
+    - name: customer86
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 86
+    - name: customer87
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 87
+    - name: customer88
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 88
+    - name: customer89
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 89
+    - name: customer90
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 90
+    - name: customer91
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 91
+    - name: customer92
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 92
+    - name: customer93
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 93
+    - name: customer94
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 94
+    - name: customer95
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 95
+    - name: customer96
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 96
+    - name: customer97
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 97
+    - name: customer98
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 98
+    - name: customer99
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 99
+    - name: customer100
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 100
+    - name: customer101
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 101
+    - name: customer102
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 102
+    - name: customer103
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 103
+    - name: customer104
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 104
+    - name: customer105
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 105
+    - name: customer106
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 106
+    - name: customer107
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 107     
+    - name: customer108
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 108
+    - name: customer109
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 109
+    - name: customer110
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 110
+    - name: customer111
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 111
+    - name: customer112
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 112
+    - name: customer113
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 113
+    - name: customer114
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 114
+    - name: customer115
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 115
+    - name: customer116
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 116
+    - name: customer117
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 117
+    - name: customer118
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 118
+    - name: customer119
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 119
+    - name: customer120
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 120
+    - name: customer121
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 121
+    - name: customer122
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 122
+    - name: customer123
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 123
+    - name: customer124
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 124
+    - name: customer125
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 125
+    - name: customer126
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 126
+    - name: customer127
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 127
+    - name: customer128
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 128
+    - name: customer129
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 129
+    - name: customer130
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 130
+    - name: customer131
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 131
+    - name: customer132
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 132
+    - name: customer133
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 133
+    - name: customer134
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 134
+    - name: customer135
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 135
+    - name: customer136
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 136
+    - name: customer137
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 137
+    - name: customer138
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 138
+    - name: customer139
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 139
+    - name: customer140
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 140
+    - name: customer141
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 141
+    - name: customer142
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 142
+    - name: customer143
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 143
+    - name: customer144
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 144
+    - name: customer145
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 145
+    - name: customer146
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 146
+    - name: customer147
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 147
+    - name: customer148
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 148
+    - name: customer149
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 149
+    - name: customer150
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 150
+    - name: customer151
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 151
+    - name: customer152
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 152
+    - name: customer153
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 153
+    - name: customer154
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 154
+    - name: customer155
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 155
+    - name: customer156
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 156
+    - name: customer157
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 157
+    - name: customer158
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 158
+    - name: customer159
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 159
+    - name: customer160
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 160
+    - name: customer161
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 161
+    - name: customer162
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 162
+    - name: customer163
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 163
+    - name: customer164
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 164
+    - name: customer165
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 165
+    - name: customer166
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 166
+    - name: customer167
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 167
+    - name: customer168
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 168
+    - name: customer169
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 169
+    - name: customer170
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 170
+    - name: customer171
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 171
+    - name: customer172
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 172
+    - name: customer173
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 173
+    - name: customer174
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 174
+    - name: customer175
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 175
+    - name: customer176
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 176
+    - name: customer177
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 177
+    - name: customer178
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 178
+    - name: customer179
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 179
+    - name: customer180
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 180
+    - name: customer181
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 181
+    - name: customer182
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 182
+    - name: customer183
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 183
+    - name: customer184
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 184
+    - name: customer185
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 185
+    - name: customer186
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 186
+    - name: customer187
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 187
+    - name: customer188
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 188
+    - name: customer189
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 189
+    - name: customer190
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 190
+    - name: customer191
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 191
+    - name: customer192
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 192
+    - name: customer193
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 193
+    - name: customer194
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 194
+    - name: customer195
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 195
+    - name: customer196
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 196
+    - name: customer197
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 197
+    - name: customer198
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 198
+    - name: customer199
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 199
+    - name: customer200
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 200  
+    - name: customer201
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 201
+    - name: customer202
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 202
+    - name: customer203
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 203
+    - name: customer204
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 204
+    - name: customer205
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 205
+    - name: customer206
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 206
+    - name: customer207
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 207     
+    - name: customer208
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 208
+    - name: customer209
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 209
+    - name: customer210
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 210
+    - name: customer211
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 211
+    - name: customer212
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 212
+    - name: customer213
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 213
+    - name: customer214
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 214
+    - name: customer215
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 215
+    - name: customer216
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 216
+    - name: customer217
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 217
+    - name: customer218
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 218
+    - name: customer219
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 219
+    - name: customer220
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 220
+    - name: customer221
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 221
+    - name: customer222
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 222
+    - name: customer223
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 223
+    - name: customer224
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 224
+    - name: customer225
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 225
+    - name: customer226
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 226
+    - name: customer227
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 227
+    - name: customer228
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 228
+    - name: customer229
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 229
+    - name: customer230
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 230
+    - name: customer231
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 231
+    - name: customer232
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 232
+    - name: customer233
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 233
+    - name: customer234
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 234
+    - name: customer235
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 235
+    - name: customer236
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 236
+    - name: customer237
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 237
+    - name: customer238
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 238
+    - name: customer239
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 239
+    - name: customer240
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 240
+    - name: customer241
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 241
+    - name: customer242
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 242
+    - name: customer243
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 243
+    - name: customer244
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 244
+    - name: customer245
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 245
+    - name: customer246
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 246
+    - name: customer247
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 247
+    - name: customer248
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 248
+    - name: customer249
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 249
+    - name: customer250
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 250
+    - name: customer251
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 251
+    - name: customer252
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 252
+    - name: customer253
+      policy: TELEPRES-AVT-POLICY
+      wan_vni: 253
+
+
+
+  
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
+            preference: preferred
+    # - name: CUSTOMER1-AVT-POLICY
+    #   default_virtual_topology:
+    #     path_groups:
+    #       - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
+    #         preference: preferred
+    # - name: CUSTOMER2-AVT-POLICY
+    #   default_virtual_topology:
+    #     path_groups:
+    #       - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
+    #         preference: preferred
+    - name: TELEPRES-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
+            preference: preferred
+      application_virtual_topologies:
+        - application_profile: VOICE 
+          # if you enable lowest hop count it will disable FRR
+          lowest_hop_count: false
+          path_groups:
+            - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
+              preference: preferred
+          constraints: 
+            latency: 120
+            jitter: 20
+            loss_rate: 0.3
+          id: 2 
+
+
+# Application traffic recognition configuration.
+application_classification:
+  field_sets:
+    l4_ports: 
+    - name: RTP_PORT
+      port_values: [1-65000]
+  # Group of applications.
+  application_profiles:
+    - name: VOICE
+     
+     # Can be custom defined APP, or builtin Cosmos app
+      applications:
+        - name: voice-udpport
+        - name: erspan
+
+
+      
+      # service: "audio-video"
+      # application_transports:
+      #   - "rtp"
+ 
+  applications:
+    ipv4_applications:
+      - name: voice-udpport
+        udp_dest_port_set_name: RTP_PORT
+        protocols: 
+          - "udp"

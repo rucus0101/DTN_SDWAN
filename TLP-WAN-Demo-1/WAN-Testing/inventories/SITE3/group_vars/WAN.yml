@@ -1,0 +1,50 @@
+### WAN ###
+
+design:
+  type: l3ls-evpn
+
+underlay_routing_protocol: ebgp
+
+mgmt_interface: Management1
+
+type: wan_router
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Global
+    cv_pathfinder_site: SITE3
+    loopback_ipv4_pool: 10.103.254.0/25
+    vtep_loopback_ipv4_pool: 10.103.255.0/25
+    uplink_ipv4_pool: 10.103.0.128/25
+    uplink_type: port-channel
+    filter:
+      always_include_vrfs_in_tenants:
+        - avd-testing
+    wan_ha:
+      enabled: true
+  node_groups:
+    - group: WAN-SITE3
+      bgp_as: 65000
+      nodes:
+        - name: wan1-site3
+          id: 1
+          mgmt_ip: 192.168.66.27/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [leaf1-site3, leaf2-site3]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.8.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: SITE3-MPLS-8
+              peer_ip: 172.18.8.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.8.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: SITE3-INET-8
+              peer_ip: 100.64.8.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+

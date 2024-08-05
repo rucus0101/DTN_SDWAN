@@ -1,0 +1,20 @@
+fabric_name: SITE1
+
+tenants: # dynamic_key: network_services
+  - name: avd-testing
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: guest
+        vrf_vni: 10
+        svis:
+          - id: 10
+            enabled: true
+            name: guest_10
+            ip_address_virtual: 10.201.10.1/24
+      - name: data
+        vrf_vni: 20
+        svis:
+          - id: 20
+            enabled: true
+            name: data_20
+            ip_address_virtual: 10.201.20.1/24

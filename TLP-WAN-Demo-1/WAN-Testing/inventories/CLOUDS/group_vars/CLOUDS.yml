@@ -1,0 +1,30 @@
+
+fabric_name: CLOUDS
+
+design:
+  type: l2ls
+
+type: l3spine
+
+
+l3spine:
+  defaults:
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 10.255.255.0/24
+    bgp_as: 10000
+    filter:
+      tags: [ clouds ]
+  nodes:
+    - name: mpls-cloud
+      id: 1
+      mgmt_ip: 192.168.66.10/24
+      bgp_as: 10000
+    - name: inet-cloud
+      id: 2
+      mgmt_ip: 192.168.66.11/24
+      bgp_as: 20000
+    - name: nat-rtr1
+      id: 3
+      mgmt_ip: 192.168.66.12/24
+      bgp_as: 30000
+

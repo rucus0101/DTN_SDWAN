@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    CLOUDS:
+      hosts:
+        mpls-cloud:
+          ansible_host: 192.168.66.10
+        inet-cloud:
+          ansible_host: 192.168.66.11
+        nat-rtr1:
+          ansible_host: 192.168.66.12

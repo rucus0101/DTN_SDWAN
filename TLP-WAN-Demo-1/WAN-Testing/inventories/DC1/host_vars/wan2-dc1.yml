@@ -1,0 +1,13 @@
+---
+
+# Temp disable wan2-dc1
+
+custom_structured_configuration_ethernet_interfaces:
+  - name: Ethernet1
+    shutdown: true
+  - name: Ethernet2
+    shutdown: true
+  - name: Ethernet3
+    shutdown: true
+  - name: Ethernet4
+    shutdown: true

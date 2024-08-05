@@ -1,0 +1,157 @@
+---
+all:
+  children:
+    TLP_WAN:
+      children:
+        REGION1:
+          children:
+            REGION1_HUB:
+              children:
+                R1_HUB_WAN:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r1-hub-wan1:
+                      ansible_host: 172.28.137.226
+                      serial_number: WTW23160927
+                      poc_hostname: IND355 
+                    r1-hub-wan2:
+                      ansible_host: 172.28.137.227
+                      serial_number: WTW23160930
+                      poc_hostname: IND356 
+
+                R1_HUB_LEAF:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r1-hub-leaf1:
+                      ansible_host: 172.28.135.179
+                      serial_number: JAS20400183
+                      poc_hostname: IND356 
+            REGION1_SITE1:
+              children:
+                WAN_R1SITE1:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r1-site1-wan1:
+                      ansible_host: 172.28.138.70
+                      serial_number: WTW22500040
+                      poc_hostname: CBL385 
+                    r1-site1-wan2:
+                      ansible_host: 172.28.138.71
+                      serial_number: WTW22500039
+                      poc_hostname: CBL386 
+                LEAFS_R1SITE1:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r1-site1-leaf1:
+                      ansible_host: 172.28.133.157
+                      serial_number: JPE18270451
+                      poc_hostname: CAL383
+            REGION1_SITE2:
+              children:
+                WAN_R1SITE2:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r1-site2-wan1:
+                      ansible_host: 172.28.138.220
+                      serial_number: WTW23341336
+                      poc_hostname: CBL433 
+                    r1-site2-wan2:
+                      ansible_host: 172.28.138.221
+                      serial_number: WTW23341340
+                      poc_hostname: CBL434 
+                LEAFS_R1SITE2:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r1-site2-leaf1:
+                      ansible_host: 172.28.133.18
+                      serial_number: JPE19012880
+                      poc_hostname:  CAL419
+        REGION2:
+          children:
+            REGION2_HUB:
+              children:
+                R2_HUB_WAN:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r2-hub-wan1:
+                      ansible_host: 172.28.138.223
+                      serial_number: WTW23250084
+                      poc_hostname:  IND517
+                    r2-hub-wan2:
+                      ansible_host: 172.28.138.224
+                      serial_number: WTW23250083
+                      poc_hostname:  IND518
+                R2_HUB_LEAF:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r2-hub-leaf1:
+                      ansible_host: 172.28.135.178
+                      serial_number: JPE21043551
+                      poc_hostname:  CDV471
+            REGION2_SITE1:
+              children:
+                WAN_R2SITE1:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r2-site1-wan1:
+                      ansible_host: 172.28.139.42
+                      serial_number: DTW24090012
+                      poc_hostname:  WLM360
+                    r2-site1-wan2:
+                      ansible_host: 172.28.139.43
+                      serial_number: DTW24090018
+                      poc_hostname:  WLM361
+                LEAFS_R2SITE1:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r2-site1-leaf1:
+                      ansible_host: 172.28.135.136
+                      serial_number: SGD20435246
+                      poc_hostname:  MRV436
+
+            REGION2_SITE2:
+              children:
+                WAN_R2SITE2:
+                  vars:
+                    type: wan_router
+                  hosts:
+                    r2-site2-wan1:
+                      ansible_host: 172.28.143.208
+                      # serial_number: VM
+                      poc_hostname:  VM1
+                    r2-site2-wan2:
+                      ansible_host: 172.28.143.227
+                      # serial_number: VM
+                      poc_hostname:  VM2
+                LEAFS_R2SITE2:
+                  vars:
+                    type: l3leaf
+                  hosts:
+                    r2-site2-leaf1:
+                      ansible_host: 172.28.129.213
+                      serial_number: JPE20297014
+                      poc_hostname:  MRV425
+        PATHFINDERS:
+          children:
+            WAN:
+              vars:
+                type: wan_rr
+              hosts:
+                pf1:
+                  ansible_host: 172.28.138.222
+                  serial_number: WTW23341351
+                  poc_hostname:  CBL435
+                pf2:
+                  ansible_host: 172.28.137.186
+                  serial_number: WTW22500002
+                  poc_hostname:  CBL357

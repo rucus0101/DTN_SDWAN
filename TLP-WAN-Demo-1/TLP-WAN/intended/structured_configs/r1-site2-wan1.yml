@@ -1,0 +1,3494 @@
+hostname: r1-site2-wan1
+is_deployed: true
+serial_number: WTW23341336
+router_bgp:
+  as: '65000'
+  router_id: 10.1.2.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 16
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 15000
+      min_rx: 15000
+      multiplier: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.1.2.128
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65012'
+    peer: r1-site2-leaf1
+    description: r1-site2-leaf1_Ethernet1
+  - ip_address: 10.255.0.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: pf1
+    description: pf1
+  - ip_address: 10.255.0.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: pf2
+    description: pf2
+  - ip_address: 10.1.2.66
+    peer: r1-site2-wan2
+    description: r1-site2-wan2
+    remote_as: '65000'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
+  vrfs:
+  - name: customer1
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.254_vrf_customer1
+    rd: 10.1.2.1:254
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 254:254
+      export:
+      - address_family: evpn
+        route_targets:
+        - 254:254
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer2
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.2_vrf_customer2
+    rd: 10.1.2.1:2
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer3
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.3_vrf_customer3
+    rd: 10.1.2.1:3
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer4
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.4_vrf_customer4
+    rd: 10.1.2.1:4
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer5
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.5_vrf_customer5
+    rd: 10.1.2.1:5
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '5:5'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '5:5'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer6
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.6_vrf_customer6
+    rd: 10.1.2.1:6
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '6:6'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '6:6'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer7
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.7_vrf_customer7
+    rd: 10.1.2.1:7
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '7:7'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '7:7'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer8
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.8_vrf_customer8
+    rd: 10.1.2.1:8
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '8:8'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '8:8'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer9
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.9_vrf_customer9
+    rd: 10.1.2.1:9
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer10
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.10_vrf_customer10
+    rd: 10.1.2.1:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer11
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.11_vrf_customer11
+    rd: 10.1.2.1:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer12
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.12_vrf_customer12
+    rd: 10.1.2.1:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer13
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.13_vrf_customer13
+    rd: 10.1.2.1:13
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer14
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.14_vrf_customer14
+    rd: 10.1.2.1:14
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer15
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.15_vrf_customer15
+    rd: 10.1.2.1:15
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '15:15'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '15:15'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer16
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.16_vrf_customer16
+    rd: 10.1.2.1:16
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '16:16'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '16:16'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer17
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.17_vrf_customer17
+    rd: 10.1.2.1:17
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '17:17'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer18
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.18_vrf_customer18
+    rd: 10.1.2.1:18
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '18:18'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '18:18'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer19
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.19_vrf_customer19
+    rd: 10.1.2.1:19
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '19:19'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '19:19'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer20
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.20_vrf_customer20
+    rd: 10.1.2.1:20
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer21
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.21_vrf_customer21
+    rd: 10.1.2.1:21
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer22
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.22_vrf_customer22
+    rd: 10.1.2.1:22
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '22:22'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '22:22'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer23
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.23_vrf_customer23
+    rd: 10.1.2.1:23
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '23:23'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '23:23'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer24
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.24_vrf_customer24
+    rd: 10.1.2.1:24
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '24:24'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '24:24'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer25
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.25_vrf_customer25
+    rd: 10.1.2.1:25
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '25:25'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '25:25'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer26
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.26_vrf_customer26
+    rd: 10.1.2.1:26
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '26:26'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '26:26'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer27
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.27_vrf_customer27
+    rd: 10.1.2.1:27
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '27:27'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '27:27'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer28
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.28_vrf_customer28
+    rd: 10.1.2.1:28
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '28:28'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '28:28'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer29
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.29_vrf_customer29
+    rd: 10.1.2.1:29
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '29:29'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '29:29'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer30
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.30_vrf_customer30
+    rd: 10.1.2.1:30
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '30:30'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '30:30'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer31
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.31_vrf_customer31
+    rd: 10.1.2.1:31
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '31:31'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '31:31'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer32
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.32_vrf_customer32
+    rd: 10.1.2.1:32
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '32:32'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '32:32'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer33
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.33_vrf_customer33
+    rd: 10.1.2.1:33
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '33:33'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '33:33'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer34
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.34_vrf_customer34
+    rd: 10.1.2.1:34
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '34:34'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '34:34'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer35
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.35_vrf_customer35
+    rd: 10.1.2.1:35
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '35:35'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '35:35'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer36
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.36_vrf_customer36
+    rd: 10.1.2.1:36
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '36:36'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '36:36'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer37
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.37_vrf_customer37
+    rd: 10.1.2.1:37
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '37:37'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '37:37'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer38
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.38_vrf_customer38
+    rd: 10.1.2.1:38
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '38:38'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '38:38'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer39
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.39_vrf_customer39
+    rd: 10.1.2.1:39
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '39:39'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '39:39'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer40
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.40_vrf_customer40
+    rd: 10.1.2.1:40
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '40:40'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '40:40'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer41
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.41_vrf_customer41
+    rd: 10.1.2.1:41
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer42
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.42_vrf_customer42
+    rd: 10.1.2.1:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer43
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.43_vrf_customer43
+    rd: 10.1.2.1:43
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '43:43'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '43:43'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer44
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.44_vrf_customer44
+    rd: 10.1.2.1:44
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '44:44'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '44:44'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer45
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.45_vrf_customer45
+    rd: 10.1.2.1:45
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '45:45'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '45:45'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer46
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.46_vrf_customer46
+    rd: 10.1.2.1:46
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '46:46'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '46:46'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer47
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.47_vrf_customer47
+    rd: 10.1.2.1:47
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer48
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.48_vrf_customer48
+    rd: 10.1.2.1:48
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '48:48'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '48:48'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer49
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.49_vrf_customer49
+    rd: 10.1.2.1:49
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '49:49'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '49:49'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer50
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.50_vrf_customer50
+    rd: 10.1.2.1:50
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer51
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.51_vrf_customer51
+    rd: 10.1.2.1:51
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '51:51'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '51:51'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer52
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.52_vrf_customer52
+    rd: 10.1.2.1:52
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '52:52'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '52:52'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer53
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.53_vrf_customer53
+    rd: 10.1.2.1:53
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '53:53'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '53:53'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer54
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.54_vrf_customer54
+    rd: 10.1.2.1:54
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '54:54'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '54:54'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer55
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.55_vrf_customer55
+    rd: 10.1.2.1:55
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '55:55'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '55:55'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer56
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.56_vrf_customer56
+    rd: 10.1.2.1:56
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '56:56'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '56:56'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer57
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.57_vrf_customer57
+    rd: 10.1.2.1:57
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '57:57'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '57:57'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer58
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.58_vrf_customer58
+    rd: 10.1.2.1:58
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '58:58'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '58:58'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer59
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.59_vrf_customer59
+    rd: 10.1.2.1:59
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '59:59'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '59:59'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer60
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.60_vrf_customer60
+    rd: 10.1.2.1:60
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 60:60
+      export:
+      - address_family: evpn
+        route_targets:
+        - 60:60
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer61
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.61_vrf_customer61
+    rd: 10.1.2.1:61
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 61:61
+      export:
+      - address_family: evpn
+        route_targets:
+        - 61:61
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer62
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.62_vrf_customer62
+    rd: 10.1.2.1:62
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 62:62
+      export:
+      - address_family: evpn
+        route_targets:
+        - 62:62
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer63
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.63_vrf_customer63
+    rd: 10.1.2.1:63
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 63:63
+      export:
+      - address_family: evpn
+        route_targets:
+        - 63:63
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer64
+    router_id: 10.1.2.1
+    neighbors:
+    - ip_address: 10.1.2.128
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65012'
+      description: r1-site2-leaf1_Ethernet1.64_vrf_customer64
+    rd: 10.1.2.1:64
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 64:64
+      export:
+      - address_family: evpn
+        route_targets:
+        - 64:64
+    redistribute_routes:
+    - source_protocol: connected
+  - name: default
+    rd: 10.1.2.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.1.2.66
+      activate: true
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.28.128.1
+- destination_address_prefix: 172.16.51.16/30
+  gateway: 172.16.123.1
+- destination_address_prefix: 172.16.52.16/30
+  gateway: 172.16.123.1
+- destination_address_prefix: 172.16.103.0/30
+  gateway: 172.16.123.1
+- destination_address_prefix: 172.16.113.0/30
+  gateway: 172.16.123.1
+- destination_address_prefix: 172.16.123.0/30
+  gateway: 172.16.123.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.cv-staging.corp.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /mnt/flash/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: true
+transceiver_qsfp_default_mode_4x10: false
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: MGMT
+spanning_tree:
+  mode: none
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$qI16FDuEyTyahgyH$su2QQ4zgkOLu1269G7PM1pdM0xHV0AeBJ6nSUzCcGeTrIqCJYpEK8t/KKDtUy6Q8YyUGoYe2ZFPNYqprB482b0
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: customer1
+  tenant: region1-site2
+  ip_routing: true
+- name: customer2
+  tenant: region1-site2
+  ip_routing: true
+- name: customer3
+  tenant: region1-site2
+  ip_routing: true
+- name: customer4
+  tenant: region1-site2
+  ip_routing: true
+- name: customer5
+  tenant: region1-site2
+  ip_routing: true
+- name: customer6
+  tenant: region1-site2
+  ip_routing: true
+- name: customer7
+  tenant: region1-site2
+  ip_routing: true
+- name: customer8
+  tenant: region1-site2
+  ip_routing: true
+- name: customer9
+  tenant: region1-site2
+  ip_routing: true
+- name: customer10
+  tenant: region1-site2
+  ip_routing: true
+- name: customer11
+  tenant: region1-site2
+  ip_routing: true
+- name: customer12
+  tenant: region1-site2
+  ip_routing: true
+- name: customer13
+  tenant: region1-site2
+  ip_routing: true
+- name: customer14
+  tenant: region1-site2
+  ip_routing: true
+- name: customer15
+  tenant: region1-site2
+  ip_routing: true
+- name: customer16
+  tenant: region1-site2
+  ip_routing: true
+- name: customer17
+  tenant: region1-site2
+  ip_routing: true
+- name: customer18
+  tenant: region1-site2
+  ip_routing: true
+- name: customer19
+  tenant: region1-site2
+  ip_routing: true
+- name: customer20
+  tenant: region1-site2
+  ip_routing: true
+- name: customer21
+  tenant: region1-site2
+  ip_routing: true
+- name: customer22
+  tenant: region1-site2
+  ip_routing: true
+- name: customer23
+  tenant: region1-site2
+  ip_routing: true
+- name: customer24
+  tenant: region1-site2
+  ip_routing: true
+- name: customer25
+  tenant: region1-site2
+  ip_routing: true
+- name: customer26
+  tenant: region1-site2
+  ip_routing: true
+- name: customer27
+  tenant: region1-site2
+  ip_routing: true
+- name: customer28
+  tenant: region1-site2
+  ip_routing: true
+- name: customer29
+  tenant: region1-site2
+  ip_routing: true
+- name: customer30
+  tenant: region1-site2
+  ip_routing: true
+- name: customer31
+  tenant: region1-site2
+  ip_routing: true
+- name: customer32
+  tenant: region1-site2
+  ip_routing: true
+- name: customer33
+  tenant: region1-site2
+  ip_routing: true
+- name: customer34
+  tenant: region1-site2
+  ip_routing: true
+- name: customer35
+  tenant: region1-site2
+  ip_routing: true
+- name: customer36
+  tenant: region1-site2
+  ip_routing: true
+- name: customer37
+  tenant: region1-site2
+  ip_routing: true
+- name: customer38
+  tenant: region1-site2
+  ip_routing: true
+- name: customer39
+  tenant: region1-site2
+  ip_routing: true
+- name: customer40
+  tenant: region1-site2
+  ip_routing: true
+- name: customer41
+  tenant: region1-site2
+  ip_routing: true
+- name: customer42
+  tenant: region1-site2
+  ip_routing: true
+- name: customer43
+  tenant: region1-site2
+  ip_routing: true
+- name: customer44
+  tenant: region1-site2
+  ip_routing: true
+- name: customer45
+  tenant: region1-site2
+  ip_routing: true
+- name: customer46
+  tenant: region1-site2
+  ip_routing: true
+- name: customer47
+  tenant: region1-site2
+  ip_routing: true
+- name: customer48
+  tenant: region1-site2
+  ip_routing: true
+- name: customer49
+  tenant: region1-site2
+  ip_routing: true
+- name: customer50
+  tenant: region1-site2
+  ip_routing: true
+- name: customer51
+  tenant: region1-site2
+  ip_routing: true
+- name: customer52
+  tenant: region1-site2
+  ip_routing: true
+- name: customer53
+  tenant: region1-site2
+  ip_routing: true
+- name: customer54
+  tenant: region1-site2
+  ip_routing: true
+- name: customer55
+  tenant: region1-site2
+  ip_routing: true
+- name: customer56
+  tenant: region1-site2
+  ip_routing: true
+- name: customer57
+  tenant: region1-site2
+  ip_routing: true
+- name: customer58
+  tenant: region1-site2
+  ip_routing: true
+- name: customer59
+  tenant: region1-site2
+  ip_routing: true
+- name: customer60
+  tenant: region1-site2
+  ip_routing: true
+- name: customer61
+  tenant: region1-site2
+  ip_routing: true
+- name: customer62
+  tenant: region1-site2
+  ip_routing: true
+- name: customer63
+  tenant: region1-site2
+  ip_routing: true
+- name: customer64
+  tenant: region1-site2
+  ip_routing: true
+management_interfaces:
+- name: Management1/1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.28.138.220/17
+  gateway: 172.28.128.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management1/1
+    vrf: MGMT
+  servers:
+  - name: 1.pool.ntp.org
+    iburst: true
+    vrf: MGMT
+    preferred: true
+ethernet_interfaces:
+- name: Ethernet1/5
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1
+  speed: 10g
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.254
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.254
+  peer_type: l3leaf
+  vrf: customer1
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.254_vrf_customer1
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 254
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.2
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.2
+  peer_type: l3leaf
+  vrf: customer2
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.2_vrf_customer2
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 2
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.3
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.3
+  peer_type: l3leaf
+  vrf: customer3
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.3_vrf_customer3
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 3
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.4
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.4
+  peer_type: l3leaf
+  vrf: customer4
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.4_vrf_customer4
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 4
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.5
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.5
+  peer_type: l3leaf
+  vrf: customer5
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.5_vrf_customer5
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 5
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.6
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.6
+  peer_type: l3leaf
+  vrf: customer6
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.6_vrf_customer6
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 6
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.7
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.7
+  peer_type: l3leaf
+  vrf: customer7
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.7_vrf_customer7
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 7
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.8
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.8
+  peer_type: l3leaf
+  vrf: customer8
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.8_vrf_customer8
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 8
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.9
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.9
+  peer_type: l3leaf
+  vrf: customer9
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.9_vrf_customer9
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 9
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.10
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.10
+  peer_type: l3leaf
+  vrf: customer10
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.10_vrf_customer10
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.11
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.11
+  peer_type: l3leaf
+  vrf: customer11
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.11_vrf_customer11
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 11
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.12
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.12
+  peer_type: l3leaf
+  vrf: customer12
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.12_vrf_customer12
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 12
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.13
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.13
+  peer_type: l3leaf
+  vrf: customer13
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.13_vrf_customer13
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 13
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.14
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.14
+  peer_type: l3leaf
+  vrf: customer14
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.14_vrf_customer14
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 14
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.15
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.15
+  peer_type: l3leaf
+  vrf: customer15
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.15_vrf_customer15
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 15
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.16
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.16
+  peer_type: l3leaf
+  vrf: customer16
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.16_vrf_customer16
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 16
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.17
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.17
+  peer_type: l3leaf
+  vrf: customer17
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.17_vrf_customer17
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 17
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.18
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.18
+  peer_type: l3leaf
+  vrf: customer18
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.18_vrf_customer18
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 18
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.19
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.19
+  peer_type: l3leaf
+  vrf: customer19
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.19_vrf_customer19
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 19
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.20
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.20
+  peer_type: l3leaf
+  vrf: customer20
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.20_vrf_customer20
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 20
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.21
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.21
+  peer_type: l3leaf
+  vrf: customer21
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.21_vrf_customer21
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 21
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.22
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.22
+  peer_type: l3leaf
+  vrf: customer22
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.22_vrf_customer22
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 22
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.23
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.23
+  peer_type: l3leaf
+  vrf: customer23
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.23_vrf_customer23
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 23
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.24
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.24
+  peer_type: l3leaf
+  vrf: customer24
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.24_vrf_customer24
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 24
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.25
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.25
+  peer_type: l3leaf
+  vrf: customer25
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.25_vrf_customer25
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 25
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.26
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.26
+  peer_type: l3leaf
+  vrf: customer26
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.26_vrf_customer26
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 26
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.27
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.27
+  peer_type: l3leaf
+  vrf: customer27
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.27_vrf_customer27
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 27
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.28
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.28
+  peer_type: l3leaf
+  vrf: customer28
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.28_vrf_customer28
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 28
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.29
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.29
+  peer_type: l3leaf
+  vrf: customer29
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.29_vrf_customer29
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 29
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.30
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.30
+  peer_type: l3leaf
+  vrf: customer30
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.30_vrf_customer30
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 30
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.31
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.31
+  peer_type: l3leaf
+  vrf: customer31
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.31_vrf_customer31
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 31
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.32
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.32
+  peer_type: l3leaf
+  vrf: customer32
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.32_vrf_customer32
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 32
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.33
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.33
+  peer_type: l3leaf
+  vrf: customer33
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.33_vrf_customer33
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 33
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.34
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.34
+  peer_type: l3leaf
+  vrf: customer34
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.34_vrf_customer34
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 34
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.35
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.35
+  peer_type: l3leaf
+  vrf: customer35
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.35_vrf_customer35
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 35
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.36
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.36
+  peer_type: l3leaf
+  vrf: customer36
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.36_vrf_customer36
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 36
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.37
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.37
+  peer_type: l3leaf
+  vrf: customer37
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.37_vrf_customer37
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 37
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.38
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.38
+  peer_type: l3leaf
+  vrf: customer38
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.38_vrf_customer38
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 38
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.39
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.39
+  peer_type: l3leaf
+  vrf: customer39
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.39_vrf_customer39
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 39
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.40
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.40
+  peer_type: l3leaf
+  vrf: customer40
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.40_vrf_customer40
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 40
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.41
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.41
+  peer_type: l3leaf
+  vrf: customer41
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.41_vrf_customer41
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 41
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.42
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+  vrf: customer42
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.42_vrf_customer42
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.43
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.43
+  peer_type: l3leaf
+  vrf: customer43
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.43_vrf_customer43
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 43
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.44
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.44
+  peer_type: l3leaf
+  vrf: customer44
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.44_vrf_customer44
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 44
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.45
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.45
+  peer_type: l3leaf
+  vrf: customer45
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.45_vrf_customer45
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 45
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.46
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.46
+  peer_type: l3leaf
+  vrf: customer46
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.46_vrf_customer46
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 46
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.47
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.47
+  peer_type: l3leaf
+  vrf: customer47
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.47_vrf_customer47
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 47
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.48
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.48
+  peer_type: l3leaf
+  vrf: customer48
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.48_vrf_customer48
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 48
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.49
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.49
+  peer_type: l3leaf
+  vrf: customer49
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.49_vrf_customer49
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 49
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.50
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.50
+  peer_type: l3leaf
+  vrf: customer50
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.50_vrf_customer50
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 50
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.51
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.51
+  peer_type: l3leaf
+  vrf: customer51
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.51_vrf_customer51
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 51
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.52
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.52
+  peer_type: l3leaf
+  vrf: customer52
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.52_vrf_customer52
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 52
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.53
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.53
+  peer_type: l3leaf
+  vrf: customer53
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.53_vrf_customer53
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 53
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.54
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.54
+  peer_type: l3leaf
+  vrf: customer54
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.54_vrf_customer54
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 54
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.55
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.55
+  peer_type: l3leaf
+  vrf: customer55
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.55_vrf_customer55
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 55
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.56
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.56
+  peer_type: l3leaf
+  vrf: customer56
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.56_vrf_customer56
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 56
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.57
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.57
+  peer_type: l3leaf
+  vrf: customer57
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.57_vrf_customer57
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 57
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.58
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.58
+  peer_type: l3leaf
+  vrf: customer58
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.58_vrf_customer58
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 58
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.59
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.59
+  peer_type: l3leaf
+  vrf: customer59
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.59_vrf_customer59
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 59
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.60
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.60
+  peer_type: l3leaf
+  vrf: customer60
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.60_vrf_customer60
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 60
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.61
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.61
+  peer_type: l3leaf
+  vrf: customer61
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.61_vrf_customer61
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 61
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.62
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.62
+  peer_type: l3leaf
+  vrf: customer62
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.62_vrf_customer62
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 62
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.63
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.63
+  peer_type: l3leaf
+  vrf: customer63
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.63_vrf_customer63
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 63
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/5.64
+  peer: r1-site2-leaf1
+  peer_interface: Ethernet1.64
+  peer_type: l3leaf
+  vrf: customer64
+  description: P2P_LINK_TO_R1-SITE2-LEAF1_Ethernet1.64_vrf_customer64
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 64
+  mtu: 9214
+  ip_address: 10.1.2.129/31
+- name: Ethernet1/7
+  peer_type: l3_interface
+  ip_address: 172.16.123.2/30
+  shutdown: false
+  type: routed
+  description: rmpls3_SITE2-MPLS3
+  mtu: 9000
+- name: Ethernet1/6
+  type: routed
+  peer_type: l3_interface
+  peer: r1-site2-wan2
+  shutdown: false
+  description: DIRECT LAN HA LINK
+  ip_address: 10.10.12.0/31
+  flow_tracker: null
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.1.2.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.1.2.0/26 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 10.1.2.1:102 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 10.1.2.1:102 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
+    match:
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.1.2.1:102 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 10.1.2.1:102
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 10.1.2.65
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: Region1
+    id: 1
+  zone:
+    name: Region1-ZONE
+    id: 1
+  site:
+    name: REGION1_SITE2
+    id: 102
+  profiles:
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: TELEPRES-AVT-POLICY-VOICE
+    load_balance_policy: LB-TELEPRES-AVT-POLICY-VOICE
+  - name: TELEPRES-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-TELEPRES-AVT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-AVT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer1
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer2
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer3
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer4
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer5
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer6
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer7
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer8
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer9
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer10
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer11
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer12
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer13
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer14
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer15
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer16
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer17
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer18
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer19
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer20
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer21
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer22
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer23
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer24
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer25
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer26
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer27
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer28
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer29
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer30
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer31
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer32
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer33
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer34
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer35
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer36
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer37
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer38
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer39
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer40
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer41
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer42
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer43
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer44
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer45
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer46
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer47
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer48
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer49
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer50
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer51
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer52
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer53
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer54
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer55
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer56
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer57
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer58
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer59
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer60
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer61
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer62
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer63
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer64
+    policy: TELEPRES-AVT-POLICY
+    profiles:
+    - name: TELEPRES-AVT-POLICY-VOICE
+      id: 2
+    - name: TELEPRES-AVT-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+  - name: TELEPRES-AVT-POLICY
+    matches:
+    - application_profile: VOICE
+      avt_profile: TELEPRES-AVT-POLICY-VOICE
+    - application_profile: default
+      avt_profile: TELEPRES-AVT-POLICY-DEFAULT
+router_bfd:
+  multihop:
+    interval: 100
+    min_rx: 100
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  path_groups:
+  - name: rmpls3
+    id: 103
+    local_interfaces:
+    - name: Ethernet1/7
+      stun:
+        server_profiles:
+        - rmpls3-pf1-Ethernet1_7
+        - rmpls3-pf2-Ethernet1_7
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.0.1
+      name: pf1
+      ipv4_addresses:
+      - 172.16.51.18
+    - router_ip: 10.255.0.2
+      name: pf2
+      ipv4_addresses:
+      - 172.16.52.18
+    ipsec_profile: CP-PROFILE
+    keepalive:
+      interval: 50
+      failure_threshold: 3
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
+    local_interfaces:
+    - name: Ethernet1/6
+    static_peers:
+    - router_ip: 10.1.2.66
+      name: r1-site2-wan2
+      ipv4_addresses:
+      - 10.10.12.1
+  load_balance_policies:
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: rmpls3
+    - name: LAN_HA
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: rmpls3
+    - name: LAN_HA
+  - name: LB-TELEPRES-AVT-POLICY-VOICE
+    path_groups:
+    - name: rmpls3
+    - name: LAN_HA
+    latency: 120
+    jitter: 20
+    loss_rate: '0.3'
+    lowest_hop_count: false
+  - name: LB-TELEPRES-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: rmpls3
+    - name: LAN_HA
+router_traffic_engineering:
+  enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: rmpls3-pf1-Ethernet1_7
+      ip_address: 172.16.51.18
+    - name: rmpls3-pf2-Ethernet1_7
+      ip_address: 172.16.52.18
+application_traffic_recognition:
+  application_profiles:
+  - name: VOICE
+    applications:
+    - name: voice-udpport
+    - name: erspan
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+  applications:
+    ipv4_applications:
+    - name: voice-udpport
+      udp_dest_port_set_name: RTP_PORT
+      protocols:
+      - udp
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  field_sets:
+    l4_ports:
+    - name: RTP_PORT
+      port_values:
+      - 1-65000
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.0.1/32
+      - 10.255.0.2/32
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9214
+  ip_address: 10.1.2.65/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: r1-site2-wan1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1
+      vrfs:
+      - name: customer1
+        vni: 254
+      - name: customer2
+        vni: 2
+      - name: customer3
+        vni: 3
+      - name: customer4
+        vni: 4
+      - name: customer5
+        vni: 5
+      - name: customer6
+        vni: 6
+      - name: customer7
+        vni: 7
+      - name: customer8
+        vni: 8
+      - name: customer9
+        vni: 9
+      - name: customer10
+        vni: 10
+      - name: customer11
+        vni: 11
+      - name: customer12
+        vni: 12
+      - name: customer13
+        vni: 13
+      - name: customer14
+        vni: 14
+      - name: customer15
+        vni: 15
+      - name: customer16
+        vni: 16
+      - name: customer17
+        vni: 17
+      - name: customer18
+        vni: 18
+      - name: customer19
+        vni: 19
+      - name: customer20
+        vni: 20
+      - name: customer21
+        vni: 21
+      - name: customer22
+        vni: 22
+      - name: customer23
+        vni: 23
+      - name: customer24
+        vni: 24
+      - name: customer25
+        vni: 25
+      - name: customer26
+        vni: 26
+      - name: customer27
+        vni: 27
+      - name: customer28
+        vni: 28
+      - name: customer29
+        vni: 29
+      - name: customer30
+        vni: 30
+      - name: customer31
+        vni: 31
+      - name: customer32
+        vni: 32
+      - name: customer33
+        vni: 33
+      - name: customer34
+        vni: 34
+      - name: customer35
+        vni: 35
+      - name: customer36
+        vni: 36
+      - name: customer37
+        vni: 37
+      - name: customer38
+        vni: 38
+      - name: customer39
+        vni: 39
+      - name: customer40
+        vni: 40
+      - name: customer41
+        vni: 41
+      - name: customer42
+        vni: 42
+      - name: customer43
+        vni: 43
+      - name: customer44
+        vni: 44
+      - name: customer45
+        vni: 45
+      - name: customer46
+        vni: 46
+      - name: customer47
+        vni: 47
+      - name: customer48
+        vni: 48
+      - name: customer49
+        vni: 49
+      - name: customer50
+        vni: 50
+      - name: customer51
+        vni: 51
+      - name: customer52
+        vni: 52
+      - name: customer53
+        vni: 53
+      - name: customer54
+        vni: 54
+      - name: customer55
+        vni: 55
+      - name: customer56
+        vni: 56
+      - name: customer57
+        vni: 57
+      - name: customer58
+        vni: 58
+      - name: customer59
+        vni: 59
+      - name: customer60
+        vni: 60
+      - name: customer61
+        vni: 61
+      - name: customer62
+        vni: 62
+      - name: customer63
+        vni: 63
+      - name: customer64
+        vni: 64
+      - name: default
+        vni: 1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: Region1
+    - name: Zone
+      value: Region1-ZONE
+    - name: Site
+      value: REGION1_SITE2
+    interface_tags:
+    - interface: Ethernet1/5
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.254
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.2
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.3
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.4
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.5
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.6
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.7
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.8
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.9
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.10
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.11
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.12
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.13
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.14
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.15
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.16
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.17
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.18
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.19
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.20
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.21
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.22
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.23
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.24
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.25
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.26
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.27
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.28
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.29
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.30
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.31
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.32
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.33
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.34
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.35
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.36
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.37
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.38
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.39
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.40
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.41
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.42
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.43
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.44
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.45
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.46
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.47
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.48
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.49
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.50
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.51
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.52
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.53
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.54
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.55
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.56
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.57
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.58
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.59
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.60
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.61
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.62
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.63
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/5.64
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/7
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: rmpls3
+      - name: Circuit
+        value: SITE2-MPLS3
+    - interface: Ethernet1/6
+      tags:
+      - name: Type
+        value: lan
+  cv_pathfinder:
+    role: edge
+    vtep_ip: 10.1.2.65
+    region: Region1
+    zone: Region1-ZONE
+    site: REGION1_SITE2
+    interfaces:
+    - name: Ethernet1/7
+      carrier: rmpls3
+      circuit_id: SITE2-MPLS3
+      pathgroup: rmpls3
+    pathfinders:
+    - vtep_ip: 10.255.0.1
+    - vtep_ip: 10.255.0.2
+maintenance:
+  unit_profiles:
+  - name: System
+    on_boot:
+      duration: 310
+  units:
+  - name: System
+    profile: System
+  default_unit_profile: System
+aaa_authorization:
+  exec:
+    default: local
+load_interval:
+  default: 1
+dns_domain: fun.aristanetworks.com

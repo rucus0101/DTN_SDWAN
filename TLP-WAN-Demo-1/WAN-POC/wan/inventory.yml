@@ -1,0 +1,25 @@
+---
+all:
+  children:
+    WAN:
+      children:
+        pathfinder_nodes:
+          hosts:
+            arista-pf1-ch-test:
+              ansible_host: 10.90.245.41
+            arista-pf2-ch-test:
+              ansible_host: 10.90.245.35
+        transit_nodes:
+          hosts:
+            arista-r1-ch-test:
+              ansible_host: 10.90.245.93
+            arista-r2-ch-test:
+              ansible_host: 10.90.245.92
+        edge_nodes:
+          hosts:
+            Site-DRF-INET-SDWAN:
+              ansible_host: 10.90.245.94
+            Site-Tier1-INET-SDWAN:
+              ansible_host: 10.90.245.42
+            Site-Tier3-INET-SDWAN:
+              ansible_host: 10.90.245.55

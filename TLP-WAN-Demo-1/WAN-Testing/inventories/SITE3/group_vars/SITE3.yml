@@ -1,0 +1,31 @@
+fabric_name: SITE3
+
+design:
+  type: l2ls
+
+tenants: # dynamic_key: network_services
+  - name: avd-testing
+    vrfs:
+      - name: guest
+        vrf_id: 10
+        svis:
+          - id: 10
+            enabled: true
+            name: guest_10
+            ip_virtual_router_addresses:
+              - 10.203.10.1
+            nodes:
+              - node: wan1-site3
+                ip_address: 10.203.10.2/24
+      - name: data
+        vrf_id: 20
+        svis:
+          - id: 20
+            enabled: true
+            name: data_20
+            ip_virtual_router_addresses:
+              - 10.203.20.1
+            nodes:
+              - node: wan1-site3
+                ip_address: 10.203.20.2/24
+

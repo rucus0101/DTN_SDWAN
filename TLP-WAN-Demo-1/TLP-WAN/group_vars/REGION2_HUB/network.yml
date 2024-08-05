@@ -1,0 +1,112 @@
+
+mgmt_interface: Management1/1
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_transit_mode: region
+    cv_pathfinder_region: Region2
+    cv_pathfinder_site: REGION2_HUB
+    loopback_ipv4_pool: 10.2.0.0/26
+    vtep_loopback_ipv4_pool: 10.2.0.64/26
+    uplink_ipv4_pool: 10.2.0.128/26
+    uplink_type: p2p-vrfs # uplink to local switch
+    uplink_interfaces: [ Ethernet1/13 ]
+    uplink_switches: [ r2-hub-leaf1 ]
+    bgp_as: 65000
+    filter:
+      always_include_vrfs_in_tenants:
+        - region2-hub
+    wan_ha:
+      enabled: true
+      ha_interfaces: [Ethernet1/15] 
+      ha_ipv4_pool: 10.10.20.0/24
+      ipsec: false
+  node_groups:
+    - group: R2_HUB_WAN
+      nodes:
+        - name: r2-hub-wan1
+          id: 1
+          mgmt_ip: 172.28.138.223/17
+          uplink_switch_interfaces: [ Ethernet1 ]
+          l3_interfaces:
+            - name: Ethernet1/9
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.201.2/30
+              wan_carrier: gmpls1
+              wan_circuit_id: R2-HUB-GMPLS1
+              peer_ip: 172.16.201.1
+              static_routes:
+                - prefix: 172.16.51.0/30
+                - prefix: 172.16.52.0/30
+                - prefix: 172.16.151.0/30
+                - prefix: 172.16.201.0/30
+            - name: Ethernet1/11
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.203.2/30
+              wan_carrier: rmpls1
+              wan_circuit_id: R2-HUB-MPLS1
+              peer_ip: 172.16.203.1
+              static_routes:
+                - prefix: 172.16.51.8/30
+                - prefix: 172.16.52.8/30
+                - prefix: 172.16.203.0/30
+                - prefix: 172.16.211.0/30
+                - prefix: 172.16.221.0/30
+        - name: r2-hub-wan2
+          id: 2
+          mgmt_ip: 172.28.138.224/17
+          uplink_switch_interfaces: [ Ethernet3 ]
+          l3_interfaces:
+            - name: Ethernet1/9
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.202.2/30
+              wan_carrier: gmpls2
+              wan_circuit_id: R2-HUB-GMPLS2
+              peer_ip: 172.16.202.1
+              static_routes:
+                - prefix: 172.16.51.4/30
+                - prefix: 172.16.52.4/30
+                - prefix: 172.16.152.0/30
+                - prefix: 172.16.202.0/30
+
+            - name: Ethernet1/11
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.204.2/30
+              wan_carrier: rmpls2
+              wan_circuit_id: R2-HUB-MPLS2
+              peer_ip: 172.16.204.1
+              static_routes:
+                - prefix: 172.16.51.12/30
+                - prefix: 172.16.52.12/30
+                - prefix: 172.16.204.0/30
+                - prefix: 172.16.212.0/30
+                - prefix: 172.16.222.0/30
+
+
+### LEAFS ###
+
+l3leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.2.0.0/26
+    vtep_loopback_ipv4_pool: 10.2.0.64/26
+    uplink_ipv4_pool: 10.2.0.128/26
+    # mlag_interfaces: [Ethernet5, Ethernet6]
+    # mlag_peer_ipv4_pool: 10.103.3.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  nodes:
+    - name: r2-hub-leaf1
+      id: 3
+      mgmt_interface: Management1
+      mgmt_ip: 172.28.135.178/17
+      bgp_as: 65020
+
+
+# custom_structured_configuration_eos_cli: |
+#  platform tfa personality arfa
+

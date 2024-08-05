@@ -1,0 +1,147 @@
+
+tenants: # dynamic_key: network_services
+  - name: region2-site2
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: customer1
+        vrf_id: 254
+        svis:
+          - id: 254
+            enabled: true
+            name: customer1
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.1.1/24
+      - name: customer2
+        vrf_id: 2
+        svis:
+          - id: 2
+            enabled: true
+            name: customer2
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.2.1/24
+      - name: customer3
+        vrf_id: 3
+        svis:
+          - id: 3
+            enabled: true
+            name: customer3
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.3.1/24
+      - name: customer4
+        vrf_id: 4
+        svis:
+          - id: 4
+            enabled: true
+            name: customer4
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.4.1/24
+      - name: customer5
+        vrf_id: 5
+        svis:
+          - id: 5
+            enabled: true
+            name: customer5
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.5.1/24
+      - name: customer6
+        vrf_id: 6
+        svis:
+          - id: 6
+            enabled: true
+            name: customer6
+            nodes:
+              - node: r2-site2-leaf1
+                ip_address: 10.22.6.1/24
+      # - name: customer7
+      #   vrf_id: 7
+      #   svis:
+      #     - id: 7
+      #       enabled: true
+      #       name: customer7
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.7.1/24
+      # - name: customer8
+      #   vrf_id: 8
+      #   svis:
+      #     - id: 8
+      #       enabled: true
+      #       name: customer8
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.8.1/24
+      # - name: customer9
+      #   vrf_id: 9
+      #   svis:
+      #     - id: 9
+      #       enabled: true
+      #       name: customer9
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.9.1/24
+      # - name: customer10
+      #   vrf_id: 10
+      #   svis:
+      #     - id: 10
+      #       enabled: true
+      #       name: customer10
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.10.1/24
+      # - name: customer11
+      #   vrf_id: 11
+      #   svis:
+      #     - id: 11
+      #       enabled: true
+      #       name: customer11
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.11.1/24
+      # - name: customer12
+      #   vrf_id: 12
+      #   svis:
+      #     - id: 12
+      #       enabled: true
+      #       name: customer12
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.12.1/24
+      # - name: customer13
+      #   vrf_id: 13
+      #   svis:
+      #     - id: 13
+      #       enabled: true
+      #       name: customer13
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.13.1/24
+      # - name: customer14
+      #   vrf_id: 14
+      #   svis:
+      #     - id: 14
+      #       enabled: true
+      #       name: customer14
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.14.1/24
+      # - name: customer15
+      #   vrf_id: 15
+      #   svis:
+      #     - id: 15
+      #       enabled: true
+      #       name: customer15
+      #       nodes:
+      #         - node: r2-site2-leaf1
+      #           ip_address: 10.22.15.1/24
+servers: # dynamic_key: connected_endpoints
+  - name: test-host
+    adapters:
+      - switch_ports: [Ethernet49/1]
+        switches: [r2-site2-leaf1]
+        mode: trunk
+        vlans: 1-255

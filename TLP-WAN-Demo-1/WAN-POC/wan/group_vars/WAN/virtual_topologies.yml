@@ -1,0 +1,20 @@
+---
+
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+    - name: prod
+      policy: DEFAULT-PROD-POLICY
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [internet]
+            preference: preferred
+    - name: DEFAULT-PROD-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [internet]
+            preference: preferred

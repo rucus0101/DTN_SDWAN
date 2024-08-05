@@ -1,0 +1,12 @@
+version: "3"
+services:
+
+  webdoc_avd:
+    image: python:3.11.0-alpine3.17
+    container_name: webdoc_avd
+    working_dir: /data
+    volumes:
+      - ${PWD}/:/data
+    ports:
+      - 8000:8000
+    entrypoint: "sh /data/development/entrypoint.sh"

@@ -1,0 +1,343 @@
+name: avd-test
+mgmt:
+  network: atd-avd-wan-mgmt
+  ipv4-subnet: 192.168.66.0/24
+
+topology:
+  kinds:
+    ceos:
+      image: ceos-cloudlab:02222024
+      binds:
+        - /avd_resources/EOS/license_IPSec_1.json:/mnt/flash/ipsec.lcs:ro
+        - /avd_resources/EOS/license_vEOS_1.json:/mnt/flash/veos.lcs:ro
+      exec:
+        - FastCli -p 15 -c 'license import flash:ipsec.lcs'
+        - FastCli -p 15 -c 'license import flash:veos.lcs'
+    arista_ceos:
+      image: ceoslab:4.31.0F
+  nodes:
+    mpls-cloud:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.10
+      startup-config: ./inventories/CLOUDS/intended/configs/mpls-cloud.cfg
+      group: 6
+    inet-cloud:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.11
+      startup-config: ./inventories/CLOUDS/intended/configs/inet-cloud.cfg
+      group: 6
+    nat-rtr1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.12
+      startup-config: ./inventories/CLOUDS/intended/configs/nat-rtr1.cfg
+      group: 6
+    wan1-dc1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.21
+      startup-config: ./inventories/DC1/intended/configs/wan1-dc1.cfg
+      group: 5
+    wan2-dc1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.22
+      startup-config: ./inventories/DC1/intended/configs/wan2-dc1.cfg
+      group: 5
+    wan1-site1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.23
+      startup-config: ./inventories/SITE1/intended/configs/wan1-site1.cfg
+      group: 5
+    wan2-site1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.24
+      startup-config: ./inventories/SITE1/intended/configs/wan2-site1.cfg
+      group: 5
+    wan1-site2:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.25
+     # startup-config: ./sd-wan/intended/configs/wan1-site2.cfg
+     group: 5
+    wan2-site2:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.26
+     # startup-config: ./sd-wan/intended/configs/wan2-site2.cfg
+     group: 5
+    wan1-site3:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.27
+     # startup-config: ./sd-wan/intended/configs/wan1-site3.cfg
+     group: 5
+    wan1-site4:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.28
+     # startup-config: ./sd-wan/intended/configs/wan1-site4.cfg
+     group: 5
+    wan2-site4:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.29
+     # startup-config: ./sd-wan/intended/configs/wan2-site4.cfg
+     group: 5
+    wan1-site5:
+     kind: ceos
+     mgmt-ipv4: 192.168.66.30
+     # startup-config: ./sd-wan/intended/configs/wan1-site5.cfg
+     group: 5
+    pf1:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.31
+      startup-config: ./inventories/PATHFINDERS/intended/configs/pf1.cfg
+      group: 7
+    pf2:
+      kind: ceos
+      mgmt-ipv4: 192.168.66.32
+      startup-config: ./inventories/PATHFINDERS/intended/configs/pf2.cfg
+      group: 7
+    border1-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.101
+      startup-config: ./inventories/DC1/intended/configs/border1-dc1.cfg
+      group: 4
+    border2-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.102
+      startup-config: ./inventories/DC1/intended/configs/border2-dc1.cfg
+      group: 4
+    spine1-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.103
+      startup-config: ./inventories/DC1/intended/configs/spine1-dc1.cfg
+      group: 3
+    spine2-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.104
+      startup-config: ./inventories/DC1/intended/configs/spine2-dc1.cfg
+      group: 3
+    leaf1-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.105
+      startup-config: ./inventories/DC1/intended/configs/leaf1-dc1.cfg
+      group: 2
+    leaf2-dc1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.106
+      startup-config: ./inventories/DC1/intended/configs/leaf2-dc1.cfg
+      group: 2
+    border1-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.107
+      startup-config: ./inventories/SITE1/intended/configs/border1-site1.cfg
+      group: 4
+    border2-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.108
+      startup-config: ./inventories/SITE1/intended/configs/border2-site1.cfg
+      group: 4
+    spine1-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.109
+      startup-config: ./inventories/SITE1/intended/configs/spine1-site1.cfg
+      group: 3
+    spine2-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.110
+      startup-config: ./inventories/SITE1/intended/configs/spine2-site1.cfg
+      group: 3
+    leaf1-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.111
+      startup-config: ./inventories/SITE1/intended/configs/leaf1-site1.cfg
+      group: 2
+    leaf2-site1:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.112
+      startup-config: ./inventories/SITE1/intended/configs/leaf2-site1.cfg
+      group: 2
+    spine1-site2:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.113
+      # startup-config: ./inventories/SITE2/intended/configs/spine1-site2.cfg
+      group: 3
+    spine2-site2:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.114
+      # startup-config: ./inventories/SITE2/intended/configs/spine2-site2.cfg
+      group: 3
+    leaf1-site2:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.115
+      # startup-config: ./inventories/SITE2/intended/configs/leaf1-site2.cfg
+      group: 2
+    leaf2-site2:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.116
+      # startup-config: ./inventories/SITE2/intended/configs/leaf2-site2.cfg
+      group: 2
+    leaf1-site3:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.117
+      # startup-config: ./inventories/SITE3/intended/configs/leaf1-site3.cfg
+      group: 2
+    leaf2-site3:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.118
+      # startup-config: ./inventories/SITE3/intended/configs/leaf2-site3.cfg
+      group: 2
+    leaf1-site4:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.119
+      # startup-config: ./inventories/SITE4/intended/configs/leaf1-site4.cfg
+      group: 2
+    leaf2-site4:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.120
+      # startup-config: ./inventories/SITE4/intended/configs/leaf2-site4.cfg
+      group: 2
+    leaf1-site5:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.121
+      # startup-config: ./inventories/SITE5/intended/configs/leaf1-site5.cfg
+      group: 2
+    test-host:
+      kind: arista_ceos
+      mgmt-ipv4: 192.168.66.200
+      startup-config: ./inventories/TEST_HOST/intended/configs/test-host.cfg
+      group: 1
+
+
+    # --------------------------------------- #
+    # Graphite Node                           #
+    # Provides Topology Graphing and the      #
+    # ability to connect to nodes in the      #
+    # topology via a web/ssh session          #
+    # --------------------------------------- #
+    # graphite:
+    #   kind: linux
+    #   image: netreplica/graphite
+    #   env:
+    #     GRAPHITE_DEFAULT_TYPE: clab
+    #     GRAPHITE_DEFAULT_TOPO: autopvpn
+    #     HOST_CONNECTION: ${SSH_CONNECTION}
+    #   binds:
+    #     # - .:/htdocs/clab    # New path required for latest version
+    #     - __clabDir__/topology-data.json:/htdocs/default/default.json:ro
+    #     #- __clabDir__/ansible-inventory.yml:/htdocs/lab/default/ansible-inventory.yml:ro
+    #   ports:
+    #     - 80:80
+    #   exec:
+    #     - sh -c 'graphite_motd.sh 80'
+    #   labels:
+    #     graph-hide: yes
+    #   group: server
+
+  links:
+  # mpls-cloud
+    - endpoints: ["mpls-cloud:eth1", "pf1:eth1"]
+    - endpoints: ["mpls-cloud:eth2", "pf2:eth1"]
+    - endpoints: ["mpls-cloud:eth3", "wan1-dc1:eth3"]
+    - endpoints: ["mpls-cloud:eth4", "wan2-dc1:eth3"]
+    - endpoints: ["mpls-cloud:eth5", "wan1-site1:eth3"]
+    - endpoints: ["mpls-cloud:eth6", "wan2-site1:eth3"]
+    - endpoints: ["mpls-cloud:eth7", "wan1-site2:eth3"]
+    - endpoints: ["mpls-cloud:eth8", "wan1-site3:eth3"]
+  # inet-cloud
+    - endpoints: ["inet-cloud:eth1", "pf1:eth2"]
+    - endpoints: ["inet-cloud:eth2", "nat-rtr1:eth1"]
+    - endpoints: ["inet-cloud:eth3", "wan1-dc1:eth4"]
+    - endpoints: ["inet-cloud:eth4", "wan2-dc1:eth4"]
+    - endpoints: ["inet-cloud:eth5", "wan1-site1:eth4"]
+    - endpoints: ["inet-cloud:eth6", "wan2-site1:eth4"]
+    - endpoints: ["inet-cloud:eth7", "wan2-site2:eth4"]
+    - endpoints: ["inet-cloud:eth8", "wan1-site3:eth4"]
+    - endpoints: ["inet-cloud:eth9", "wan1-site4:eth4"]
+    - endpoints: ["inet-cloud:eth10", "wan2-site4:eth4"]
+  # nat-rtr1
+    - endpoints: ["nat-rtr1:eth2", "pf2:eth2"]
+    - endpoints: ["nat-rtr1:eth3", "wan1-site5:eth4"]
+  # wan1-dc1
+    - endpoints: ["wan1-dc1:eth1", "border1-dc1:eth3"]
+    - endpoints: ["wan1-dc1:eth2", "border2-dc1:eth3"]
+  # wan2-dc1
+    - endpoints: ["wan2-dc1:eth1", "border1-dc1:eth4"]
+    - endpoints: ["wan2-dc1:eth2", "border2-dc1:eth4"]
+  # wan1-site1
+    - endpoints: ["wan1-site1:eth1", "border1-site1:eth3"]
+    - endpoints: ["wan1-site1:eth2", "border2-site1:eth3"]
+  # wan2-site1
+    - endpoints: ["wan2-site1:eth1", "border1-site1:eth4"]
+    - endpoints: ["wan2-site1:eth2", "border2-site1:eth4"]
+  # wan1-site2
+    - endpoints: ["wan1-site2:eth1", "spine1-site2:eth3"]
+    - endpoints: ["wan1-site2:eth2", "spine2-site2:eth3"]
+  # wan2-site2
+    - endpoints: ["wan2-site2:eth1", "spine1-site2:eth4"]
+    - endpoints: ["wan2-site2:eth2", "spine2-site2:eth4"]
+  # wan1-site3
+    - endpoints: ["wan1-site3:eth1", "leaf1-site3:eth1"]
+    - endpoints: ["wan1-site3:eth2", "leaf2-site3:eth1"]
+  # wan1-site4
+    - endpoints: ["wan1-site4:eth1", "leaf1-site4:eth1"]
+  # wan2-site4
+    - endpoints: ["wan2-site4:eth1", "leaf2-site4:eth1"]
+  # wan1-site5
+    - endpoints: ["wan1-site5:eth1", "leaf1-site5:eth1"]
+  # border1-dc1 <-> border2-dc1
+    - endpoints: ["border1-dc1:eth5", "border2-dc1:eth5"]
+    - endpoints: ["border1-dc1:eth6", "border2-dc1:eth6"]
+  # spine1-dc1
+    - endpoints: ["spine1-dc1:eth1", "border1-dc1:eth1"]
+    - endpoints: ["spine1-dc1:eth2", "border2-dc1:eth1"]
+    - endpoints: ["spine1-dc1:eth3", "leaf1-dc1:eth1"]
+    - endpoints: ["spine1-dc1:eth4", "leaf2-dc1:eth1"]
+  # spine2-dc1
+    - endpoints: ["spine2-dc1:eth1", "border1-dc1:eth2"]
+    - endpoints: ["spine2-dc1:eth2", "border2-dc1:eth2"]
+    - endpoints: ["spine2-dc1:eth3", "leaf1-dc1:eth2"]
+    - endpoints: ["spine2-dc1:eth4", "leaf2-dc1:eth2"]
+  # leaf1-dc1 <-> leaf2-dc1
+    - endpoints: ["leaf1-dc1:eth5", "leaf2-dc1:eth5"]
+    - endpoints: ["leaf1-dc1:eth6", "leaf2-dc1:eth6"]
+  # border1-site1 <-> border2-site1
+    - endpoints: ["border1-site1:eth5", "border2-site1:eth5"]
+    - endpoints: ["border1-site1:eth6", "border2-site1:eth6"]
+  # spine1-site1
+    - endpoints: ["spine1-site1:eth1", "border1-site1:eth1"]
+    - endpoints: ["spine1-site1:eth2", "border2-site1:eth1"]
+    - endpoints: ["spine1-site1:eth3", "leaf1-site1:eth1"]
+    - endpoints: ["spine1-site1:eth4", "leaf2-site1:eth1"]
+  # spine2-site1
+    - endpoints: ["spine2-site1:eth1", "border1-site1:eth2"]
+    - endpoints: ["spine2-site1:eth2", "border2-site1:eth2"]
+    - endpoints: ["spine2-site1:eth3", "leaf1-site1:eth2"]
+    - endpoints: ["spine2-site1:eth4", "leaf2-site1:eth2"]
+  # leaf1-site1 <-> leaf2-site1
+    - endpoints: ["leaf1-site1:eth5", "leaf2-site1:eth5"]
+    - endpoints: ["leaf1-site1:eth6", "leaf2-site1:eth6"]
+  # spine1-site2
+    - endpoints: ["spine1-site2:eth1", "leaf1-site2:eth1"]
+    - endpoints: ["spine1-site2:eth2", "leaf2-site2:eth1"]
+    - endpoints: ["spine1-site2:eth5", "spine2-site2:eth5"]
+    - endpoints: ["spine1-site2:eth6", "spine2-site2:eth6"]
+  # spine2-site2
+    - endpoints: ["spine2-site2:eth1", "leaf1-site2:eth2"]
+    - endpoints: ["spine2-site2:eth2", "leaf2-site2:eth2"]
+  # leaf1-site2 <-> leaf2-site2
+    - endpoints: ["leaf1-site2:eth5", "leaf2-site2:eth5"]
+    - endpoints: ["leaf1-site2:eth6", "leaf2-site2:eth6"]
+  # leaf1-site3 <-> leaf2-site3
+    - endpoints: ["leaf1-site3:eth5", "leaf2-site3:eth5"]
+    - endpoints: ["leaf1-site3:eth6", "leaf2-site3:eth6"]
+  # leaf1-site4 <-> leaf2-site4
+    - endpoints: ["leaf1-site4:eth5", "leaf2-site4:eth5"]
+    - endpoints: ["leaf1-site4:eth6", "leaf2-site4:eth6"]
+  # test-host
+    - endpoints: ["test-host:eth1", "leaf1-dc1:eth3"]
+    - endpoints: ["test-host:eth2", "leaf2-dc1:eth3"]
+    - endpoints: ["test-host:eth3", "leaf1-site1:eth3"]
+    - endpoints: ["test-host:eth4", "leaf2-site1:eth3"]
+    - endpoints: ["test-host:eth5", "leaf1-site2:eth3"]
+    - endpoints: ["test-host:eth6", "leaf2-site2:eth3"]
+    - endpoints: ["test-host:eth7", "leaf1-site3:eth3"]
+    - endpoints: ["test-host:eth8", "leaf2-site3:eth3"]
+    - endpoints: ["test-host:eth9", "leaf1-site4:eth3"]
+    - endpoints: ["test-host:eth10", "leaf2-site4:eth3"]
+    - endpoints: ["test-host:eth11", "leaf1-site5:eth3"]
+

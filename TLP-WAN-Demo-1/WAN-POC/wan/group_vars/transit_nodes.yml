@@ -1,0 +1,32 @@
+---
+
+# WAN Transit Nodes
+
+type: wan_transit
+
+wan_transit:  # dynamic_key: node_type
+  defaults:
+    id: 1
+    loopback_ipv4_offset: -1
+    cv_pathfinder_region: Global
+    filter:
+      always_include_vrfs_in_tenants: [hawaiianairlines]
+  nodes:
+    - name: arista-r1-ch-test
+      cv_pathfinder_site: Site-EQX-SEA
+      loopback_ipv4_pool: 10.254.108.1/32
+      vtep_loopback_ipv4_pool: 192.168.108.1/32
+      mgmt_ip: 10.90.245.93/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.37/24
+          wan_carrier: internet
+    - name: arista-r2-ch-test
+      cv_pathfinder_site: Site-EQX-ASH
+      mgmt_ip: 10.90.245.92/24
+      loopback_ipv4_pool: 10.254.109.1/32
+      vtep_loopback_ipv4_pool: 192.168.109.1/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.38/24
+          wan_carrier: internet

@@ -1,0 +1,424 @@
+hostname: Site-DRF-INET-SDWAN
+is_deployed: true
+router_bgp:
+  as: '65199'
+  router_id: 10.254.110.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 16
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65199'
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+    networks:
+    - prefix: 172.29.2.0/24
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 192.168.99.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: arista-pf1-ch-test
+    description: arista-pf1-ch-test
+  - ip_address: 192.168.99.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: arista-pf2-ch-test
+    description: arista-pf2-ch-test
+  vrfs:
+  - name: default
+    rd: 10.254.110.1:101
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 65199:101
+      export:
+      - address_family: evpn
+        route_targets:
+        - 65199:101
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: prod
+    router_id: 10.254.110.1
+    rd: 10.254.110.1:102
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 65199:102
+      export:
+      - address_family: evpn
+        route_targets:
+        - 65199:102
+    redistribute_routes:
+    - source_protocol: connected
+static_routes:
+- vrf: default
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 10.90.245.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.cv-staging.corp.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvvrf: default
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+local_users:
+- name: admin
+  role: network-admin
+  privilege: 15
+  sha512_password: $6$JrS3d2nAMOGnIlAh$h3J1UHELqo4rO4X.11QwVWltyNzvT4EV/7ufhuJ.yonFGjRWm8YpCbLN3IldeWZqs8YIOoKSrdx2f6Dsgg1OF0
+vrfs:
+- name: default
+  ip_routing: false
+- name: prod
+  tenant: hawaiianairlines
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 10.90.245.94/24
+  gateway: 10.90.245.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: default
+  servers:
+  - name: 10.41.194.6
+    vrf: default
+    preferred: true
+  - name: 10.85.14.245
+    vrf: default
+  - name: time.google.com
+    vrf: default
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.90.244.34/24
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  ip_address: 172.29.2.3/24
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.254.110.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.110.1/32 eq 32
+- name: PL-VRF-DEFAULT-NETWORKS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.29.2.0/24
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 40
+    type: permit
+    match:
+    - ip address prefix-list PL-VRF-DEFAULT-NETWORKS
+flow_tracking:
+  hardware:
+    trackers:
+    - name: WAN-FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 5000
+      exporters:
+      - name: DPI-EXPORTER
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 5000
+    shutdown: false
+ip_security:
+  ike_policies:
+  - name: DP-IKE-POLICY
+    local_id: 192.168.110.1
+  - name: CP-IKE-POLICY
+    local_id: 192.168.110.1
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    ike_policy: DP-IKE-POLICY
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: Global
+    id: 1
+  zone:
+    name: DEFAULT-ZONE
+    id: 1
+  site:
+    name: Site-DRF
+    id: 110
+  profiles:
+  - name: CONTROL-PLANE-PROFILE
+    load_balance_policy: LB-CONTROL-PLANE-PROFILE
+  - name: DEFAULT-PROD-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-PROD-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-AVT-POLICY-WITH-CP
+    profiles:
+    - name: CONTROL-PLANE-PROFILE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
+  - name: prod
+    policy: DEFAULT-PROD-POLICY
+    profiles:
+    - name: DEFAULT-PROD-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: DEFAULT-PROD-POLICY
+    matches:
+    - application_profile: default
+      avt_profile: DEFAULT-PROD-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  path_groups:
+  - name: internet
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+      stun:
+        server_profiles:
+        - internet-arista-pf1-ch-test-Ethernet1
+        - internet-arista-pf2-ch-test-Ethernet1
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.99.1
+      name: arista-pf1-ch-test
+      ipv4_addresses:
+      - 10.90.244.39
+    - router_ip: 192.168.99.2
+      name: arista-pf2-ch-test
+      ipv4_addresses:
+      - 10.90.244.40
+    ipsec_profile: CP-PROFILE
+  load_balance_policies:
+  - name: LB-CONTROL-PLANE-PROFILE
+    path_groups:
+    - name: internet
+  - name: LB-DEFAULT-PROD-POLICY-DEFAULT
+    path_groups:
+    - name: internet
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: internet
+router_traffic_engineering:
+  enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: internet-arista-pf1-ch-test-Ethernet1
+      ip_address: 10.90.244.39
+    - name: internet-arista-pf2-ch-test-Ethernet1
+      ip_address: 10.90.244.40
+application_traffic_recognition:
+  application_profiles:
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
+  applications:
+    ipv4_applications:
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
+  field_sets:
+    ipv4_prefixes:
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+      prefix_values:
+      - 192.168.99.1/32
+      - 192.168.99.2/32
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  ip_address: 192.168.110.1/32
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: Site-DRF-INET-SDWAN_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1
+      vrfs:
+      - name: default
+        vni: 101
+      - name: prod
+        vni: 102
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: Global
+    - name: Zone
+      value: DEFAULT-ZONE
+    - name: Site
+      value: Site-DRF
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: internet
+  cv_pathfinder:
+    role: edge
+    vtep_ip: 192.168.110.1
+    region: Global
+    zone: DEFAULT-ZONE
+    site: Site-DRF
+    interfaces:
+    - name: Ethernet1
+      carrier: internet
+      pathgroup: internet
+    pathfinders:
+    - vtep_ip: 192.168.99.1
+    - vtep_ip: 192.168.99.2
+switchport_default:
+  mode: routed
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '''true'''
+system:
+  l1:
+    unsupported_speed_action: error
+    unsupported_error_correction_action: error
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: default
+- ip_address: 172.22.22.40
+  vrf: default
+- ip_address: 8.8.4.4
+  vrf: default
+  priority: 4
+- ip_address: 8.8.8.8
+  vrf: default
+  priority: 4
+management_ssh:
+  client_alive:
+    interval: 180

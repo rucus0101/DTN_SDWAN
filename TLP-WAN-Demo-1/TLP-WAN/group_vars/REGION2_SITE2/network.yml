@@ -1,0 +1,77 @@
+
+mgmt_interface: Management1
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Region2
+    cv_pathfinder_site: REGION2_SITE2
+    loopback_ipv4_pool: 10.2.2.0/26
+    vtep_loopback_ipv4_pool: 10.2.2.64/26
+    uplink_ipv4_pool: 10.2.2.128/26
+    uplink_type: p2p-vrfs # uplink to local switch
+    uplink_interfaces: [ Ethernet2 ]
+    uplink_switches: [ r2-site2-leaf1 ]
+    bgp_as: 65000
+    filter:
+      always_include_vrfs_in_tenants:
+        - region2-site2
+    wan_ha:
+      enabled: true
+      ha_interfaces: [Ethernet3] 
+      ha_ipv4_pool: 10.10.22.0/24
+      ipsec: false
+  node_groups:
+    - group: WAN_R2SITE2
+      nodes:
+        - name: r2-site2-wan1
+          id: 1
+          mgmt_ip: 172.28.143.208/17
+          uplink_switch_interfaces: [ Ethernet47 ]
+          l3_interfaces:
+            - name: Ethernet1
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.221.2/30
+              wan_carrier: rmpls1
+              wan_circuit_id: R2-SITE2-MPLS1
+              peer_ip: 172.16.221.1
+              static_routes:
+                - prefix: 172.16.0.0/16
+        - name: r2-site2-wan2
+          id: 2
+          mgmt_ip: 172.28.143.227/17
+          uplink_switch_interfaces: [ Ethernet48 ]
+          l3_interfaces:
+            - name: Ethernet1
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.222.2/30
+              wan_carrier: rmpls2
+              wan_circuit_id: R2-SITE2-MPLS2
+              peer_ip: 172.16.222.1
+              static_routes:
+                - prefix: 172.16.0.0/16
+
+### LEAFS ###
+
+l3leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.2.2.0/26
+    vtep_loopback_ipv4_pool: 10.2.2.64/26
+    uplink_ipv4_pool: 10.2.2.128/26
+    # mlag_interfaces: [Ethernet5, Ethernet6]
+    # mlag_peer_ipv4_pool: 10.103.3.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  nodes:
+    - name: r2-site2-leaf1
+      id: 3
+      mgmt_interface: Management1
+      mgmt_ip: 172.28.129.213/17
+      bgp_as: 65022
+
+
+#custom_structured_configuration_eos_cli: |
+#  platform tfa personality arfa
+

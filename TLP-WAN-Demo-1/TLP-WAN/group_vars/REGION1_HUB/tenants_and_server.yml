@@ -1,0 +1,2297 @@
+
+tenants: # dynamic_key: network_services
+  - name: region1-hub
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: customer1
+        vrf_id: 254
+        svis:
+          - id: 254
+            enabled: true
+            name: customer1
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.1.1/24
+      - name: customer2
+        vrf_id: 2
+        svis:
+          - id: 2
+            enabled: true
+            name: customer2
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.2.1/24
+      - name: customer3
+        vrf_id: 3
+        svis:
+          - id: 3
+            enabled: true
+            name: customer3
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.3.1/24
+      - name: customer4
+        vrf_id: 4
+        svis:
+          - id: 4
+            enabled: true
+            name: customer4
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.4.1/24
+      - name: customer5
+        vrf_id: 5
+        svis:
+          - id: 5
+            enabled: true
+            name: customer5
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.5.1/24
+      - name: customer6
+        vrf_id: 6
+        svis:
+          - id: 6
+            enabled: true
+            name: customer6
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.6.1/24
+      - name: customer7
+        vrf_id: 7
+        svis:
+          - id: 7
+            enabled: true
+            name: customer7
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.7.1/24
+      - name: customer8
+        vrf_id: 8
+        svis:
+          - id: 8
+            enabled: true
+            name: customer8
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.8.1/24
+      - name: customer9
+        vrf_id: 9
+        svis:
+          - id: 9
+            enabled: true
+            name: customer9
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.9.1/24
+      - name: customer10
+        vrf_id: 10
+        svis:
+          - id: 10
+            enabled: true
+            name: customer10
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.10.1/24
+      - name: customer11
+        vrf_id: 11
+        svis:
+          - id: 11
+            enabled: true
+            name: customer11
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.11.1/24
+      - name: customer12
+        vrf_id: 12
+        svis:
+          - id: 12
+            enabled: true
+            name: customer12
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.12.1/24
+      - name: customer13
+        vrf_id: 13
+        svis:
+          - id: 13
+            enabled: true
+            name: customer13
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.13.1/24
+      - name: customer14
+        vrf_id: 14
+        svis:
+          - id: 14
+            enabled: true
+            name: customer14
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.14.1/24
+      - name: customer15
+        vrf_id: 15
+        svis:
+          - id: 15
+            enabled: true
+            name: customer15
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.15.1/24
+      - name: customer16
+        vrf_id: 16
+        svis:
+          - id: 16
+            enabled: true
+            name: customer16
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.16.1/24
+      - name: customer17
+        vrf_id: 17
+        svis:
+          - id: 17
+            enabled: true
+            name: customer17
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.17.1/24
+      - name: customer18
+        vrf_id: 18
+        svis:
+          - id: 18
+            enabled: true
+            name: customer18
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.18.1/24
+      - name: customer19
+        vrf_id: 19
+        svis:
+          - id: 19
+            enabled: true
+            name: customer19
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.19.1/24
+      - name: customer20
+        vrf_id: 20
+        svis:
+          - id: 20
+            enabled: true
+            name: customer20
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.20.1/24
+      - name: customer21
+        vrf_id: 21
+        svis:
+          - id: 21
+            enabled: true
+            name: customer21
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.21.1/24
+      - name: customer22
+        vrf_id: 22
+        svis:
+          - id: 22
+            enabled: true
+            name: customer22
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.22.1/24
+      - name: customer23
+        vrf_id: 23
+        svis:
+          - id: 23
+            enabled: true
+            name: customer23
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.23.1/24
+      - name: customer24
+        vrf_id: 24
+        svis:
+          - id: 24
+            enabled: true
+            name: customer24
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.24.1/24
+      - name: customer25
+        vrf_id: 25
+        svis:
+          - id: 25
+            enabled: true
+            name: customer25
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.25.1/24
+      - name: customer26
+        vrf_id: 26
+        svis:
+          - id: 26
+            enabled: true
+            name: customer26
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.26.1/24
+      - name: customer27
+        vrf_id: 27
+        svis:
+          - id: 27
+            enabled: true
+            name: customer27
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.27.1/24
+      - name: customer28
+        vrf_id: 28
+        svis:
+          - id: 28
+            enabled: true
+            name: customer28
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.28.1/24
+      - name: customer29
+        vrf_id: 29
+        svis:
+          - id: 29
+            enabled: true
+            name: customer29
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.29.1/24
+      - name: customer30
+        vrf_id: 30
+        svis:
+          - id: 30
+            enabled: true
+            name: customer30
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.30.1/24
+      - name: customer31
+        vrf_id: 31
+        svis:
+          - id: 31
+            enabled: true
+            name: customer31
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.31.1/24
+      - name: customer32
+        vrf_id: 32
+        svis:
+          - id: 32
+            enabled: true
+            name: customer32
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.32.1/24
+      - name: customer33
+        vrf_id: 33
+        svis:
+          - id: 33
+            enabled: true
+            name: customer33
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.33.1/24
+      - name: customer34
+        vrf_id: 34
+        svis:
+          - id: 34
+            enabled: true
+            name: customer34
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.34.1/24
+      - name: customer35
+        vrf_id: 35
+        svis:
+          - id: 35
+            enabled: true
+            name: customer35
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.35.1/24
+      - name: customer36
+        vrf_id: 36
+        svis:
+          - id: 36
+            enabled: true
+            name: customer36
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.36.1/24
+      - name: customer37
+        vrf_id: 37
+        svis:
+          - id: 37
+            enabled: true
+            name: customer37
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.37.1/24
+      - name: customer38
+        vrf_id: 38
+        svis:
+          - id: 38
+            enabled: true
+            name: customer38
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.38.1/24
+      - name: customer39
+        vrf_id: 39
+        svis:
+          - id: 39
+            enabled: true
+            name: customer39
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.39.1/24
+      - name: customer40
+        vrf_id: 40
+        svis:
+          - id: 40
+            enabled: true
+            name: customer40
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.40.1/24
+      - name: customer41
+        vrf_id: 41
+        svis:
+          - id: 41
+            enabled: true
+            name: customer41
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.41.1/24
+      - name: customer42
+        vrf_id: 42
+        svis:
+          - id: 42
+            enabled: true
+            name: customer42
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.42.1/24
+      - name: customer43
+        vrf_id: 43
+        svis:
+          - id: 43
+            enabled: true
+            name: customer43
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.43.1/24
+      - name: customer44
+        vrf_id: 44
+        svis:
+          - id: 44
+            enabled: true
+            name: customer44
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.44.1/24
+      - name: customer45
+        vrf_id: 45
+        svis:
+          - id: 45
+            enabled: true
+            name: customer45
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.45.1/24
+      - name: customer46
+        vrf_id: 46
+        svis:
+          - id: 46
+            enabled: true
+            name: customer46
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.46.1/24
+
+      - name: customer47
+        vrf_id: 47
+        svis:
+          - id: 47
+            enabled: true
+            name: customer47
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.47.1/24
+      - name: customer48
+        vrf_id: 48
+        svis:
+          - id: 48
+            enabled: true
+            name: customer48
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.48.1/24
+      - name: customer49
+        vrf_id: 49
+        svis:
+          - id: 49
+            enabled: true
+            name: customer49
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.49.1/24
+      - name: customer50
+        vrf_id: 50
+        svis:
+          - id: 50
+            enabled: true
+            name: customer50
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.50.1/24
+      - name: customer51
+        vrf_id: 51
+        svis:
+          - id: 51
+            enabled: true
+            name: customer51
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.51.1/24
+      - name: customer52
+        vrf_id: 52
+        svis:
+          - id: 52
+            enabled: true
+            name: customer52
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.52.1/24
+      - name: customer53
+        vrf_id: 53
+        svis:
+          - id: 53
+            enabled: true
+            name: customer53
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.53.1/24
+      - name: customer54
+        vrf_id: 54
+        svis:
+          - id: 54
+            enabled: true
+            name: customer54
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.54.1/24
+      - name: customer55
+        vrf_id: 55
+        svis:
+          - id: 55
+            enabled: true
+            name: customer55
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.55.1/24
+      - name: customer56
+        vrf_id: 56
+        svis:
+          - id: 56
+            enabled: true
+            name: customer56
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.56.1/24
+      - name: customer57
+        vrf_id: 57
+        svis:
+          - id: 57
+            enabled: true
+            name: customer57
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.57.1/24
+      - name: customer58
+        vrf_id: 58
+        svis:
+          - id: 58
+            enabled: true
+            name: customer58
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.58.1/24
+      - name: customer59
+        vrf_id: 59
+        svis:
+          - id: 59
+            enabled: true
+            name: customer59
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.59.1/24
+      - name: customer60
+        vrf_id: 60
+        svis:
+          - id: 60
+            enabled: true
+            name: customer60
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.60.1/24
+      - name: customer61
+        vrf_id: 61
+        svis:
+          - id: 61
+            enabled: true
+            name: customer61
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.61.1/24
+      - name: customer62
+        vrf_id: 62
+        svis:
+          - id: 62
+            enabled: true
+            name: customer62
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.62.1/24
+      - name: customer63
+        vrf_id: 63
+        svis:
+          - id: 63
+            enabled: true
+            name: customer63
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.63.1/24
+      - name: customer64
+        vrf_id: 64
+        svis:
+          - id: 64
+            enabled: true
+            name: customer64
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.64.1/24
+      - name: customer65
+        vrf_id: 65
+        svis:
+          - id: 65
+            enabled: true
+            name: customer65
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.65.1/24
+      - name: customer66
+        vrf_id: 66
+        svis:
+          - id: 66
+            enabled: true
+            name: customer66
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.66.1/24
+      - name: customer67
+        vrf_id: 67
+        svis:
+          - id: 67
+            enabled: true
+            name: customer67
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.67.1/24
+      - name: customer68
+        vrf_id: 68
+        svis:
+          - id: 68
+            enabled: true
+            name: customer68
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.68.1/24
+      - name: customer69
+        vrf_id: 69
+        svis:
+          - id: 69
+            enabled: true
+            name: customer69
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.69.1/24
+      - name: customer70
+        vrf_id: 70
+        svis:
+          - id: 70
+            enabled: true
+            name: customer70
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.70.1/24
+      - name: customer71
+        vrf_id: 71
+        svis:
+          - id: 71
+            enabled: true
+            name: customer71
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.71.1/24
+      - name: customer72
+        vrf_id: 72
+        svis:
+          - id: 72
+            enabled: true
+            name: customer72
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.72.1/24
+      - name: customer73
+        vrf_id: 73
+        svis:
+          - id: 73
+            enabled: true
+            name: customer73
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.73.1/24
+      - name: customer74
+        vrf_id: 74
+        svis:
+          - id: 74
+            enabled: true
+            name: customer74
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.74.1/24
+      - name: customer75
+        vrf_id: 75
+        svis:
+          - id: 75
+            enabled: true
+            name: customer75
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.75.1/24
+      - name: customer76
+        vrf_id: 76
+        svis:
+          - id: 76
+            enabled: true
+            name: customer76
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.76.1/24
+      - name: customer77
+        vrf_id: 77
+        svis:
+          - id: 77
+            enabled: true
+            name: customer77
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.77.1/24
+      - name: customer78
+        vrf_id: 78
+        svis:
+          - id: 78
+            enabled: true
+            name: customer78
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.78.1/24
+      - name: customer79
+        vrf_id: 79
+        svis:
+          - id: 79
+            enabled: true
+            name: customer79
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.79.1/24
+      - name: customer80
+        vrf_id: 80
+        svis:
+          - id: 80
+            enabled: true
+            name: customer80
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.80.1/24
+      - name: customer81
+        vrf_id: 81
+        svis:
+          - id: 81
+            enabled: true
+            name: customer81
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.81.1/24
+      - name: customer82
+        vrf_id: 82
+        svis:
+          - id: 82
+            enabled: true
+            name: customer82
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.82.1/24
+      - name: customer83
+        vrf_id: 83
+        svis:
+          - id: 83
+            enabled: true
+            name: customer83
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.83.1/24
+      - name: customer84
+        vrf_id: 84
+        svis:
+          - id: 84
+            enabled: true
+            name: customer84
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.84.1/24
+      - name: customer85
+        vrf_id: 85
+        svis:
+          - id: 85
+            enabled: true
+            name: customer85
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.85.1/24
+      - name: customer86
+        vrf_id: 86
+        svis:
+          - id: 86
+            enabled: true
+            name: customer86
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.86.1/24
+      - name: customer87
+        vrf_id: 87
+        svis:
+          - id: 87
+            enabled: true
+            name: customer87
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.87.1/24
+      - name: customer88
+        vrf_id: 88
+        svis:
+          - id: 88
+            enabled: true
+            name: customer88
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.88.1/24
+      - name: customer89
+        vrf_id: 89
+        svis:
+          - id: 89
+            enabled: true
+            name: customer89
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.89.1/24
+      - name: customer90
+        vrf_id: 90
+        svis:
+          - id: 90
+            enabled: true
+            name: customer90
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.90.1/24
+      - name: customer91
+        vrf_id: 91
+        svis:
+          - id: 91
+            enabled: true
+            name: customer91
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.91.1/24
+      - name: customer92
+        vrf_id: 92
+        svis:
+          - id: 92
+            enabled: true
+            name: customer92
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.92.1/24
+      - name: customer93
+        vrf_id: 93
+        svis:
+          - id: 93
+            enabled: true
+            name: customer93
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.93.1/24
+      - name: customer94
+        vrf_id: 94
+        svis:
+          - id: 94
+            enabled: true
+            name: customer94
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.94.1/24
+      - name: customer95
+        vrf_id: 95
+        svis:
+          - id: 95
+            enabled: true
+            name: customer95
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.95.1/24
+      - name: customer96
+        vrf_id: 96
+        svis:
+          - id: 96
+            enabled: true
+            name: customer96
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.96.1/24
+      - name: customer97
+        vrf_id: 97
+        svis:
+          - id: 97
+            enabled: true
+            name: customer97
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.97.1/24
+      - name: customer98
+        vrf_id: 98
+        svis:
+          - id: 98
+            enabled: true
+            name: customer98
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.98.1/24
+      - name: customer99
+        vrf_id: 99
+        svis:
+          - id: 99
+            enabled: true
+            name: customer99
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.99.1/24
+      - name: customer100
+        vrf_id: 100
+        svis:
+          - id: 100
+            enabled: true
+            name: customer100
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.100.1/24              
+      - name: customer101
+        vrf_id: 101
+        svis:
+          - id: 101
+            enabled: true
+            name: customer100
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.101.1/24
+      - name: customer102
+        vrf_id: 102
+        svis:
+          - id: 102
+            enabled: true
+            name: customer12
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.102.1/24
+      - name: customer103
+        vrf_id: 103
+        svis:
+          - id: 103
+            enabled: true
+            name: customer103
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.103.1/24
+      - name: customer104
+        vrf_id: 104
+        svis:
+          - id: 104
+            enabled: true
+            name: customer104
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.104.1/24
+      - name: customer105
+        vrf_id: 105
+        svis:
+          - id: 105
+            enabled: true
+            name: customer105
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.105.1/24
+      - name: customer106
+        vrf_id: 106
+        svis:
+          - id: 106
+            enabled: true
+            name: customer106
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.106.1/24
+      - name: customer107
+        vrf_id: 107
+        svis:
+          - id: 107
+            enabled: true
+            name: customer107
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.107.1/24
+      - name: customer108
+        vrf_id: 108
+        svis:
+          - id: 108
+            enabled: true
+            name: customer108
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.108.1/24
+      - name: customer109
+        vrf_id: 109
+        svis:
+          - id: 109
+            enabled: true
+            name: customer109
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.109.1/24
+      - name: customer110
+        vrf_id: 110
+        svis:
+          - id: 110
+            enabled: true
+            name: customer110
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.110.1/24
+      - name: customer111
+        vrf_id: 111
+        svis:
+          - id: 111
+            enabled: true
+            name: customer111
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.111.1/24
+      - name: customer112
+        vrf_id: 112
+        svis:
+          - id: 112
+            enabled: true
+            name: customer112
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.112.1/24
+      - name: customer113
+        vrf_id: 113
+        svis:
+          - id: 113
+            enabled: true
+            name: customer113
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.113.1/24
+      - name: customer114
+        vrf_id: 114
+        svis:
+          - id: 114
+            enabled: true
+            name: customer114
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.114.1/24
+      - name: customer115
+        vrf_id: 115
+        svis:
+          - id: 115
+            enabled: true
+            name: customer115
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.115.1/24
+      - name: customer116
+        vrf_id: 116
+        svis:
+          - id: 116
+            enabled: true
+            name: customer116
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.116.1/24
+      - name: customer117
+        vrf_id: 117
+        svis:
+          - id: 117
+            enabled: true
+            name: customer117
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.117.1/24
+      - name: customer118
+        vrf_id: 118
+        svis:
+          - id: 118
+            enabled: true
+            name: customer118
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.118.1/24
+      - name: customer119
+        vrf_id: 119
+        svis:
+          - id: 119
+            enabled: true
+            name: customer119
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.119.1/24
+      - name: customer120
+        vrf_id: 120
+        svis:
+          - id: 120
+            enabled: true
+            name: customer120
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.120.1/24
+      - name: customer121
+        vrf_id: 121
+        svis:
+          - id: 121
+            enabled: true
+            name: customer121
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.121.1/24
+      - name: customer122
+        vrf_id: 122
+        svis:
+          - id: 122
+            enabled: true
+            name: customer122
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.122.1/24
+      - name: customer123
+        vrf_id: 123
+        svis:
+          - id: 123
+            enabled: true
+            name: customer123
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.123.1/24
+      - name: customer124
+        vrf_id: 124
+        svis:
+          - id: 124
+            enabled: true
+            name: customer124
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.124.1/24
+      - name: customer125
+        vrf_id: 125
+        svis:
+          - id: 125
+            enabled: true
+            name: customer125
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.125.1/24
+      - name: customer126
+        vrf_id: 126
+        svis:
+          - id: 126
+            enabled: true
+            name: customer126
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.126.1/24
+      - name: customer127
+        vrf_id: 127
+        svis:
+          - id: 127
+            enabled: true
+            name: customer127
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.127.1/24
+      - name: customer128
+        vrf_id: 128
+        svis:
+          - id: 128
+            enabled: true
+            name: customer128
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.128.1/24
+      - name: customer129
+        vrf_id: 129
+        svis:
+          - id: 129
+            enabled: true
+            name: customer129
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.129.1/24
+      - name: customer130
+        vrf_id: 130
+        svis:
+          - id: 130
+            enabled: true
+            name: customer130
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.130.1/24
+      - name: customer131
+        vrf_id: 131
+        svis:
+          - id: 131
+            enabled: true
+            name: customer131
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.131.1/24
+      - name: customer132
+        vrf_id: 132
+        svis:
+          - id: 132
+            enabled: true
+            name: customer132
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.132.1/24
+      - name: customer133
+        vrf_id: 133
+        svis:
+          - id: 133
+            enabled: true
+            name: customer133
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.133.1/24
+      - name: customer134
+        vrf_id: 134
+        svis:
+          - id: 134
+            enabled: true
+            name: customer134
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.134.1/24
+      - name: customer135
+        vrf_id: 135
+        svis:
+          - id: 135
+            enabled: true
+            name: customer135
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.135.1/24
+      - name: customer136
+        vrf_id: 136
+        svis:
+          - id: 136
+            enabled: true
+            name: customer136
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.136.1/24
+      - name: customer137
+        vrf_id: 137
+        svis:
+          - id: 137
+            enabled: true
+            name: customer137
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.137.1/24
+      - name: customer138
+        vrf_id: 138
+        svis:
+          - id: 138
+            enabled: true
+            name: customer138
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.138.1/24
+      - name: customer139
+        vrf_id: 139
+        svis:
+          - id: 139
+            enabled: true
+            name: customer139
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.139.1/24
+      - name: customer140
+        vrf_id: 140
+        svis:
+          - id: 140
+            enabled: true
+            name: customer140
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.140.1/24
+      - name: customer141
+        vrf_id: 141
+        svis:
+          - id: 141
+            enabled: true
+            name: customer141
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.141.1/24
+
+      - name: customer142
+        vrf_id: 142
+        svis:
+          - id: 142
+            enabled: true
+            name: customer142
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.142.1/24
+      - name: customer143
+        vrf_id: 143
+        svis:
+          - id: 143
+            enabled: true
+            name: customer143
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.143.1/24
+      - name: customer144
+        vrf_id: 144
+        svis:
+          - id: 144
+            enabled: true
+            name: customer144
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.144.1/24
+      - name: customer145
+        vrf_id: 145
+        svis:
+          - id: 145
+            enabled: true
+            name: customer145
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.145.1/24
+      - name: customer146
+        vrf_id: 146
+        svis:
+          - id: 146
+            enabled: true
+            name: customer146
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.146.1/24
+      - name: customer147
+        vrf_id: 147
+        svis:
+          - id: 147
+            enabled: true
+            name: customer147
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.147.1/24
+      - name: customer148
+        vrf_id: 148
+        svis:
+          - id: 148
+            enabled: true
+            name: customer148
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.148.1/24
+      - name: customer149
+        vrf_id: 149
+        svis:
+          - id: 149
+            enabled: true
+            name: customer149
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.149.1/24
+      - name: customer150
+        vrf_id: 150
+        svis:
+          - id: 150
+            enabled: true
+            name: customer150
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.150.1/24
+      - name: customer151
+        vrf_id: 151
+        svis:
+          - id: 151
+            enabled: true
+            name: customer151
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.151.1/24
+      - name: customer152
+        vrf_id: 152
+        svis:
+          - id: 152
+            enabled: true
+            name: customer152
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.152.1/24
+      - name: customer153
+        vrf_id: 153
+        svis:
+          - id: 153
+            enabled: true
+            name: customer153
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.153.1/24
+      - name: customer154
+        vrf_id: 154
+        svis:
+          - id: 154
+            enabled: true
+            name: customer154
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.154.1/24
+      - name: customer155
+        vrf_id: 155
+        svis:
+          - id: 155
+            enabled: true
+            name: customer155
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.155.1/24
+      - name: customer156
+        vrf_id: 156
+        svis:
+          - id: 156
+            enabled: true
+            name: customer156
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.156.1/24
+      - name: customer157
+        vrf_id: 157
+        svis:
+          - id: 157
+            enabled: true
+            name: customer157
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.157.1/24
+      - name: customer158
+        vrf_id: 158
+        svis:
+          - id: 158
+            enabled: true
+            name: customer158
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.158.1/24
+      - name: customer159
+        vrf_id: 159
+        svis:
+          - id: 159
+            enabled: true
+            name: customer159
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.159.1/24
+      - name: customer160
+        vrf_id: 160
+        svis:
+          - id: 160
+            enabled: true
+            name: customer160
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.160.1/24
+      - name: customer161
+        vrf_id: 161
+        svis:
+          - id: 161
+            enabled: true
+            name: customer161
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.161.1/24
+      - name: customer162
+        vrf_id: 162
+        svis:
+          - id: 162
+            enabled: true
+            name: customer162
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.162.1/24
+      - name: customer163
+        vrf_id: 163
+        svis:
+          - id: 163
+            enabled: true
+            name: customer163
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.163.1/24
+      - name: customer164
+        vrf_id: 164
+        svis:
+          - id: 164
+            enabled: true
+            name: customer164
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.164.1/24
+      - name: customer165
+        vrf_id: 165
+        svis:
+          - id: 165
+            enabled: true
+            name: customer165
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.165.1/24
+      - name: customer166
+        vrf_id: 166
+        svis:
+          - id: 166
+            enabled: true
+            name: customer166
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.166.1/24
+      - name: customer167
+        vrf_id: 167
+        svis:
+          - id: 167
+            enabled: true
+            name: customer167
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.167.1/24
+      - name: customer168
+        vrf_id: 168
+        svis:
+          - id: 168
+            enabled: true
+            name: customer168
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.168.1/24
+      - name: customer169
+        vrf_id: 169
+        svis:
+          - id: 169
+            enabled: true
+            name: customer169
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.169.1/24
+      - name: customer170
+        vrf_id: 170
+        svis:
+          - id: 170
+            enabled: true
+            name: customer170
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.170.1/24
+      - name: customer171
+        vrf_id: 171
+        svis:
+          - id: 171
+            enabled: true
+            name: customer171
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.171.1/24
+      - name: customer172
+        vrf_id: 172
+        svis:
+          - id: 172
+            enabled: true
+            name: customer172
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.172.1/24
+      - name: customer173
+        vrf_id: 173
+        svis:
+          - id: 173
+            enabled: true
+            name: customer173
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.173.1/24
+      - name: customer174
+        vrf_id: 174
+        svis:
+          - id: 174
+            enabled: true
+            name: customer174
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.174.1/24
+      - name: customer175
+        vrf_id: 175
+        svis:
+          - id: 175
+            enabled: true
+            name: customer175
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.175.1/24
+      - name: customer176
+        vrf_id: 176
+        svis:
+          - id: 176
+            enabled: true
+            name: customer176
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.176.1/24
+      - name: customer177
+        vrf_id: 177
+        svis:
+          - id: 177
+            enabled: true
+            name: customer177
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.177.1/24
+      - name: customer178
+        vrf_id: 178
+        svis:
+          - id: 178
+            enabled: true
+            name: customer178
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.178.1/24
+      - name: customer179
+        vrf_id: 179
+        svis:
+          - id: 179
+            enabled: true
+            name: customer179
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.179.1/24
+      - name: customer180
+        vrf_id: 180
+        svis:
+          - id: 180
+            enabled: true
+            name: customer180
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.180.1/24
+      - name: customer181
+        vrf_id: 181
+        svis:
+          - id: 181
+            enabled: true
+            name: customer181
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.181.1/24
+
+      - name: customer182
+        vrf_id: 182
+        svis:
+          - id: 182
+            enabled: true
+            name: customer182
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.182.1/24
+      - name: customer183
+        vrf_id: 183
+        svis:
+          - id: 183
+            enabled: true
+            name: customer183
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.183.1/24
+      - name: customer184
+        vrf_id: 184
+        svis:
+          - id: 184
+            enabled: true
+            name: customer184
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.184.1/24
+      - name: customer185
+        vrf_id: 185
+        svis:
+          - id: 185
+            enabled: true
+            name: customer185
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.185.1/24
+      - name: customer186
+        vrf_id: 186
+        svis:
+          - id: 186
+            enabled: true
+            name: customer186
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.186.1/24
+      - name: customer187
+        vrf_id: 187
+        svis:
+          - id: 187
+            enabled: true
+            name: customer187
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.187.1/24
+      - name: customer188
+        vrf_id: 188
+        svis:
+          - id: 188
+            enabled: true
+            name: customer188
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.188.1/24
+      - name: customer189
+        vrf_id: 189
+        svis:
+          - id: 189
+            enabled: true
+            name: customer189
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.189.1/24
+      - name: customer190
+        vrf_id: 190
+        svis:
+          - id: 190
+            enabled: true
+            name: customer190
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.190.1/24
+      - name: customer191
+        vrf_id: 191
+        svis:
+          - id: 191
+            enabled: true
+            name: customer191
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.191.1/24
+      - name: customer192
+        vrf_id: 192
+        svis:
+          - id: 192
+            enabled: true
+            name: customer192
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.192.1/24
+      - name: customer193
+        vrf_id: 193
+        svis:
+          - id: 193
+            enabled: true
+            name: customer193
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.193.1/24
+      - name: customer194
+        vrf_id: 194
+        svis:
+          - id: 194
+            enabled: true
+            name: customer194
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.194.1/24
+      - name: customer195
+        vrf_id: 195
+        svis:
+          - id: 195
+            enabled: true
+            name: customer195
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.195.1/24
+      - name: customer196
+        vrf_id: 196
+        svis:
+          - id: 196
+            enabled: true
+            name: customer196
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.196.1/24
+
+      - name: customer197
+        vrf_id: 197
+        svis:
+          - id: 197
+            enabled: true
+            name: customer197
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.197.1/24
+      - name: customer198
+        vrf_id: 198
+        svis:
+          - id: 198
+            enabled: true
+            name: customer198
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.198.1/24
+      - name: customer199
+        vrf_id: 199
+        svis:
+          - id: 199
+            enabled: true
+            name: customer199
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.199.1/24
+      - name: customer200
+        vrf_id: 200
+        svis:
+          - id: 200
+            enabled: true
+            name: customer20
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.200.1/24              
+      - name: customer201
+        vrf_id: 201
+        svis:
+          - id: 201
+            enabled: true
+            name: customer201
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.201.1/24
+      - name: customer202
+        vrf_id: 202
+        svis:
+          - id: 202
+            enabled: true
+            name: customer202
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.202.1/24
+      - name: customer203
+        vrf_id: 203
+        svis:
+          - id: 203
+            enabled: true
+            name: customer203
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.203.1/24
+      - name: customer204
+        vrf_id: 204
+        svis:
+          - id: 204
+            enabled: true
+            name: customer204
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.204.1/24
+      - name: customer205
+        vrf_id: 205
+        svis:
+          - id: 205
+            enabled: true
+            name: customer205
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.205.1/24
+      - name: customer206
+        vrf_id: 206
+        svis:
+          - id: 206
+            enabled: true
+            name: customer206
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.206.1/24
+      - name: customer207
+        vrf_id: 207
+        svis:
+          - id: 207
+            enabled: true
+            name: customer207
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.207.1/24
+      - name: customer208
+        vrf_id: 208
+        svis:
+          - id: 208
+            enabled: true
+            name: customer208
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.208.1/24
+      - name: customer209
+        vrf_id: 209
+        svis:
+          - id: 209
+            enabled: true
+            name: customer209
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.209.1/24
+      - name: customer210
+        vrf_id: 210
+        svis:
+          - id: 210
+            enabled: true
+            name: customer210
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.210.1/24
+      - name: customer211
+        vrf_id: 211
+        svis:
+          - id: 211
+            enabled: true
+            name: customer211
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.211.1/24
+      - name: customer212
+        vrf_id: 212
+        svis:
+          - id: 212
+            enabled: true
+            name: customer212
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.212.1/24
+      - name: customer213
+        vrf_id: 213
+        svis:
+          - id: 213
+            enabled: true
+            name: customer213
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.213.1/24
+      - name: customer214
+        vrf_id: 214
+        svis:
+          - id: 214
+            enabled: true
+            name: customer214
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.214.1/24
+      - name: customer215
+        vrf_id: 215
+        svis:
+          - id: 215
+            enabled: true
+            name: customer215
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.215.1/24
+      - name: customer216
+        vrf_id: 216
+        svis:
+          - id: 216
+            enabled: true
+            name: customer216
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.216.1/24
+      - name: customer217
+        vrf_id: 217
+        svis:
+          - id: 217
+            enabled: true
+            name: customer217
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.217.1/24
+      - name: customer218
+        vrf_id: 218
+        svis:
+          - id: 218
+            enabled: true
+            name: customer218
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.218.1/24
+      - name: customer219
+        vrf_id: 219
+        svis:
+          - id: 219
+            enabled: true
+            name: customer219
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.219.1/24
+      - name: customer220
+        vrf_id: 220
+        svis:
+          - id: 220
+            enabled: true
+            name: customer220
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.220.1/24
+      - name: customer221
+        vrf_id: 221
+        svis:
+          - id: 221
+            enabled: true
+            name: customer221
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.221.1/24
+      - name: customer222
+        vrf_id: 222
+        svis:
+          - id: 222
+            enabled: true
+            name: customer222
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.222.1/24
+      - name: customer223
+        vrf_id: 223
+        svis:
+          - id: 223
+            enabled: true
+            name: customer223
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.223.1/24
+      - name: customer224
+        vrf_id: 224
+        svis:
+          - id: 224
+            enabled: true
+            name: customer224
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.224.1/24
+      - name: customer225
+        vrf_id: 225
+        svis:
+          - id: 225
+            enabled: true
+            name: customer225
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.225.1/24
+      - name: customer226
+        vrf_id: 226
+        svis:
+          - id: 226
+            enabled: true
+            name: customer226
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.226.1/24
+      - name: customer227
+        vrf_id: 227
+        svis:
+          - id: 227
+            enabled: true
+            name: customer227
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.227.1/24
+      - name: customer228
+        vrf_id: 228
+        svis:
+          - id: 228
+            enabled: true
+            name: customer228
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.228.1/24
+      - name: customer229
+        vrf_id: 229
+        svis:
+          - id: 229
+            enabled: true
+            name: customer229
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.229.1/24
+      - name: customer230
+        vrf_id: 230
+        svis:
+          - id: 230
+            enabled: true
+            name: customer230
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.230.1/24
+      - name: customer231
+        vrf_id: 231
+        svis:
+          - id: 231
+            enabled: true
+            name: customer231
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.231.1/24
+      - name: customer232
+        vrf_id: 232
+        svis:
+          - id: 232
+            enabled: true
+            name: customer232
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.232.1/24
+      - name: customer233
+        vrf_id: 233
+        svis:
+          - id: 233
+            enabled: true
+            name: customer233
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.233.1/24
+      - name: customer234
+        vrf_id: 234
+        svis:
+          - id: 234
+            enabled: true
+            name: customer234
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.234.1/24
+      - name: customer235
+        vrf_id: 235
+        svis:
+          - id: 235
+            enabled: true
+            name: customer235
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.235.1/24
+      - name: customer236
+        vrf_id: 236
+        svis:
+          - id: 236
+            enabled: true
+            name: customer236
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.236.1/24
+      - name: customer237
+        vrf_id: 237
+        svis:
+          - id: 237
+            enabled: true
+            name: customer237
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.237.1/24
+      - name: customer238
+        vrf_id: 238
+        svis:
+          - id: 238
+            enabled: true
+            name: customer238
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.238.1/24
+      - name: customer239
+        vrf_id: 239
+        svis:
+          - id: 239
+            enabled: true
+            name: customer239
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.239.1/24
+      - name: customer240
+        vrf_id: 240
+        svis:
+          - id: 240
+            enabled: true
+            name: customer240
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.240.1/24
+      - name: customer241
+        vrf_id: 241
+        svis:
+          - id: 241
+            enabled: true
+            name: customer241
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.241.1/24
+
+      - name: customer242
+        vrf_id: 242
+        svis:
+          - id: 242
+            enabled: true
+            name: customer242
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.242.1/24
+      - name: customer243
+        vrf_id: 243
+        svis:
+          - id: 243
+            enabled: true
+            name: customer243
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.243.1/24
+      - name: customer244
+        vrf_id: 244
+        svis:
+          - id: 244
+            enabled: true
+            name: customer244
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.244.1/24
+      - name: customer245
+        vrf_id: 245
+        svis:
+          - id: 245
+            enabled: true
+            name: customer245
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.245.1/24
+      - name: customer246
+        vrf_id: 246
+        svis:
+          - id: 246
+            enabled: true
+            name: customer246
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.246.1/24
+      - name: customer247
+        vrf_id: 247
+        svis:
+          - id: 247
+            enabled: true
+            name: customer247
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.247.1/24
+      - name: customer248
+        vrf_id: 248
+        svis:
+          - id: 248
+            enabled: true
+            name: customer248
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.248.1/24
+      - name: customer249
+        vrf_id: 249
+        svis:
+          - id: 249
+            enabled: true
+            name: customer249
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.249.1/24
+      - name: customer250
+        vrf_id: 250
+        svis:
+          - id: 250
+            enabled: true
+            name: customer250
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.250.1/24
+      - name: customer251
+        vrf_id: 251
+        svis:
+          - id: 251
+            enabled: true
+            name: customer251
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.251.1/24
+      - name: customer252
+        vrf_id: 252
+        svis:
+          - id: 252
+            enabled: true
+            name: customer252
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.252.1/24
+      - name: customer253
+        vrf_id: 253
+        svis:
+          - id: 253
+            enabled: true
+            name: customer253
+            nodes:
+              - node: r1-hub-leaf1
+                ip_address: 10.10.253.1/24
+
+
+
+servers: # dynamic_key: connected_endpoints
+  - name: IXIA
+    adapters:
+      - switch_ports: [Ethernet49/1]
+        switches: [r1-hub-leaf1]
+        mode: trunk
+        vlans: 1-253

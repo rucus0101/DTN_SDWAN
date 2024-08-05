@@ -1,0 +1,81 @@
+custom_structured_configuration_ethernet_interfaces:
+  - name: Ethernet1
+    peer: pf1
+    peer_interface: Ethernet2
+    description: p2p_pf1_Ethernet2
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.1.1/24
+  - name: Ethernet2
+    peer: nat-rtr1
+    peer_interface: Ethernet1
+    description: p2p_nat-rtr1_Ethernet1
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.2.1/24
+  - name: Ethernet3
+    peer: wan1-dc1
+    peer_interface: Ethernet4
+    description: p2p_wan1-dc1_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.3.1/24
+  - name: Ethernet4
+    peer: wan2-dc1
+    peer_interface: Ethernet4
+    description: p2p_wan2-dc1_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.4.1/24
+  - name: Ethernet5
+    peer: wan1-site1
+    peer_interface: Ethernet4
+    description: p2p_wan1-site1_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.5.1/24
+  - name: Ethernet6
+    peer: wan2-site1
+    peer_interface: Ethernet4
+    description: p2p_wan2-site1_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.6.1/24
+  - name: Ethernet7
+    peer: wan2-site2
+    peer_interface: Ethernet4
+    description: p2p_wan2-site2_Ethernet3
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.7.1/24
+  - name: Ethernet8
+    peer: wan1-site3
+    peer_interface: Ethernet4
+    description: p2p_wan1-site3_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.8.1/24
+  - name: Ethernet9
+    peer: wan1-site3
+    peer_interface: Ethernet4
+    description: p2p_wan1-site4_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.9.1/24
+  - name: Ethernet10
+    peer: wan1-site3
+    peer_interface: Ethernet4
+    description: p2p_wan2-site4_Ethernet4
+    shutdown: false
+    # mtu: 9214
+    type: routed
+    ip_address: 100.64.10.1/24

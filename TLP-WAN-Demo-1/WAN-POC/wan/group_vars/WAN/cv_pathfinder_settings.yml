@@ -1,0 +1,56 @@
+---
+
+# WAN CV Pathfinder Settings
+
+fabric_name: WAN
+use_anta: true
+deploy_to_cv_accept_preview: true
+deploy_to_cv_inventory_host: cloudvision
+bgp_update_wait_install: false
+
+wan_mode: cv-pathfinder
+
+bgp_as: 65199
+
+cv_pathfinder_regions:
+  - name: Global
+    id: 1
+    sites:
+      - name: Site-Tier1
+        id: 100
+      - name: Site-EQX-SEA
+        id: 108
+      - name: Site-EQX-ASH
+        id: 109
+      - name: Site-DRF
+        id: 110
+      - name: Site-Tier3
+        id: 120
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.100.0/31
+      - 192.168.108.0/31
+      - 192.168.109.0/31
+      - 192.168.110.0/31
+      - 192.168.120.0/31
+
+wan_route_servers:
+  - hostname: arista-pf1-ch-test
+  - hostname: arista-pf2-ch-test
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: internet
+    id: 101
+
+wan_carriers:
+  - name: internet
+    path_group: internet

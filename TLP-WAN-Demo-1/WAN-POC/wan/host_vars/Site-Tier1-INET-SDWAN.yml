@@ -1,0 +1,30 @@
+---
+
+# Site-Tier1-INET-SDWAN Router Configuration
+
+custom_structured_configuration_ethernet_interfaces:
+- name: Ethernet2
+  ip_address: 172.29.3.3/24
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+
+custom_structured_configuration_prefix_lists:
+- name: PL-VRF-DEFAULT-NETWORKS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.29.3.0/24
+
+custom_structured_configuration_route_maps:
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    match:
+    - ip address prefix-list PL-VRF-DEFAULT-NETWORKS
+
+custom_structured_configuration_router_bgp:
+  address_family_ipv4:
+    networks:
+      - prefix: 172.29.3.0/24

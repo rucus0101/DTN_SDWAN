@@ -1,0 +1,165 @@
+hostname: leaf2-site2
+is_deployed: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.66.1
+service_routing_protocols_model: multi-agent
+daemon_terminattr:
+  cvaddrs:
+  - avd-cv-master-1.fun.aristanetworks.com:9910
+  cvauth:
+    method: token
+    token_file: /mnt/flash/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: MGMT
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 16384
+  no_spanning_tree_vlan: '4094'
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$flN.35Ol2oV3E.lP$7dxXyyQdPJFQHyuHTUwiXyQHhzQR3A4Q4JAevhLCHkzprp2.weEKD/Qig.3xD7DfQ8nQeGOTciFQkqddC.fWc1
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.116/24
+  gateway: 192.168.66.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management0
+    vrf: MGMT
+  servers:
+  - name: 1.pool.ntp.org
+    iburst: true
+    vrf: MGMT
+    preferred: true
+vlans:
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+- id: 20
+  name: data_20
+  tenant: avd-testing
+- id: 10
+  name: guest_10
+  tenant: avd-testing
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  no_autostate: true
+  mtu: 9214
+  ip_address: 10.102.3.5/31
+port_channel_interfaces:
+- name: Port-Channel5
+  description: MLAG_PEER_leaf1-site2_Po5
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Port-Channel1
+  description: SPINE1-SITE2_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 10,20
+  mlag: 1
+ethernet_interfaces:
+- name: Ethernet5
+  peer: leaf1-site2
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+  description: MLAG_PEER_leaf1-site2_Ethernet5
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet6
+  peer: leaf1-site2
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+  description: MLAG_PEER_leaf1-site2_Ethernet6
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet1
+  peer: spine1-site2
+  peer_interface: Ethernet2
+  peer_type: l3spine
+  description: SPINE1-SITE2_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: spine2-site2
+  peer_interface: Ethernet2
+  peer_type: l3spine
+  description: SPINE2-SITE2_Ethernet2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet3
+  peer: test-host
+  peer_type: server
+  description: test-host
+  shutdown: false
+  type: switched
+  mode: trunk
+  vlans: 10,20
+mlag_configuration:
+  domain_id: LEAFS_SITE2
+  local_interface: Vlan4094
+  peer_address: 10.102.3.4
+  peer_link: Port-Channel5
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  platform: cEOSLab
+aaa_authorization:
+  exec:
+    default: local
+dns_domain: fun.aristanetworks.com
+eos_cli: 'platform tfa personality arfa
+
+  '

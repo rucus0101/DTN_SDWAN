@@ -1,0 +1,16 @@
+---
+- name: Deploy configuratrion via CV
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Provision Devices via CV
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        deploy_to_cv_accept_preview: true
+        cv_token: eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjYxNTI1MjgsImRzbiI6Im1hcmN1cyIsImRzdCI6ImFjY291bnQiLCJleHAiOjE3MjUxMTM3NDAsImlhdCI6MTcxOTIzODU0Nywib2dpIjoyOTk0OTkyLCJvZ24iOiJhcmlzdGEtcG9jLTUiLCJzaWQiOiI1ODhlZDBjMTE3NWI0MjRjZDRiM2Q3OTMwOGI1YmI2MzBiZWY2MDIyNjU0MjQ0NDI5ZTcxYjJjZWU2NGQ1MTllLTlfZ00xU2lKTXhRbzB1eUVTdWNEU0V4YmlHb0d5TTFaMFo0T1dSSEYifQ.gjf82kBtXPtpff-UHOjC-bpZ-W2tbaRpsoe4AUnj4aeGSG8_2cU8Ss3mg4wpW4B-8daPdTzkPlOjGXC-FCSwEQ
+        cv_server: www.cv-staging.corp.arista.io
+        cv_run_change_control: true
+        # deploy_to_cv_inventory_host: cloudvision - not needed
+

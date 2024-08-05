@@ -1,0 +1,289 @@
+hostname: wan-site1
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 10.101.254.3
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 16
+  updates:
+    wait_install: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Dps1
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    ttl_maximum_hops: 1
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 10.255.0.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: wan-hub1
+    description: wan-hub1
+  - ip_address: 10.255.0.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: wan-hub2
+    description: wan-hub2
+  vrfs:
+  - name: default
+    rd: 10.101.254.3:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+service_routing_protocols_model: multi-agent
+ip_routing: true
+transceiver_qsfp_default_mode_4x10: false
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.23/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 172.18.5.2/24
+  shutdown: false
+  type: routed
+  description: isp_INTERNET-1111
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.101.254.3/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.101.254.0/25 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 10.101.254.3:0 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.101.254.3:0 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 172.18.5.1
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 10.101.254.3:0
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 10.101.255.3
+  sa_policies:
+  - name: DP-SA-POLICY
+  - name: CP-SA-POLICY
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  path_groups:
+  - name: internet
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+      stun:
+        server_profiles:
+        - internet-wan-hub1-Ethernet1
+        - internet-wan-hub2-Ethernet1
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.0.1
+      name: wan-hub1
+      ipv4_addresses:
+      - 172.18.4.2
+    - router_ip: 10.255.0.2
+      name: wan-hub2
+      ipv4_addresses:
+      - 172.18.4.6
+    ipsec_profile: CP-PROFILE
+  load_balance_policies:
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: internet
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: internet
+  policies:
+  - name: DEFAULT-POLICY-WITH-CP
+    rules:
+    - id: 10
+      application_profile: APP-PROFILE-CONTROL-PLANE
+      load_balance: LB-DEFAULT-POLICY-CONTROL-PLANE
+    default_match:
+      load_balance: LB-DEFAULT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    path_selection_policy: DEFAULT-POLICY-WITH-CP
+stun:
+  client:
+    server_profiles:
+    - name: internet-wan-hub1-Ethernet1
+      ip_address: 172.18.4.2
+    #  ssl_profile: STUN-DTLS
+    - name: internet-wan-hub2-Ethernet1
+      ip_address: 172.18.4.6
+    #  ssl_profile: STUN-DTLS
+application_traffic_recognition:
+  application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+  applications:
+    ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  field_sets:
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.0.1/32
+      - 10.255.0.2/32
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9214
+  ip_address: 10.101.255.3/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: wan-site1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1
+      vrfs:
+      - name: default
+        vni: 1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false

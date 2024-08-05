@@ -1,0 +1,15 @@
+---
+- name: Deploy configuratrion via CV
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Provision Devices via CV
+      ansible.builtin.import_role:
+        name: arista.avd.deploy_to_cv
+      vars:
+        deploy_to_cv_accept_preview: true
+        # cv_token:
+        # cv_server:
+        # deploy_to_cv_inventory_host: cloudvision - not needed
+

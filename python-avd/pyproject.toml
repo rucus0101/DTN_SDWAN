@@ -1,0 +1,106 @@
+[project]
+name="pyavd"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
+description="Arista Validated Designs"
+readme = "README.md"
+license = { file = "pyavd/LICENSE" }
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+]
+keywords = ["pyavd"]
+requires-python = ">=3.9"
+
+[project.urls]
+homepage = "https://avd.arista.com"
+repository = "https://github.com/aristanetworks/avd"
+
+[build-system]
+requires = [
+    "setuptools>=66.1",
+    "wheel",
+    "jinja2>=3.0",
+    "jsonschema>=4.10.3",
+    "referencing>=0.35.0",
+    "deepmerge>=1.1.0",
+    "pyyaml>=6.0.0",
+    "mkdocstrings[python]",
+    "pydantic>=2.3.0",
+]
+build-backend = "custom_build_backend"
+backend-path = ["scripts"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = [
+    "avd_meta_schema.pickle",
+    "eos_cli_config_gen.schema.pickle",
+    "eos_designs.schema.pickle",
+]
+
+[tool.setuptools.packages.find]
+include = ["pyavd*"]
+exclude = ["vendor_overrides*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pyavd.__version__"}
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {"ansible" = { file = ["requirements-ansible-avd.txt"] } }
+
+[tool.black]
+line-length = 160
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+line_length = 160
+known_third_party = ["pyavd"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 89
+include = [
+  "pyavd/*"
+]
+omit = [
+  "pyavd/vendor/cv_client/*"
+]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    # Don't complain about TYPE_CHECKING blocks
+    "if TYPE_CHECKING:",
+    # Don't complain about Jinja2 internalcode
+    # Note that except KeyError is a bit sad but this is the pattern
+    "except KeyError:",
+    "@internalcode",
+    "raise TemplateRuntimeError",
+    "^blocks = {}",
+    "^debug_info =.*",
+]

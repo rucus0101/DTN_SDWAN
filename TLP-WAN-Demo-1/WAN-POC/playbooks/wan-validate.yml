@@ -1,0 +1,10 @@
+---
+- name: Validate Network State
+  hosts: WAN
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Validate Network State
+      ansible.builtin.import_role:
+        name: arista.avd.eos_validate_state

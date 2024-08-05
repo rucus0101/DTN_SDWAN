@@ -1,0 +1,155 @@
+---
+# WAN Pathfinder Nodes
+
+mgmt_interface: Management1/1
+
+wan_rr: # dynamic_key: node_type
+  defaults:
+    data_plane_cpu_allocation_max: 1
+    loopback_ipv4_pool: 10.10.0.0/30
+    vtep_loopback_ipv4_pool: 10.255.0.0/30
+    bgp_as: 65000
+  nodes:
+    - name: pf1
+      cv_pathfinder_region: Region1
+      cv_pathfinder_site: PATHFINDERS
+      id: 1
+      mgmt_ip: 172.28.138.222/17
+      l3_interfaces:
+        - name: Ethernet1/1
+          ip_address: 172.16.51.2/30
+          wan_carrier: gmpls1
+          wan_circuit_id: PF-GMPLS-1
+          peer_ip: 172.16.51.1
+          static_routes:
+            - prefix: 172.16.51.0/30
+            - prefix: 172.16.52.0/30
+            - prefix: 172.16.151.0/30
+            - prefix: 172.16.201.0/30
+        - name: Ethernet1/2
+          ip_address: 172.16.51.6/30
+          wan_carrier: gmpls2
+          wan_circuit_id: PF-GMPLS-2
+          peer_ip: 172.16.51.5
+          static_routes:
+            - prefix: 172.16.51.4/30
+            - prefix: 172.16.52.4/30
+            - prefix: 172.16.152.0/30
+            - prefix: 172.16.202.0/30
+        - name: Ethernet1/5
+          ip_address: 172.16.51.10/30
+          wan_carrier: rmpls1
+          wan_circuit_id: PF-RMPLS-1
+          peer_ip: 172.16.51.9
+          static_routes:
+            - prefix: 172.16.51.8/30
+            - prefix: 172.16.52.8/30
+            - prefix: 172.16.203.0/30
+            - prefix: 172.16.211.0/30
+            - prefix: 172.16.221.0/30
+        - name: Ethernet1/6
+          ip_address: 172.16.51.14/30
+          wan_carrier: rmpls2
+          wan_circuit_id: PF-RMPLS-2
+          peer_ip: 172.16.51.13
+          static_routes:
+            - prefix: 172.16.51.12/30
+            - prefix: 172.16.52.12/30
+            - prefix: 172.16.204.0/30
+            - prefix: 172.16.212.0/30
+            - prefix: 172.16.222.0/30
+        - name: Ethernet1/7
+          ip_address: 172.16.51.18/30
+          wan_carrier: rmpls3
+          wan_circuit_id: PF-RMPLS-3
+          peer_ip: 172.16.51.17
+          static_routes:
+            - prefix: 172.16.51.16/30
+            - prefix: 172.16.52.16/30
+            - prefix: 172.16.103.0/30
+            - prefix: 172.16.113.0/30
+            - prefix: 172.16.123.0/30
+        - name: Ethernet1/8
+          ip_address: 172.16.51.22/30
+          wan_carrier: rmpls4
+          wan_circuit_id: PF-RMPLS-4
+          peer_ip: 172.16.51.21
+          static_routes:
+            - prefix: 172.16.51.20/30
+            - prefix: 172.16.52.20/30
+            - prefix: 172.16.104.0/30
+            - prefix: 172.16.114.0/30
+            - prefix: 172.16.124.0/30
+
+    - name: pf2
+      id: 2
+      cv_pathfinder_region: Region1
+      cv_pathfinder_site: PATHFINDERS
+      mgmt_ip: 172.28.137.186/17
+      l3_interfaces:
+        - name: Ethernet1/1
+          ip_address: 172.16.52.2/30
+          wan_carrier: gmpls1
+          wan_circuit_id: PF-GMPLS-1
+          peer_ip: 172.16.52.1
+          static_routes:
+            - prefix: 172.16.51.0/30
+            - prefix: 172.16.52.0/30
+            - prefix: 172.16.151.0/30
+            - prefix: 172.16.201.0/30
+        - name: Ethernet1/2
+          ip_address: 172.16.52.6/30
+          wan_carrier: gmpls2
+          wan_circuit_id: PF-GMPLS-2
+          peer_ip: 172.16.52.5
+          static_routes:
+            - prefix: 172.16.51.4/30
+            - prefix: 172.16.52.4/30
+            - prefix: 172.16.152.0/30
+            - prefix: 172.16.202.0/30
+        - name: Ethernet1/5
+          ip_address: 172.16.52.10/30
+          wan_carrier: rmpls1
+          wan_circuit_id: PF-RMPLS-1
+          peer_ip: 172.16.52.9
+          static_routes:
+            - prefix: 172.16.51.8/30
+            - prefix: 172.16.52.8/30
+            - prefix: 172.16.203.0/30
+            - prefix: 172.16.211.0/30
+            - prefix: 172.16.221.0/30
+        - name: Ethernet1/6
+          ip_address: 172.16.52.14/30
+          wan_carrier: rmpls2
+          wan_circuit_id: PF-RMPLS-2
+          peer_ip: 172.16.52.13
+          static_routes:
+            - prefix: 172.16.51.12/30
+            - prefix: 172.16.52.12/30
+            - prefix: 172.16.204.0/30
+            - prefix: 172.16.212.0/30
+            - prefix: 172.16.222.0/30
+        - name: Ethernet1/7
+          ip_address: 172.16.52.18/30
+          wan_carrier: rmpls3
+          wan_circuit_id: PF-RMPLS-3
+          peer_ip: 172.16.52.17
+          static_routes:
+            - prefix: 172.16.51.16/30
+            - prefix: 172.16.52.16/30
+            - prefix: 172.16.103.0/30
+            - prefix: 172.16.113.0/30
+            - prefix: 172.16.123.0/30
+        - name: Ethernet1/8
+          ip_address: 172.16.52.22/30
+          wan_carrier: rmpls4
+          wan_circuit_id: PF-RMPLS-4
+          peer_ip: 172.16.52.21
+          static_routes:
+            - prefix: 172.16.51.20/30
+            - prefix: 172.16.52.20/30
+            - prefix: 172.16.104.0/30
+            - prefix: 172.16.114.0/30
+            - prefix: 172.16.124.0/30
+
+

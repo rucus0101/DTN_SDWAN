@@ -1,0 +1,203 @@
+hostname: spine1-site1
+is_deployed: true
+router_bgp:
+  as: '65110'
+  router_id: 10.101.1.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.101.0.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65111'
+    peer: border1-site1
+    description: border1-site1_Ethernet1
+  - ip_address: 10.101.0.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65111'
+    peer: border2-site1
+    description: border2-site1_Ethernet1
+  - ip_address: 10.101.0.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65112'
+    peer: leaf1-site1
+    description: leaf1-site1_Ethernet1
+  - ip_address: 10.101.0.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65112'
+    peer: leaf2-site1
+    description: leaf2-site1_Ethernet1
+  - ip_address: 10.101.1.3
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: border1-site1
+    description: border1-site1
+    remote_as: '65111'
+  - ip_address: 10.101.1.4
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: border2-site1
+    description: border2-site1
+    remote_as: '65111'
+  - ip_address: 10.101.1.5
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: leaf1-site1
+    description: leaf1-site1
+    remote_as: '65112'
+  - ip_address: 10.101.1.6
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: leaf2-site1
+    description: leaf2-site1
+    remote_as: '65112'
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.66.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - avd-cv-master-1.fun.aristanetworks.com:9910
+  cvauth:
+    method: token
+    token_file: /mnt/flash/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: MGMT
+spanning_tree:
+  mode: none
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$flN.35Ol2oV3E.lP$7dxXyyQdPJFQHyuHTUwiXyQHhzQR3A4Q4JAevhLCHkzprp2.weEKD/Qig.3xD7DfQ8nQeGOTciFQkqddC.fWc1
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.109/24
+  gateway: 192.168.66.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management0
+    vrf: MGMT
+  servers:
+  - name: 1.pool.ntp.org
+    iburst: true
+    vrf: MGMT
+    preferred: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: border1-site1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_BORDER1-SITE1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.101.0.0/31
+- name: Ethernet2
+  peer: border2-site1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_BORDER2-SITE1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.101.0.4/31
+- name: Ethernet3
+  peer: leaf1-site1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_LEAF1-SITE1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.101.0.8/31
+- name: Ethernet4
+  peer: leaf2-site1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_LEAF2-SITE1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.101.0.12/31
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.101.1.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.101.1.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+metadata:
+  platform: cEOSLab
+aaa_authorization:
+  exec:
+    default: local
+dns_domain: fun.aristanetworks.com
+eos_cli: platform tfa personality arfa

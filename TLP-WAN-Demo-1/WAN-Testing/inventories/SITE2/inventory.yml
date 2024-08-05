@@ -1,0 +1,23 @@
+---
+all:
+  children:
+    SITE2:
+      children:
+        WAN:
+          hosts:
+            wan1-site2:
+              ansible_host: 192.168.66.25
+            wan2-site2:
+              ansible_host: 192.168.66.26
+        SPINES:
+          hosts:
+            spine1-site2:
+              ansible_host: 192.168.66.113
+            spine2-site2:
+              ansible_host: 192.168.66.114
+        LEAFS:
+          hosts:
+            leaf1-site2:
+              ansible_host: 192.168.66.115
+            leaf2-site2:
+              ansible_host: 192.168.66.116

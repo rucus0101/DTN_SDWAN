@@ -1,0 +1,67 @@
+---
+
+# WAN Management Settings
+
+mgmt_interface_vrf: default
+mgmt_gateway: 10.90.245.1
+
+custom_structured_configuration_switchport_default:
+  mode: "routed"
+
+custom_structured_configuration_agents:
+  - name: KernelFib
+    environment_variables:
+      - name: KERNELFIB_PROGRAM_ALL_ECMP
+        value: "'true'"
+
+local_users:
+  - name: admin
+    role: network-admin
+    privilege: 15
+    sha512_password: "$6$JrS3d2nAMOGnIlAh$h3J1UHELqo4rO4X.11QwVWltyNzvT4EV/7ufhuJ.yonFGjRWm8YpCbLN3IldeWZqs8YIOoKSrdx2f6Dsgg1OF0"
+
+cvp_instance_ips: ["apiserver.cv-staging.corp.arista.io"]
+
+custom_structured_configuration_daemon_terminattr:
+  cvauth:
+    token_file: "/tmp/cv-onboarding-token"
+  disable_aaa: true
+
+custom_structured_configuration_system:
+  l1:
+    unsupported_speed_action: "error"
+    unsupported_error_correction_action: "error"
+
+custom_structured_configuration_ip_domain_lookup:
+  source_interfaces:
+    - name: Management1
+
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 10.14.0.1
+    vrf: default
+  - ip_address: 172.22.22.40
+    vrf: default
+  - ip_address: 8.8.4.4
+    vrf: default
+    priority: 4
+  - ip_address: 8.8.8.8
+    vrf: default
+    priority: 4
+
+ntp_settings:
+  servers:
+    - name: 10.41.194.6
+    - name: 10.85.14.245
+    - name: time.google.com
+
+custom_structured_configuration_management_ssh:
+  client_alive:
+    interval: 180
+
+skipped_tests:
+  - category: AvdTestHardware
+    tests:
+      - VerifyEnvironmentPower
+      - VerifyEnvironmentCooling
+      - VerifyTemperature
+      - VerifyTransceiversManufacturers

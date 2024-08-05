@@ -1,0 +1,91 @@
+# Common Settings
+fabric_name: TLP_WAN
+
+design:
+  type: l3ls-evpn
+
+underlay_routing_protocol: ebgp
+
+custom_structured_configuration_maintenance:
+  unit_profiles:
+    - name: System
+      on_boot:
+        duration: 310
+  units:
+    - name: System
+      profile: System
+  default_unit_profile: System
+
+
+
+local_users:
+  - name: admin
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0"
+  - name: cvpadmin
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$qI16FDuEyTyahgyH$su2QQ4zgkOLu1269G7PM1pdM0xHV0AeBJ6nSUzCcGeTrIqCJYpEK8t/KKDtUy6Q8YyUGoYe2ZFPNYqprB482b0"
+
+mgmt_gateway: 172.28.128.1
+mgmt_interface_vrf: MGMT
+
+
+
+custom_structured_configuration_aaa_authorization:
+  exec:
+    default: local
+
+cvp_instance_ips:
+  - apiserver.cv-staging.corp.arista.io 
+
+custom_structured_configuration_daemon_terminattr:
+  cvauth:
+    token_file: "/mnt/flash/token"
+  disable_aaa: True
+
+custom_structured_configuration_load_interval:
+  default: 1
+
+terminattr_ingestgrpcurl_port: 443 
+
+name_servers:
+  - 10.14.0.1
+
+custom_structured_configuration_dns_domain: fun.aristanetworks.com
+
+ntp_settings:
+  servers:
+    - name: 1.pool.ntp.org
+      iburst: true
+
+#### Override for vEOS Lab Caveats ####
+
+bgp_update_wait_install: false
+
+# Adjust default bfd values
+bfd_multihop:
+  interval: 100
+  min_rx: 100
+  multiplier: 3
+
+
+### Ansible Settings
+
+ansible_user: admin
+ansible_password: admin
+ansible_network_os: arista.eos.eos
+# Configure privilege escalation
+ansible_become: true
+ansible_become_method: enable
+# HTTPAPI configuration
+ansible_connection: httpapi
+ansible_httpapi_port: 443
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_python_interpreter: $(which python3)
+avd_data_conversion_mode: error
+avd_data_validation_mode: error
+# Use default EOS ciphers:
+ansible_httpapi_ciphers: AES256-SHA:DHE-RSA-AES256-SHA:AES128-SHA:DHE-RSA-AES128-SHA

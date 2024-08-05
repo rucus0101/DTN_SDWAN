@@ -1,0 +1,263 @@
+---
+# L3LS Fabric Values - update these values with caution,
+# SOME CHANGES COULD BE DISRUPTIVE.
+
+fabric_name: TEST_HOST
+
+design:
+  type: l2ls
+
+type: l3spine
+
+l3spine:
+  defaults:
+    loopback_ipv4_pool: 10.255.255.0/30
+    platform: cEOSLab
+  nodes:
+    - name: test-host
+      id: 1
+      mgmt_ip: 192.168.66.200/24
+
+tenants: # dynamic_key: network_services
+  - name: avd-testing
+    vrfs:
+      # DC1 VRFs/Interfaces
+      - name: dc1-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.200.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet1.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.200.10.11/24
+      - name: dc1-guest-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.200.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet2.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.200.10.12/24
+      - name: dc1-data-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.200.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet1.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.200.20.11/24
+      - name: dc1-data-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.200.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet2.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.200.20.12/24
+      # Site1 VRFs/Interfaces
+      - name: site1-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.201.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet3.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.201.10.11/24
+      - name: site1-guest-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.201.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet4.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.201.10.12/24
+      - name: site1-data-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.201.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet3.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.201.20.11/24
+      - name: site1-data-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.201.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet4.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.201.20.12/24
+      # Site2 VRFs/Interfaces
+      - name: site2-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.202.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet5.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.202.10.11/24
+      - name: site2-guest-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.202.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet6.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.202.10.12/24
+      - name: site2-data-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.202.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet5.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.202.20.11/24
+      - name: site2-data-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.202.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet6.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.202.20.12/24
+      # Site3 VRFs/Interfaces
+      - name: site3-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.203.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet7.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.203.10.11/24
+      - name: site3-guest-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.203.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet8.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.203.10.12/24
+      - name: site3-data-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.203.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet7.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.203.20.11/24
+      - name: site3-data-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.203.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet8.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.203.20.12/24
+      # Site4 VRFs/Interfaces
+      - name: site4-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.204.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet9.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.204.10.11/24
+      - name: site4-guest-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.204.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet10.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.204.10.11/24
+      - name: site4-data-2
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.204.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet10.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.204.20.12/24
+      # Site5 VRFs/Interfaces
+      - name: site5-guest-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.205.10.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet11.10
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.205.10.11/24
+      - name: site5-data-1
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: 10.205.20.1
+        l3_interfaces:
+          - interfaces:
+              - Ethernet11.20
+            nodes:
+              - test-host
+            ip_addresses:
+              - 10.205.20.11/24
+
+custom_structured_configuration_eos_cli: |
+  platform tfa personality arfa

@@ -1,0 +1,20 @@
+---
+- name: Build configuration
+  hosts: TLP_WAN
+  connection: local
+  gather_facts: false
+  # vars:
+    # fabric_dir_name: "{{ fabric_name }}"
+    # fabric_dir_name: TLP-WAN
+    # execute_tasks: false
+  tasks:
+
+    - name: Generate intended variables
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate device intended config and documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+      vars:
+        generate_device_documentation: false

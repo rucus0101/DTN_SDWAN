@@ -1,0 +1,89 @@
+
+mgmt_interface: Management1/1
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Region1
+    cv_pathfinder_site: REGION1_SITE1
+    loopback_ipv4_pool: 10.1.1.0/26
+    vtep_loopback_ipv4_pool: 10.1.1.64/26
+    uplink_ipv4_pool: 10.1.1.128/26
+    uplink_interface_speed: 10g
+    uplink_type: p2p-vrfs # uplink to local switch
+    uplink_interfaces: [ Ethernet1/5 ]
+    uplink_switches: [ r1-site1-leaf1 ]
+    bgp_as: 65000
+    filter:
+      always_include_vrfs_in_tenants:
+        - region1-site1
+    wan_ha:
+      enabled: true
+      ha_interfaces: [Ethernet1/6] 
+      ha_ipv4_pool: 10.10.11.0/24
+      ipsec: false
+  node_groups:
+    - group: WAN_R1SITE2
+      nodes:
+        - name: r1-site1-wan1
+          id: 1
+          mgmt_ip: 172.28.138.70/17
+          uplink_switch_interfaces: [ Ethernet1 ]
+          l3_interfaces:
+            - name: Ethernet1/7
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.113.2/30
+              wan_carrier: rmpls3
+              wan_circuit_id: SITE1-MPLS3
+              peer_ip: 172.16.113.1
+              static_routes:
+                - prefix: 172.16.51.16/30
+                - prefix: 172.16.52.16/30
+                - prefix: 172.16.103.0/30
+                - prefix: 172.16.113.0/30
+                - prefix: 172.16.123.0/30
+
+        - name: r1-site1-wan2
+          id: 2
+          mgmt_ip: 172.28.138.71/17
+          uplink_switch_interfaces: [ Ethernet2 ]
+          l3_interfaces:
+            - name: Ethernet1/7
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.114.2/30
+              wan_carrier: rmpls4
+              wan_circuit_id: SITE1-MPLS4
+              peer_ip: 172.16.114.1
+              static_routes:
+                - prefix: 172.16.51.20/30
+                - prefix: 172.16.52.20/30
+                - prefix: 172.16.104.0/30
+                - prefix: 172.16.114.0/30
+                - prefix: 172.16.124.0/30
+
+
+### LEAFS ###
+
+l3leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.1.1.0/26
+    vtep_loopback_ipv4_pool: 10.1.1.64/26
+    uplink_ipv4_pool: 10.1.1.128/26
+    uplink_interface_speed: 10g
+    # mlag_interfaces: [Ethernet5, Ethernet6]
+    # mlag_peer_ipv4_pool: 10.103.3.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  nodes:
+    - name: r1-site1-leaf1
+      id: 3
+      mgmt_interface: Management1
+      mgmt_ip: 172.28.133.157/17
+      bgp_as: 65011
+
+
+# custom_structured_configuration_eos_cli: |
+#  platform tfa personality arfa
+

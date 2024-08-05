@@ -1,0 +1,94 @@
+### WAN ###
+fabric_name: WAN
+wan_mode: autovpn
+
+wan_route_servers:
+  - hostname: wan-hub1
+    vtep_ip: 10.255.0.1
+  - hostname: wan-hub2
+    vtep_ip: 10.255.0.2
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: internet
+    id: 101
+
+wan_carriers:
+  - name: isp
+    path_group: internet
+    trusted: true
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 10.0.0.0/9
+
+mgmt_interface: Management1
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 10.101.254.0/25
+    vtep_loopback_ipv4_pool: 10.101.255.0/25
+    uplink_interfaces: [Ethernet1]
+    bgp_as: 65000
+    data_plane_cpu_allocation_max: 1
+  nodes:
+    - name: wan-hub1
+      id: 1
+      mgmt_ip: 192.168.0.10/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.18.4.2/30
+          wan_carrier: isp
+          wan_circuit_id: INTERNET-1111
+          peer_ip: 172.18.4.1
+          static_routes:
+            - prefix: 0.0.0.0/0
+    - name: wan-hub2
+      id: 2
+      mgmt_ip: 192.168.0.11/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.18.4.6/24
+          wan_carrier: isp
+          wan_circuit_id: INTERNET-1112
+          peer_ip: 172.18.4.5
+          static_routes:
+            - prefix: 0.0.0.0/0
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 10.101.254.0/25
+    vtep_loopback_ipv4_pool: 10.101.255.0/25
+    uplink_interfaces: [Ethernet1]
+    bgp_as: 65000
+  nodes:
+    - name: wan-site1
+      id: 3
+      mgmt_ip: 192.168.66.23/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.18.5.2/24
+          wan_carrier: isp
+          wan_circuit_id: INTERNET-1111
+          peer_ip: 172.18.5.1
+          static_routes:
+            - prefix: 0.0.0.0/0
+    - name: wan-site2
+      id: 4
+      mgmt_ip: 192.168.66.24/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.18.6.2/24
+          wan_carrier: isp
+          wan_circuit_id: INTERNET-1111
+          peer_ip: 172.18.6.1
+          static_routes:
+            - prefix: 0.0.0.0/0
+

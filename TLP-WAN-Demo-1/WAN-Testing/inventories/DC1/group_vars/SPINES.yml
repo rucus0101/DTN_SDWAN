@@ -1,0 +1,21 @@
+### SPINES ###
+
+type: spine
+
+spine: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    bgp_as: 65100
+    loopback_ipv4_pool: 10.100.1.0/24
+    mlag: false
+  nodes:
+    - name: spine1-dc1
+      id: 1
+      mgmt_ip: 192.168.66.103/24
+    - name: spine2-dc1
+      id: 2
+      mgmt_ip: 192.168.66.104/24
+
+
+custom_structured_configuration_eos_cli: |
+  platform tfa personality arfa

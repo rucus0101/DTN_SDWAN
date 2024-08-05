@@ -1,0 +1,56 @@
+### WAN ###
+
+design:
+  type: l3ls-evpn
+
+underlay_routing_protocol: ebgp
+
+mgmt_interface: Management1
+
+type: wan_router
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    cv_pathfinder_region: Global
+    cv_pathfinder_site: SITE4
+    loopback_ipv4_pool: 10.104.254.0/25
+    vtep_loopback_ipv4_pool: 10.104.255.0/25
+    uplink_ipv4_pool: 10.104.0.128/25
+    uplink_type: lan
+    filter:
+      always_include_vrfs_in_tenants:
+        - avd-testing
+    wan_ha:
+      enabled: false
+  node_groups:
+    - group: WAN-SITE4
+      bgp_as: 65000
+      nodes:
+        - name: wan1-site4
+          id: 1
+          mgmt_ip: 192.168.66.28/24
+          uplink_interfaces: [Ethernet1]
+          uplink_switches: [leaf1-site4]
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet4
+              ip_address: 100.64.9.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: SITE4-INET-7
+              peer_ip: 100.64.7.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+        - name: wan2-site4
+          id: 2
+          mgmt_ip: 192.168.66.29/24
+          uplink_interfaces: [Ethernet1]
+          uplink_switches: [leaf2-site4]
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet4
+              ip_address: 100.64.10.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: SITE4-INET-7
+              peer_ip: 100.64.7.1
+              static_routes:
+                - prefix: 100.64.0.0/16

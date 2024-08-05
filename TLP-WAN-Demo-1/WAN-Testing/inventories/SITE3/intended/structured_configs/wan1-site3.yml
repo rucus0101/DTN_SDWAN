@@ -1,0 +1,479 @@
+hostname: wan1-site3
+is_deployed: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.66.1
+- destination_address_prefix: 172.18.0.0/16
+  gateway: 172.18.8.1
+- destination_address_prefix: 100.64.0.0/16
+  gateway: 100.64.8.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - avd-cv-master-1.fun.aristanetworks.com:9910
+  cvauth:
+    method: token
+    token_file: /mnt/flash/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+transceiver_qsfp_default_mode_4x10: false
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: MGMT
+spanning_tree:
+  mode: none
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$flN.35Ol2oV3E.lP$7dxXyyQdPJFQHyuHTUwiXyQHhzQR3A4Q4JAevhLCHkzprp2.weEKD/Qig.3xD7DfQ8nQeGOTciFQkqddC.fWc1
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: data
+  tenant: avd-testing
+  ip_routing: true
+- name: guest
+  tenant: avd-testing
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.27/24
+  gateway: 192.168.66.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 1.pool.ntp.org
+    iburst: true
+    vrf: MGMT
+    preferred: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: leaf1-site3
+  peer_interface: Ethernet1
+  peer_type: leaf
+  description: LEAF1-SITE3_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: leaf2-site3
+  peer_interface: Ethernet1
+  peer_type: leaf
+  description: LEAF2-SITE3_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 172.18.8.2/24
+  shutdown: false
+  type: routed
+  description: mpls-sp-1_SITE3-MPLS-8
+- name: Ethernet4
+  peer_type: l3_interface
+  ip_address: 100.64.8.2/24
+  shutdown: false
+  type: routed
+  description: isp-1_SITE3-INET-8
+port_channel_interfaces:
+- name: Port-Channel1
+  description: LEAFS_SITE3_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 10,20
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.103.254.1/32
+router_bgp:
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  peer_groups: []
+  address_family_evpn:
+    peer_groups: []
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 10.255.0.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: pf1
+    description: pf1
+  - ip_address: 10.255.0.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: pf2
+    description: pf2
+as_path:
+  access_lists:
+  - name: ASPATH-WAN
+    entries:
+    - type: permit
+      match: null
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.103.254.0/25 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 10.103.254.1:103 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 10.103.254.1:103 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Advertise local routes towards LAN
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+    description: Advertise routes received from WAN iBGP towards LAN
+    match:
+    - route-type internal
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 10.103.255.1
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    tls_versions: '1.2'
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: Global
+    id: 1
+  zone:
+    name: Global-ZONE
+    id: 1
+  site:
+    name: SITE3
+    id: 103
+  profiles:
+  - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: DATA-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DATA-AVT-POLICY-DEFAULT
+  - name: GUEST-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-GUEST-AVT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-AVT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
+  - name: data
+    policy: DATA-AVT-POLICY
+    profiles:
+    - name: DATA-AVT-POLICY-DEFAULT
+      id: 1
+  - name: guest
+    policy: GUEST-AVT-POLICY
+    profiles:
+    - name: GUEST-AVT-POLICY-DEFAULT
+      id: 1
+  policies:
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
+  - name: DATA-AVT-POLICY
+    matches:
+    - application_profile: default
+      avt_profile: DATA-AVT-POLICY-DEFAULT
+  - name: GUEST-AVT-POLICY
+    matches:
+    - application_profile: default
+      avt_profile: GUEST-AVT-POLICY-DEFAULT
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+  path_groups:
+  - name: mpls
+    id: 101
+    local_interfaces:
+    - name: Ethernet3
+      stun:
+        server_profiles:
+        - mpls-pf1-Ethernet1
+        - mpls-pf2-Ethernet1
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.0.1
+      name: pf1
+      ipv4_addresses:
+      - 172.18.1.2
+    - router_ip: 10.255.0.2
+      name: pf2
+      ipv4_addresses:
+      - 172.18.2.2
+    ipsec_profile: CP-PROFILE
+  - name: internet
+    id: 102
+    local_interfaces:
+    - name: Ethernet4
+      stun:
+        server_profiles:
+        - internet-pf1-Ethernet2
+        - internet-pf2-Ethernet2
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.0.1
+      name: pf1
+      ipv4_addresses:
+      - 100.64.1.2
+    - router_ip: 10.255.0.2
+      name: pf2
+      ipv4_addresses:
+      - 100.64.2.2
+    ipsec_profile: CP-PROFILE
+  load_balance_policies:
+  - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: internet
+    - name: mpls
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: internet
+    - name: mpls
+  - name: LB-DATA-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: mpls
+    - name: internet
+      priority: 2
+  - name: LB-GUEST-AVT-POLICY-DEFAULT
+    path_groups:
+    - name: internet
+    - name: mpls
+router_traffic_engineering:
+  enabled: true
+stun:
+  client:
+    server_profiles:
+    - name: mpls-pf1-Ethernet1
+      ip_address: 172.18.1.2/24
+      ssl_profile: STUN-DTLS
+    - name: mpls-pf2-Ethernet1
+      ip_address: 172.18.2.2/24
+      ssl_profile: STUN-DTLS
+    - name: internet-pf1-Ethernet2
+      ip_address: 100.64.1.2/24
+      ssl_profile: STUN-DTLS
+    - name: internet-pf2-Ethernet2
+      ip_address: 100.64.2.2/24
+      ssl_profile: STUN-DTLS
+application_traffic_recognition:
+  application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+  applications:
+    ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  field_sets:
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.0.1/32
+      - 10.255.0.2/32
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9214
+  ip_address: 10.103.255.1/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: wan1-site3_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Dps1
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: Global
+    - name: Zone
+      value: Global-ZONE
+    - name: Site
+      value: SITE3
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: mpls-sp-1
+      - name: Circuit
+        value: SITE3-MPLS-8
+    - interface: Ethernet4
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: isp-1
+      - name: Circuit
+        value: SITE3-INET-8
+  cv_pathfinder:
+    role: edge
+    ssl_profile: STUN-DTLS
+    vtep_ip: 10.103.255.1
+    region: Global
+    zone: Global-ZONE
+    site: SITE3
+    interfaces:
+    - name: Ethernet3
+      carrier: mpls-sp-1
+      circuit_id: SITE3-MPLS-8
+      pathgroup: mpls
+    - name: Ethernet4
+      carrier: isp-1
+      circuit_id: SITE3-INET-8
+      pathgroup: internet
+    pathfinders:
+    - vtep_ip: 10.255.0.1
+    - vtep_ip: 10.255.0.2
+aaa_authorization:
+  exec:
+    default: local
+dns_domain: fun.aristanetworks.com

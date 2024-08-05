@@ -1,0 +1,5 @@
+custom_structured_configuration_vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 3000
+    ending: 4000

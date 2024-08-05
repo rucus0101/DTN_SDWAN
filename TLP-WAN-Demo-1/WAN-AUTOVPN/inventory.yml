@@ -1,0 +1,19 @@
+---
+all:
+  children:
+    WAN:
+      children:
+        SITES:
+          hosts:
+            wan-hub1:
+              ansible_host: 192.168.0.10
+              type: wan_rr
+            wan-hub2:
+              ansible_host: 192.168.0.11
+              type: wan_rr
+            wan-site1:
+              ansible_host: 192.168.0.111
+              type: wan_router
+            wan-site2:
+              ansible_host: 192.168.0.121
+              type: wan_router

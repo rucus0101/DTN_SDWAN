@@ -1,0 +1,27 @@
+---
+all:
+  children:
+    DC1:
+      children:
+        WAN:
+          hosts:
+            wan1-dc1:
+              ansible_host: 192.168.66.21
+            wan2-dc1:
+              ansible_host: 192.168.66.22
+        SPINES:
+          hosts:
+            spine1-dc1:
+              ansible_host: 192.168.66.103
+            spine2-dc1:
+              ansible_host: 192.168.66.104
+        LEAFS:
+          hosts:
+            border1-dc1:
+              ansible_host: 192.168.66.101
+            border2-dc1:
+              ansible_host: 192.168.66.102
+            leaf1-dc1:
+              ansible_host: 192.168.66.105
+            leaf2-dc1:
+              ansible_host: 192.168.66.106

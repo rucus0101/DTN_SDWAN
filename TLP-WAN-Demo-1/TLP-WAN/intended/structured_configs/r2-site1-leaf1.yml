@@ -1,0 +1,1162 @@
+hostname: r2-site1-leaf1
+is_deployed: true
+serial_number: SGD20435246
+router_bgp:
+  as: '65021'
+  router_id: 10.2.1.3
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  neighbors:
+  - ip_address: 10.2.1.129
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: r2-site1-wan1
+    description: r2-site1-wan1_Ethernet6
+  - ip_address: 10.2.1.131
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: r2-site1-wan2
+    description: r2-site1-wan2_Ethernet6
+  vrfs:
+  - name: customer1
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.254_vrf_customer1
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.254_vrf_customer1
+    rd: 10.2.1.3:254
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 254:254
+      export:
+      - address_family: evpn
+        route_targets:
+        - 254:254
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer2
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.2_vrf_customer2
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.2_vrf_customer2
+    rd: 10.2.1.3:2
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer3
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.3_vrf_customer3
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.3_vrf_customer3
+    rd: 10.2.1.3:3
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer4
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.4_vrf_customer4
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.4_vrf_customer4
+    rd: 10.2.1.3:4
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer5
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.5_vrf_customer5
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.5_vrf_customer5
+    rd: 10.2.1.3:5
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '5:5'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '5:5'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer6
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.6_vrf_customer6
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.6_vrf_customer6
+    rd: 10.2.1.3:6
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '6:6'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '6:6'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer7
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.7_vrf_customer7
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.7_vrf_customer7
+    rd: 10.2.1.3:7
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '7:7'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '7:7'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer8
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.8_vrf_customer8
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.8_vrf_customer8
+    rd: 10.2.1.3:8
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '8:8'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '8:8'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer9
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.9_vrf_customer9
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.9_vrf_customer9
+    rd: 10.2.1.3:9
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer10
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.10_vrf_customer10
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.10_vrf_customer10
+    rd: 10.2.1.3:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer11
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.11_vrf_customer11
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.11_vrf_customer11
+    rd: 10.2.1.3:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer12
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.12_vrf_customer12
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.12_vrf_customer12
+    rd: 10.2.1.3:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer13
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.13_vrf_customer13
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.13_vrf_customer13
+    rd: 10.2.1.3:13
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: customer14
+    router_id: 10.2.1.3
+    neighbors:
+    - ip_address: 10.2.1.129
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan1_Ethernet6.14_vrf_customer14
+    - ip_address: 10.2.1.131
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: r2-site1-wan2_Ethernet6.14_vrf_customer14
+    rd: 10.2.1.3:14
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+    redistribute_routes:
+    - source_protocol: connected
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vlans:
+  - id: 254
+    tenant: region2-site1
+    rd: 10.2.1.3:10254
+    route_targets:
+      both:
+      - 10254:10254
+    redistribute_routes:
+    - learned
+  - id: 2
+    tenant: region2-site1
+    rd: 10.2.1.3:10002
+    route_targets:
+      both:
+      - 10002:10002
+    redistribute_routes:
+    - learned
+  - id: 3
+    tenant: region2-site1
+    rd: 10.2.1.3:10003
+    route_targets:
+      both:
+      - 10003:10003
+    redistribute_routes:
+    - learned
+  - id: 4
+    tenant: region2-site1
+    rd: 10.2.1.3:10004
+    route_targets:
+      both:
+      - 10004:10004
+    redistribute_routes:
+    - learned
+  - id: 5
+    tenant: region2-site1
+    rd: 10.2.1.3:10005
+    route_targets:
+      both:
+      - 10005:10005
+    redistribute_routes:
+    - learned
+  - id: 6
+    tenant: region2-site1
+    rd: 10.2.1.3:10006
+    route_targets:
+      both:
+      - 10006:10006
+    redistribute_routes:
+    - learned
+  - id: 7
+    tenant: region2-site1
+    rd: 10.2.1.3:10007
+    route_targets:
+      both:
+      - 10007:10007
+    redistribute_routes:
+    - learned
+  - id: 8
+    tenant: region2-site1
+    rd: 10.2.1.3:10008
+    route_targets:
+      both:
+      - 10008:10008
+    redistribute_routes:
+    - learned
+  - id: 9
+    tenant: region2-site1
+    rd: 10.2.1.3:10009
+    route_targets:
+      both:
+      - 10009:10009
+    redistribute_routes:
+    - learned
+  - id: 10
+    tenant: region2-site1
+    rd: 10.2.1.3:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+  - id: 11
+    tenant: region2-site1
+    rd: 10.2.1.3:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    tenant: region2-site1
+    rd: 10.2.1.3:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 13
+    tenant: region2-site1
+    rd: 10.2.1.3:10013
+    route_targets:
+      both:
+      - 10013:10013
+    redistribute_routes:
+    - learned
+  - id: 14
+    tenant: region2-site1
+    rd: 10.2.1.3:10014
+    route_targets:
+      both:
+      - 10014:10014
+    redistribute_routes:
+    - learned
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.28.128.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.cv-staging.corp.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /mnt/flash/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 10.14.0.1
+  vrf: MGMT
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 16384
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$hpdQay6BcrZvWaw5$wBAFmW/kOk8NAArSekZd1b5G3LafQIVAiOoT22HmatoqEBuaYv8Qp5sBv7S0/P1B.ZDUBc8vebNu0sY1hNEES0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$qI16FDuEyTyahgyH$su2QQ4zgkOLu1269G7PM1pdM0xHV0AeBJ6nSUzCcGeTrIqCJYpEK8t/KKDtUy6Q8YyUGoYe2ZFPNYqprB482b0
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: customer1
+  tenant: region2-site1
+  ip_routing: true
+- name: customer2
+  tenant: region2-site1
+  ip_routing: true
+- name: customer3
+  tenant: region2-site1
+  ip_routing: true
+- name: customer4
+  tenant: region2-site1
+  ip_routing: true
+- name: customer5
+  tenant: region2-site1
+  ip_routing: true
+- name: customer6
+  tenant: region2-site1
+  ip_routing: true
+- name: customer7
+  tenant: region2-site1
+  ip_routing: true
+- name: customer8
+  tenant: region2-site1
+  ip_routing: true
+- name: customer9
+  tenant: region2-site1
+  ip_routing: true
+- name: customer10
+  tenant: region2-site1
+  ip_routing: true
+- name: customer11
+  tenant: region2-site1
+  ip_routing: true
+- name: customer12
+  tenant: region2-site1
+  ip_routing: true
+- name: customer13
+  tenant: region2-site1
+  ip_routing: true
+- name: customer14
+  tenant: region2-site1
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.28.135.136/17
+  gateway: 172.28.128.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 1.pool.ntp.org
+    iburst: true
+    vrf: MGMT
+    preferred: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6
+  peer_type: wan_router
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.254
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.254
+  peer_type: wan_router
+  vrf: customer1
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.254_vrf_customer1
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 254
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.2
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.2
+  peer_type: wan_router
+  vrf: customer2
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.2_vrf_customer2
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 2
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.3
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.3
+  peer_type: wan_router
+  vrf: customer3
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.3_vrf_customer3
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 3
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.4
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.4
+  peer_type: wan_router
+  vrf: customer4
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.4_vrf_customer4
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 4
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.5
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.5
+  peer_type: wan_router
+  vrf: customer5
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.5_vrf_customer5
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 5
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.6
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.6
+  peer_type: wan_router
+  vrf: customer6
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.6_vrf_customer6
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 6
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.7
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.7
+  peer_type: wan_router
+  vrf: customer7
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.7_vrf_customer7
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 7
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.8
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.8
+  peer_type: wan_router
+  vrf: customer8
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.8_vrf_customer8
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 8
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.9
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.9
+  peer_type: wan_router
+  vrf: customer9
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.9_vrf_customer9
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 9
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.10
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.10
+  peer_type: wan_router
+  vrf: customer10
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.10_vrf_customer10
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.11
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.11
+  peer_type: wan_router
+  vrf: customer11
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.11_vrf_customer11
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 11
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.12
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.12
+  peer_type: wan_router
+  vrf: customer12
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.12_vrf_customer12
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 12
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.13
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.13
+  peer_type: wan_router
+  vrf: customer13
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.13_vrf_customer13
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 13
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet1.14
+  peer: r2-site1-wan1
+  peer_interface: Ethernet6.14
+  peer_type: wan_router
+  vrf: customer14
+  description: P2P_LINK_TO_R2-SITE1-WAN1_Ethernet6.14_vrf_customer14
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 14
+  mtu: 9214
+  ip_address: 10.2.1.128/31
+- name: Ethernet2
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6
+  peer_type: wan_router
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.254
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.254
+  peer_type: wan_router
+  vrf: customer1
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.254_vrf_customer1
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 254
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.2
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.2
+  peer_type: wan_router
+  vrf: customer2
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.2_vrf_customer2
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 2
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.3
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.3
+  peer_type: wan_router
+  vrf: customer3
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.3_vrf_customer3
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 3
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.4
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.4
+  peer_type: wan_router
+  vrf: customer4
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.4_vrf_customer4
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 4
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.5
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.5
+  peer_type: wan_router
+  vrf: customer5
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.5_vrf_customer5
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 5
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.6
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.6
+  peer_type: wan_router
+  vrf: customer6
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.6_vrf_customer6
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 6
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.7
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.7
+  peer_type: wan_router
+  vrf: customer7
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.7_vrf_customer7
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 7
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.8
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.8
+  peer_type: wan_router
+  vrf: customer8
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.8_vrf_customer8
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 8
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.9
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.9
+  peer_type: wan_router
+  vrf: customer9
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.9_vrf_customer9
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 9
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.10
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.10
+  peer_type: wan_router
+  vrf: customer10
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.10_vrf_customer10
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 10
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.11
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.11
+  peer_type: wan_router
+  vrf: customer11
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.11_vrf_customer11
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 11
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.12
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.12
+  peer_type: wan_router
+  vrf: customer12
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.12_vrf_customer12
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 12
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.13
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.13
+  peer_type: wan_router
+  vrf: customer13
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.13_vrf_customer13
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 13
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet2.14
+  peer: r2-site1-wan2
+  peer_interface: Ethernet6.14
+  peer_type: wan_router
+  vrf: customer14
+  description: P2P_LINK_TO_R2-SITE1-WAN2_Ethernet6.14_vrf_customer14
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 14
+  mtu: 9214
+  ip_address: 10.2.1.130/31
+- name: Ethernet49/1
+  peer: test-host
+  peer_type: server
+  description: test-host
+  shutdown: false
+  type: switched
+  mode: trunk
+  vlans: 1-255
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.2.1.3/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.2.1.67/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.2.1.0/26 eq 32
+  - sequence: 20
+    action: permit 10.2.1.64/26 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 100
+    min_rx: 100
+    multiplier: 3
+vlans:
+- id: 254
+  name: customer1
+  tenant: region2-site1
+- id: 2
+  name: customer2
+  tenant: region2-site1
+- id: 3
+  name: customer3
+  tenant: region2-site1
+- id: 4
+  name: customer4
+  tenant: region2-site1
+- id: 5
+  name: customer5
+  tenant: region2-site1
+- id: 6
+  name: customer6
+  tenant: region2-site1
+- id: 7
+  name: customer7
+  tenant: region2-site1
+- id: 8
+  name: customer8
+  tenant: region2-site1
+- id: 9
+  name: customer9
+  tenant: region2-site1
+- id: 10
+  name: customer10
+  tenant: region2-site1
+- id: 11
+  name: customer11
+  tenant: region2-site1
+- id: 12
+  name: customer12
+  tenant: region2-site1
+- id: 13
+  name: customer13
+  tenant: region2-site1
+- id: 14
+  name: customer14
+  tenant: region2-site1
+ip_igmp_snooping:
+  globally_enabled: true
+vlan_interfaces:
+- name: Vlan254
+  tenant: region2-site1
+  description: customer1
+  shutdown: false
+  ip_address: 10.21.1.1/24
+  vrf: customer1
+- name: Vlan2
+  tenant: region2-site1
+  description: customer2
+  shutdown: false
+  ip_address: 10.21.2.1/24
+  vrf: customer2
+- name: Vlan3
+  tenant: region2-site1
+  description: customer3
+  shutdown: false
+  ip_address: 10.21.3.1/24
+  vrf: customer3
+- name: Vlan4
+  tenant: region2-site1
+  description: customer4
+  shutdown: false
+  ip_address: 10.21.4.1/24
+  vrf: customer4
+- name: Vlan5
+  tenant: region2-site1
+  description: customer5
+  shutdown: false
+  ip_address: 10.21.5.1/24
+  vrf: customer5
+- name: Vlan6
+  tenant: region2-site1
+  description: customer6
+  shutdown: false
+  ip_address: 10.21.6.1/24
+  vrf: customer6
+- name: Vlan7
+  tenant: region2-site1
+  description: customer7
+  shutdown: false
+  ip_address: 10.21.7.1/24
+  vrf: customer7
+- name: Vlan8
+  tenant: region2-site1
+  description: customer8
+  shutdown: false
+  ip_address: 10.21.8.1/24
+  vrf: customer8
+- name: Vlan9
+  tenant: region2-site1
+  description: customer9
+  shutdown: false
+  ip_address: 10.21.9.1/24
+  vrf: customer9
+- name: Vlan10
+  tenant: region2-site1
+  description: customer10
+  shutdown: false
+  ip_address: 10.21.10.1/24
+  vrf: customer10
+- name: Vlan11
+  tenant: region2-site1
+  description: customer11
+  shutdown: false
+  ip_address: 10.21.11.1/24
+  vrf: customer11
+- name: Vlan12
+  tenant: region2-site1
+  description: customer12
+  shutdown: false
+  ip_address: 10.21.12.1/24
+  vrf: customer12
+- name: Vlan13
+  tenant: region2-site1
+  description: customer13
+  shutdown: false
+  ip_address: 10.21.13.1/24
+  vrf: customer13
+- name: Vlan14
+  tenant: region2-site1
+  description: customer14
+  shutdown: false
+  ip_address: 10.21.14.1/24
+  vrf: customer14
+vxlan_interface:
+  Vxlan1:
+    description: r2-site1-leaf1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 254
+        vni: 10254
+      - id: 2
+        vni: 10002
+      - id: 3
+        vni: 10003
+      - id: 4
+        vni: 10004
+      - id: 5
+        vni: 10005
+      - id: 6
+        vni: 10006
+      - id: 7
+        vni: 10007
+      - id: 8
+        vni: 10008
+      - id: 9
+        vni: 10009
+      - id: 10
+        vni: 10010
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 13
+        vni: 10013
+      - id: 14
+        vni: 10014
+      vrfs:
+      - name: customer1
+        vni: 254
+      - name: customer2
+        vni: 2
+      - name: customer3
+        vni: 3
+      - name: customer4
+        vni: 4
+      - name: customer5
+        vni: 5
+      - name: customer6
+        vni: 6
+      - name: customer7
+        vni: 7
+      - name: customer8
+        vni: 8
+      - name: customer9
+        vni: 9
+      - name: customer10
+        vni: 10
+      - name: customer11
+        vni: 11
+      - name: customer12
+        vni: 12
+      - name: customer13
+        vni: 13
+      - name: customer14
+        vni: 14
+metadata:
+  platform: cEOSLab
+maintenance:
+  unit_profiles:
+  - name: System
+    on_boot:
+      duration: 310
+  units:
+  - name: System
+    profile: System
+  default_unit_profile: System
+aaa_authorization:
+  exec:
+    default: local
+load_interval:
+  default: 1
+dns_domain: fun.aristanetworks.com

@@ -1,0 +1,41 @@
+---
+
+# Edge nodes configuration
+
+type: wan_edge
+
+wan_edge:  # dynamic_key: node_type
+  defaults:
+    id: 1
+    loopback_ipv4_offset: -1
+    cv_pathfinder_region: Global
+    filter:
+      always_include_vrfs_in_tenants: [hawaiianairlines]
+  nodes:
+    - name: Site-Tier1-INET-SDWAN
+      cv_pathfinder_site: Site-Tier1
+      mgmt_ip: 10.90.245.42/24
+      loopback_ipv4_pool: 10.254.100.1/32
+      vtep_loopback_ipv4_pool: 192.168.100.1/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.35/24
+          wan_carrier: internet
+    - name: Site-Tier3-INET-SDWAN
+      cv_pathfinder_site: Site-Tier3
+      mgmt_ip: 10.90.245.55/24
+      loopback_ipv4_pool: 10.254.120.1/32
+      vtep_loopback_ipv4_pool: 192.168.120.1/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.36/24
+          wan_carrier: internet
+    - name: Site-DRF-INET-SDWAN
+      cv_pathfinder_site: Site-DRF
+      mgmt_ip: 10.90.245.94/24
+      loopback_ipv4_pool: 10.254.110.1/32
+      vtep_loopback_ipv4_pool: 192.168.110.1/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.34/24
+          wan_carrier: internet

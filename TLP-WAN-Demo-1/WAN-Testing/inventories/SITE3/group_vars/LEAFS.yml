@@ -1,0 +1,32 @@
+### LEAFS ###
+
+type: leaf
+
+leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.103.3.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
+    - group: LEAFS_SITE3
+      bgp_as: 65112
+      nodes:
+        - name: leaf1-site3
+          id: 3
+          mgmt_ip: 192.168.66.117/24
+        - name: leaf2-site3
+          id: 4
+          mgmt_ip: 192.168.66.118/24
+
+servers: # dynamic_key: connected_endpoints
+  - name: test-host
+    adapters:
+      - switch_ports: [Ethernet3, Ethernet3]
+        switches: [leaf1-site3, leaf2-site3]
+        mode: trunk
+        vlans: 10,20
+
+custom_structured_configuration_eos_cli: |
+  platform tfa personality arfa

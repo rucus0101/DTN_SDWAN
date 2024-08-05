@@ -1,0 +1,54 @@
+### LEAFS ###
+
+type: l3leaf
+
+l3leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.100.1.0/25
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.100.2.0/25
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [spine1-dc1, spine2-dc1]
+    uplink_ipv4_pool: 10.100.0.0/25
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.100.3.0/24
+    mlag_peer_l3_ipv4_pool: 10.100.4.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
+    - group: BORDERS_DC1
+      bgp_as: 65101
+      nodes:
+        - name: border1-dc1
+          id: 1
+          mgmt_ip: 192.168.66.101/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: border2-dc1
+          id: 2
+          mgmt_ip: 192.168.66.102/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    - group: LEAFS_DC1
+      bgp_as: 65102
+      nodes:
+        - name: leaf1-dc1
+          id: 3
+          mgmt_ip: 192.168.66.105/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: leaf2-dc1
+          id: 4
+          mgmt_ip: 192.168.66.106/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+
+servers: # dynamic_key: connected_endpoints
+  - name: test-host
+    adapters:
+      - switch_ports: [Ethernet3, Ethernet3]
+        switches: [leaf1-dc1, leaf2-dc1]
+        mode: trunk
+        vlans: 10,20
+
+
+custom_structured_configuration_eos_cli: |
+  platform tfa personality arfa

@@ -1,0 +1,28 @@
+---
+# WAN Pathfinder Nodes
+
+type: wan_rr
+
+data_plane_cpu_allocation_max: 1
+
+wan_rr: # dynamic_key: node_type
+  defaults:
+    loopback_ipv4_pool: 10.254.99.0/30
+    vtep_loopback_ipv4_pool: 192.168.99.0/30
+    filter:
+      always_include_vrfs_in_tenants: [hawaiianairlines]
+  nodes:
+    - name: arista-pf1-ch-test
+      id: 1
+      mgmt_ip: 10.90.245.41/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.39/24
+          wan_carrier: internet
+    - name: arista-pf2-ch-test
+      id: 2
+      mgmt_ip: 10.90.245.35/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip: 10.90.244.40/24
+          wan_carrier: internet

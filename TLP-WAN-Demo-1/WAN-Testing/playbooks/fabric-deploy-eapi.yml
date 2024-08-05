@@ -1,0 +1,9 @@
+---
+- name: Deploy configuratrion via eAPI
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Provision Devices via eapi
+      ansible.builtin.import_role:
+        name: arista.avd.eos_config_deploy_eapi
