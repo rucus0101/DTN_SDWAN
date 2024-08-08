@@ -1,6 +1,6 @@
 ---
 - name: Build configuration
-  hosts: TLP_WAN
+  hosts: DTN_WAN
   connection: local
   gather_facts: false
   # vars:

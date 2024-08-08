@@ -1,5 +1,5 @@
 # Common Settings
-fabric_name: TLP_WAN
+fabric_name: DTN_WAN
 
 design:
   type: l3ls-evpn

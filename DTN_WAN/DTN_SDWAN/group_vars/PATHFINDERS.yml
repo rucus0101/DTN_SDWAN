@@ -14,7 +14,7 @@ wan_rr: # dynamic_key: node_type
       cv_pathfinder_region: Region1
       cv_pathfinder_site: PATHFINDERS
       id: 1
-      mgmt_ip: 172.28.138.222/17
+      mgmt_ip: 172.28.143.238/17
       l3_interfaces:
         - name: Ethernet1/1
           ip_address: 172.16.51.2/30
@@ -85,7 +85,7 @@ wan_rr: # dynamic_key: node_type
       id: 2
       cv_pathfinder_region: Region1
       cv_pathfinder_site: PATHFINDERS
-      mgmt_ip: 172.28.137.186/17
+      mgmt_ip: 172.28.143.226/17
       l3_interfaces:
         - name: Ethernet1/1
           ip_address: 172.16.52.2/30

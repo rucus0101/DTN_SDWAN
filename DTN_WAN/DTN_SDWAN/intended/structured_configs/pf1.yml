@@ -1,6 +1,5 @@
 hostname: pf1
 is_deployed: true
-serial_number: WTW23341351
 router_bgp:
   as: '65000'
   router_id: 10.10.0.1
@@ -208,7 +207,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.28.138.222/17
+  ip_address: 172.28.143.238/17
   gateway: 172.28.128.1
   type: oob
 platform:
