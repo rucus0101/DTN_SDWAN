@@ -1,8 +1,8 @@
-hostname: pf1
+hostname: dc1-wan2
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 10.10.0.1
+  router_id: 10.1.0.2
   bgp:
     default:
       ipv4_unicast: false
@@ -14,6 +14,7 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Dps1
@@ -23,85 +24,64 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     ttl_maximum_hops: 1
-    route_reflector_client: true
     bfd_timers:
       interval: 15000
       min_rx: 15000
       multiplier: 3
-  - name: WAN-RR-OVERLAY-PEERS
-    type: wan
-    update_source: Dps1
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    remote_as: '65000'
-    ttl_maximum_hops: 1
-    bfd_timers:
-      interval: 1000
-      min_rx: 1000
-      multiplier: 10
-    route_reflector_client: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: false
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
-  bgp_cluster_id: 10.10.0.1
-  listen_ranges:
-  - prefix: 10.0.0.0/9
-    peer_group: WAN-OVERLAY-PEERS
-    remote_as: '65000'
-  address_family_evpn:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
-    next_hop:
-      resolution_disabled: true
-  address_family_ipv4_sr_te:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
-  address_family_link_state:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-      missing_policy:
-        direction_out_action: deny
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
-    path_selection:
-      roles:
-        consumer: true
-        propagator: true
-  address_family_path_selection:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
-    bgp:
-      additional_paths:
-        receive: true
-        send:
-          any: true
   neighbors:
+  - ip_address: 10.99.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65010'
+    peer: dc1-leaf1
+    description: dc1-leaf1_Ethernet48
+  - ip_address: 10.255.0.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: pf1
+    description: pf1
   - ip_address: 10.255.0.2
-    peer_group: WAN-RR-OVERLAY-PEERS
+    peer_group: WAN-OVERLAY-PEERS
     peer: pf2
     description: pf2
+  - ip_address: 10.1.0.65
+    peer: dc1-wan1
+    description: dc1-wan1
+    remote_as: '65000'
+    update_source: Dps1
+    route_reflector_client: true
+    send_community: all
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
   vrfs:
+  - name: customer1
+    router_id: 10.1.0.2
+    neighbors:
+    - ip_address: 10.99.0.2
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65010'
+      description: dc1-leaf1_Ethernet48.2_vrf_customer1
+    rd: 10.1.0.2:2
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+    redistribute_routes:
+    - source_protocol: connected
   - name: default
-    rd: 10.10.0.1:1
+    rd: 10.1.0.2:1
     route_targets:
       import:
       - address_family: evpn
@@ -112,12 +92,44 @@ router_bgp:
         route_targets:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 10.1.0.65
+      activate: true
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 172.28.128.1
 - destination_address_prefix: 172.16.0.0/16
-  gateway: 172.16.51.1
+  gateway: 172.16.152.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -148,24 +160,24 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: customer1
+  tenant: dc1
+  ip_routing: true
 management_interfaces:
-- name: Management1
+- name: Management1/1
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.28.143.238/17
+  ip_address: 172.28.143.207/17
   gateway: 172.28.128.1
   type: oob
-platform:
-  sfe:
-    data_plane_cpu_allocation_max: 1
 management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
 ntp:
   local_interface:
-    name: Management1
+    name: Management1/1
     vrf: MGMT
   servers:
   - name: 1.pool.ntp.org
@@ -173,22 +185,52 @@ ntp:
     vrf: MGMT
     preferred: true
 ethernet_interfaces:
+- name: Ethernet1/13
+  peer: dc1-leaf1
+  peer_interface: Ethernet48
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF1_Ethernet48
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.99.0.3/31
+- name: Ethernet1/13.2
+  peer: dc1-leaf1
+  peer_interface: Ethernet48.2
+  peer_type: l3leaf
+  vrf: customer1
+  description: P2P_LINK_TO_DC1-LEAF1_Ethernet48.2_vrf_customer1
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 2
+  mtu: 9214
+  ip_address: 10.99.0.3/31
 - name: Ethernet1
   peer_type: l3_interface
-  ip_address: 172.16.51.2/30
+  ip_address: 172.16.152.2/30
   shutdown: false
   type: routed
-  description: INET_PF-INET-1
+  description: INET_DC1-INET
+  mtu: 9000
+- name: Ethernet3
+  type: routed
+  peer_type: l3_interface
+  peer: dc1-wan1
+  shutdown: false
+  description: DIRECT LAN HA LINK
+  ip_address: 10.10.10.1/31
+  flow_tracker: null
+  mtu: 9100
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
-  ip_address: 10.10.0.1/32
+  ip_address: 10.1.0.2/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.0.0/30 eq 32
+    action: permit 10.1.0.0/26 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -197,7 +239,61 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 10.10.0.1:0 additive
+    - extcommunity soo 10.1.0.1:101 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 10.1.0.1:101 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
+    match:
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.1.0.1:101 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -213,17 +309,30 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 10.10.0.1:0
+    extcommunities: soo 10.1.0.1:101
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 10.255.0.1
+    local_id: 10.1.0.66
   sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
   - name: CP-SA-POLICY
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
   profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 0110100A480E0A0E231D1E
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
   - name: CP-PROFILE
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
@@ -234,8 +343,19 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  key_controller:
+    profile: DP-PROFILE
 router_adaptive_virtual_topology:
-  topology_role: pathfinder
+  topology_role: edge
+  region:
+    name: Region1
+    id: 1
+  zone:
+    name: Region1-ZONE
+    id: 1
+  site:
+    name: DC1
+    id: 101
   profiles:
   - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
     load_balance_policy: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
@@ -286,7 +406,17 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet1
+      stun:
+        server_profiles:
+        - INET-pf1-Ethernet1_1
+        - INET-pf2-Ethernet1_1
+    dynamic_peers:
+      enabled: true
     static_peers:
+    - router_ip: 10.255.0.1
+      name: pf1
+      ipv4_addresses:
+      - 172.16.51.2
     - router_ip: 10.255.0.2
       name: pf2
       ipv4_addresses:
@@ -298,7 +428,13 @@ router_path_selection:
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
-  peer_dynamic_source: stun
+    local_interfaces:
+    - name: Ethernet3
+    static_peers:
+    - router_ip: 10.1.0.65
+      name: dc1-wan1
+      ipv4_addresses:
+      - 10.10.10.0
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
     path_groups:
@@ -323,9 +459,12 @@ router_path_selection:
 router_traffic_engineering:
   enabled: true
 stun:
-  server:
-    local_interfaces:
-    - Ethernet1
+  client:
+    server_profiles:
+    - name: INET-pf1-Ethernet1_1
+      ip_address: 172.16.51.2
+    - name: INET-pf2-Ethernet1_1
+      ip_address: 172.16.52.2
 application_traffic_recognition:
   application_profiles:
   - name: VOICE
@@ -342,34 +481,35 @@ application_traffic_recognition:
       protocols:
       - udp
     - name: APP-CONTROL-PLANE
-      src_prefix_set_name: PFX-LOCAL-VTEP-IP
+      dest_prefix_set_name: PFX-PATHFINDERS
   field_sets:
     l4_ports:
     - name: RTP_PORT
       port_values:
       - 1-65000
     ipv4_prefixes:
-    - name: PFX-LOCAL-VTEP-IP
+    - name: PFX-PATHFINDERS
       prefix_values:
       - 10.255.0.1/32
+      - 10.255.0.2/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9214
-  ip_address: 10.255.0.1/32
+  ip_address: 10.1.0.66/32
   flow_tracker:
     hardware: FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
-    description: pf1_VTEP
+    description: dc1-wan2_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Dps1
       vrfs:
-      - name: default
-        vni: 1
       - name: customer1
         vni: 2
+      - name: default
+        vni: 1
 flow_tracking:
   hardware:
     trackers:
@@ -388,12 +528,22 @@ metadata:
   cv_tags:
     device_tags:
     - name: Role
-      value: pathfinder
+      value: edge
     - name: Region
       value: Region1
-    - name: PathfinderSet
-      value: PATHFINDERS
+    - name: Zone
+      value: Region1-ZONE
+    - name: Site
+      value: DC1
     interface_tags:
+    - interface: Ethernet1/13
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1/13.2
+      tags:
+      - name: Type
+        value: lan
     - interface: Ethernet1
       tags:
       - name: Type
@@ -401,85 +551,25 @@ metadata:
       - name: Carrier
         value: INET
       - name: Circuit
-        value: PF-INET-1
+        value: DC1-INET
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: lan
   cv_pathfinder:
-    role: pathfinder
-    vtep_ip: 10.255.0.1
+    role: edge
+    vtep_ip: 10.1.0.66
     region: Region1
-    site: PATHFINDERS
-    address: Singapore, Singapore
+    zone: Region1-ZONE
+    site: DC1
     interfaces:
     - name: Ethernet1
       carrier: INET
-      circuit_id: PF-INET-1
+      circuit_id: DC1-INET
       pathgroup: INET
-      public_ip: 172.16.51.2
-    pathgroups:
-    - name: INET
-      carriers:
-      - name: INET
-    regions:
-    - name: Region1
-      id: 1
-      zones:
-      - name: Region1-ZONE
-        id: 1
-        sites:
-        - name: DC1
-          id: 101
-          location:
-            address: San Jose, CA
-        - name: DC2
-          id: 102
-          location:
-            address: New Orleans, LA
-        - name: CAMPUS1
-          id: 111
-          location:
-            address: New York, New York
-        - name: PATHFINDERS
-          id: 255
-          location:
-            address: Singapore, Singapore
-    vrfs:
-    - name: default
-      vni: 1
-      avts:
-      - id: 254
-        name: DEFAULT-AVT-POLICY-CONTROL-PLANE
-        pathgroups:
-        - name: INET
-          preference: preferred
-        - name: LAN_HA
-          preference: preferred
-      - id: 1
-        name: DEFAULT-AVT-POLICY-DEFAULT
-        pathgroups:
-        - name: INET
-          preference: preferred
-        - name: LAN_HA
-          preference: preferred
-    - name: customer1
-      vni: 2
-      avts:
-      - constraints:
-          jitter: 20
-          latency: 120
-          lossrate: 0.3
-        id: 2
-        name: DTN-AVT-POLICY-VOICE
-        pathgroups:
-        - name: INET
-          preference: preferred
-        - name: LAN_HA
-          preference: preferred
-      - id: 1
-        name: DTN-AVT-POLICY-DEFAULT
-        pathgroups:
-        - name: INET
-          preference: preferred
-        - name: LAN_HA
-          preference: preferred
+    pathfinders:
+    - vtep_ip: 10.255.0.1
+    - vtep_ip: 10.255.0.2
 maintenance:
   unit_profiles:
   - name: System

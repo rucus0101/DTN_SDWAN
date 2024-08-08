@@ -4,63 +4,55 @@ mgmt_interface: Management1/1
 wan_router: # dynamic_key: node_type
   defaults:
     cv_pathfinder_region: Region1
-    cv_pathfinder_site: REGION1_SITE1
+    cv_pathfinder_site: DC2
     loopback_ipv4_pool: 10.1.1.0/26
     vtep_loopback_ipv4_pool: 10.1.1.64/26
     uplink_ipv4_pool: 10.1.1.128/26
     uplink_interface_speed: 10g
     uplink_type: p2p-vrfs # uplink to local switch
-    uplink_interfaces: [ Ethernet1/5 ]
-    uplink_switches: [ r1-site1-leaf1 ]
+    uplink_interfaces: [ Ethernet2 ]
+    uplink_switches: [ dc2-leaf1 ]
     bgp_as: 65000
     filter:
       always_include_vrfs_in_tenants:
-        - region1-site1
+        - dc2
     wan_ha:
       enabled: true
-      ha_interfaces: [Ethernet1/6] 
+      ha_interfaces: [Ethernet3] 
       ha_ipv4_pool: 10.10.11.0/24
       ipsec: false
   node_groups:
-    - group: WAN_R1SITE2
+    - group: WAN_DC2
       nodes:
-        - name: r1-site1-wan1
+        - name: dc2-wan1
           id: 1
           mgmt_ip: 172.28.138.70/17
-          uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_switch_interfaces: [ Ethernet47 ]
           l3_interfaces:
-            - name: Ethernet1/7
+            - name: Ethernet1
               structured_config:
                 mtu: 9000
               ip_address: 172.16.113.2/30
-              wan_carrier: rmpls3
-              wan_circuit_id: SITE1-MPLS3
+              wan_carrier: INET
+              wan_circuit_id: DC2-WAN1-INET
               peer_ip: 172.16.113.1
               static_routes:
-                - prefix: 172.16.51.16/30
-                - prefix: 172.16.52.16/30
-                - prefix: 172.16.103.0/30
-                - prefix: 172.16.113.0/30
-                - prefix: 172.16.123.0/30
+                - prefix: 172.16.0.0/16
 
-        - name: r1-site1-wan2
+        - name: dc2-wan2
           id: 2
           mgmt_ip: 172.28.138.71/17
-          uplink_switch_interfaces: [ Ethernet2 ]
+          uplink_switch_interfaces: [ Ethernet48 ]
           l3_interfaces:
-            - name: Ethernet1/7
+            - name: Ethernet1
               structured_config:
                 mtu: 9000
               ip_address: 172.16.114.2/30
-              wan_carrier: rmpls4
-              wan_circuit_id: SITE1-MPLS4
+              wan_carrier: INET
+              wan_circuit_id: DC2-WAN2-INET
               peer_ip: 172.16.114.1
               static_routes:
-                - prefix: 172.16.51.20/30
-                - prefix: 172.16.52.20/30
-                - prefix: 172.16.104.0/30
-                - prefix: 172.16.114.0/30
-                - prefix: 172.16.124.0/30
+                - prefix: 172.16.0.0/16
 
 
 ### LEAFS ###
@@ -77,10 +69,10 @@ l3leaf: # dynamic_key: node_type
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
   nodes:
-    - name: r1-site1-leaf1
+    - name: dc2-leaf1
       id: 3
       mgmt_interface: Management1
-      mgmt_ip: 172.28.133.157/17
+      mgmt_ip: 172.28.134.109/20
       bgp_as: 65011
 
 

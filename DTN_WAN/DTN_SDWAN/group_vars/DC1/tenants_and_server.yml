@@ -1,0 +1,24 @@
+
+tenants: # dynamic_key: network_services
+  - name: dc1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: customer1
+        vrf_id: 2
+        svis:
+          - id: 2
+            enabled: true
+            name: customer1
+            nodes:
+              - node: dc1-leaf1
+                ip_address: 10.10.1.1/24
+ 
+
+
+servers: # dynamic_key: connected_endpoints
+  - name: IXIA
+    adapters:
+      - switch_ports: [Ethernet49/1]
+        switches: [dc1-leaf1]
+        mode: trunk
+        vlans: 1-253

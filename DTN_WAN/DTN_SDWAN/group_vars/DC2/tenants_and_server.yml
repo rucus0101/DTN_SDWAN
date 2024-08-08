@@ -1,0 +1,22 @@
+tenants: # dynamic_key: network_services
+  - name: region1-site1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: customer1
+        vrf_id: 2
+        svis:
+          - id: 2
+            enabled: true
+            name: customer1
+            nodes:
+              - node: dc1-leaf1
+                ip_address: 10.11.1.1/24
+  
+
+servers: # dynamic_key: connected_endpoints
+  - name: test-host2
+    adapters:
+      - switch_ports: [Ethernet49/1]
+        switches: [r1-site1-leaf1]
+        mode: trunk
+        vlans: 1-64,254

@@ -1,0 +1,95 @@
+
+
+mgmt_interface: Management1/1
+wan_router: # dynamic_key: node_type
+  defaults:
+    # cv_pathfinder_transit_mode: region
+    cv_pathfinder_region: Region1
+    cv_pathfinder_site: DC1
+    loopback_ipv4_pool: 10.1.0.0/26
+    vtep_loopback_ipv4_pool: 10.1.0.64/26
+    uplink_ipv4_pool: 10.99.0.0/22
+    uplink_type: p2p-vrfs # uplink to local switch
+    uplink_interfaces: [ Ethernet1/13 ]
+    uplink_switches: [ dc1-leaf1 ]
+    bgp_as: 65000
+    filter:
+      always_include_vrfs_in_tenants:
+        - dc1
+    wan_ha:
+      enabled: true
+      ha_interfaces: [Ethernet3] 
+      ha_ipv4_pool: 10.10.10.0/24
+      ipsec: false
+  node_groups:
+    - group: DC1_WAN
+      structured_config:
+        ethernet_interfaces:
+          # This is raising the MTU on the HA interface specified above
+          - name: Ethernet3
+            mtu: 9100
+      nodes:
+        - name: dc1-wan1
+          id: 1
+          mgmt_ip: 172.28.143.216/17
+          uplink_switch_interfaces: [ Ethernet47 ]
+          l3_interfaces:
+            - name: Ethernet1
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.151.2/30
+              wan_carrier: INET
+              wan_circuit_id: DC1-INET
+              peer_ip: 172.16.151.1
+              static_routes:
+                - prefix: 172.16.0.0/16
+            
+        - name: dc1-wan2
+          id: 2
+          mgmt_ip: 172.28.143.207/17
+          uplink_switch_interfaces: [ Ethernet48 ]
+          l3_interfaces:
+            - name: Ethernet1
+              structured_config:
+                mtu: 9000
+              ip_address: 172.16.152.2/30
+              wan_carrier: INET
+              wan_circuit_id: DC1-INET
+              peer_ip: 172.16.152.1
+              static_routes:
+                - prefix: 172.16.0.0/16
+               
+         
+
+
+### LEAFS ###
+
+l3leaf: # dynamic_key: node_type
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.1.0.0/26
+    vtep_loopback_ipv4_pool: 10.1.0.64/26
+    uplink_ipv4_pool: 10.99.0.0/22
+    # mlag_interfaces: [Ethernet5, Ethernet6]
+    # mlag_peer_ipv4_pool: 10.103.3.0/24
+    # vtep: false
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  nodes:
+    - name: dc1-leaf1
+      id: 3
+      mgmt_interface: Management1
+      mgmt_ip: 172.28.134.108/20
+      bgp_as: 65010
+
+# vlan_internal_order:
+#   allocation: ascending
+#   range:
+#   beginning: 3800
+#   ending: 4000
+
+
+
+# custom_structured_configuration_eos_cli: |
+#  platform tfa personality arfa
+
