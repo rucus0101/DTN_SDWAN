@@ -3,20 +3,20 @@ tenants: # dynamic_key: network_services
   - name: CAMPUS1
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: customer1
+      - name: customer2
         vrf_id: 2
         svis:
           - id: 2
             enabled: true
-            name: customer1
+            name: customer2
             nodes:
               - node: campus1-leaf1
-                ip_address: 10.12.1.1/24
+                ip_address: 10.12.2.1/24
  
 servers: # dynamic_key: connected_endpoints
-  - name: test-host
+  - name: IXIA
     adapters:
-      - switch_ports: [Ethernet49/1]
+      - switch_ports: [Ethernet46]
         switches: [campus1-leaf1]
         mode: trunk
         vlans: 1-255

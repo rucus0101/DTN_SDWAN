@@ -36,24 +36,24 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: dc1-wan1
-    description: dc1-wan1_Ethernet1/13
+    description: dc1-wan1_Ethernet2
   - ip_address: 10.99.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: dc1-wan2
-    description: dc1-wan2_Ethernet1/13
+    description: dc1-wan2_Ethernet2
   vrfs:
-  - name: customer1
+  - name: customer2
     router_id: 10.1.0.3
     neighbors:
     - ip_address: 10.99.0.1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: dc1-wan1_Ethernet1/13.2_vrf_customer1
+      description: dc1-wan1_Ethernet2.2_vrf_customer2
     - ip_address: 10.99.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: dc1-wan2_Ethernet1/13.2_vrf_customer1
+      description: dc1-wan2_Ethernet2.2_vrf_customer2
     rd: 10.1.0.3:2
     route_targets:
       import:
@@ -72,7 +72,7 @@ router_bgp:
       activate: true
   vlans:
   - id: 2
-    tenant: dc1
+    tenant: DC1
     rd: 10.1.0.3:10002
     route_targets:
       both:
@@ -120,8 +120,8 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: customer1
-  tenant: dc1
+- name: customer2
+  tenant: DC1
   ip_routing: true
 management_interfaces:
 - name: Management1
@@ -147,19 +147,19 @@ ntp:
 ethernet_interfaces:
 - name: Ethernet47
   peer: dc1-wan1
-  peer_interface: Ethernet1/13
+  peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_DC1-WAN1_Ethernet1/13
+  description: P2P_LINK_TO_DC1-WAN1_Ethernet2
   shutdown: false
   mtu: 9214
   type: routed
   ip_address: 10.99.0.0/31
 - name: Ethernet47.2
   peer: dc1-wan1
-  peer_interface: Ethernet1/13.2
+  peer_interface: Ethernet2.2
   peer_type: wan_router
-  vrf: customer1
-  description: P2P_LINK_TO_DC1-WAN1_Ethernet1/13.2_vrf_customer1
+  vrf: customer2
+  description: P2P_LINK_TO_DC1-WAN1_Ethernet2.2_vrf_customer2
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 2
@@ -167,25 +167,25 @@ ethernet_interfaces:
   ip_address: 10.99.0.0/31
 - name: Ethernet48
   peer: dc1-wan2
-  peer_interface: Ethernet1/13
+  peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_DC1-WAN2_Ethernet1/13
+  description: P2P_LINK_TO_DC1-WAN2_Ethernet2
   shutdown: false
   mtu: 9214
   type: routed
   ip_address: 10.99.0.2/31
 - name: Ethernet48.2
   peer: dc1-wan2
-  peer_interface: Ethernet1/13.2
+  peer_interface: Ethernet2.2
   peer_type: wan_router
-  vrf: customer1
-  description: P2P_LINK_TO_DC1-WAN2_Ethernet1/13.2_vrf_customer1
+  vrf: customer2
+  description: P2P_LINK_TO_DC1-WAN2_Ethernet2.2_vrf_customer2
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 2
   mtu: 9214
   ip_address: 10.99.0.2/31
-- name: Ethernet49/1
+- name: Ethernet46
   peer: IXIA
   peer_type: server
   description: IXIA
@@ -223,17 +223,17 @@ router_bfd:
     multiplier: 3
 vlans:
 - id: 2
-  name: customer1
-  tenant: dc1
+  name: customer2
+  tenant: DC1
 ip_igmp_snooping:
   globally_enabled: true
 vlan_interfaces:
 - name: Vlan2
-  tenant: dc1
-  description: customer1
+  tenant: DC1
+  description: customer2
   shutdown: false
-  ip_address: 10.10.1.1/24
-  vrf: customer1
+  ip_address: 10.10.2.1/24
+  vrf: customer2
 vxlan_interface:
   Vxlan1:
     description: dc1-leaf1_VTEP
@@ -244,7 +244,7 @@ vxlan_interface:
       - id: 2
         vni: 10002
       vrfs:
-      - name: customer1
+      - name: customer2
         vni: 2
 metadata:
   platform: cEOSLab

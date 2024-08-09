@@ -61,13 +61,13 @@ router_bgp:
     route_map_in: RM-WAN-HA-PEER-IN
     route_map_out: RM-WAN-HA-PEER-OUT
   vrfs:
-  - name: customer1
+  - name: customer2
     router_id: 10.1.2.2
     neighbors:
     - ip_address: 10.1.2.130
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65012'
-      description: campus1-leaf1_Ethernet48.2_vrf_customer1
+      description: campus1-leaf1_Ethernet48.2_vrf_customer2
     rd: 10.1.2.2:2
     route_targets:
       import:
@@ -160,15 +160,15 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: customer1
+- name: customer2
   tenant: CAMPUS1
   ip_routing: true
 management_interfaces:
-- name: Management1/1
+- name: Management1
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.28.143.240/17
+  ip_address: 172.28.143.240/20
   gateway: 172.28.128.1
   type: oob
 management_api_http:
@@ -177,7 +177,7 @@ management_api_http:
   enable_https: true
 ntp:
   local_interface:
-    name: Management1/1
+    name: Management1
     vrf: MGMT
   servers:
   - name: 1.pool.ntp.org
@@ -199,8 +199,8 @@ ethernet_interfaces:
   peer: campus1-leaf1
   peer_interface: Ethernet48.2
   peer_type: l3leaf
-  vrf: customer1
-  description: P2P_LINK_TO_CAMPUS1-LEAF1_Ethernet48.2_vrf_customer1
+  vrf: customer2
+  description: P2P_LINK_TO_CAMPUS1-LEAF1_Ethernet48.2_vrf_customer2
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 2
@@ -363,6 +363,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: DTN-AVT-POLICY-VOICE
     load_balance_policy: LB-DTN-AVT-POLICY-VOICE
+  - name: DTN-AVT-POLICY-BACKUP
+    load_balance_policy: LB-DTN-AVT-POLICY-BACKUP
   - name: DTN-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DTN-AVT-POLICY-DEFAULT
   vrfs:
@@ -373,11 +375,13 @@ router_adaptive_virtual_topology:
       id: 254
     - name: DEFAULT-AVT-POLICY-DEFAULT
       id: 1
-  - name: customer1
+  - name: customer2
     policy: DTN-AVT-POLICY
     profiles:
     - name: DTN-AVT-POLICY-VOICE
       id: 2
+    - name: DTN-AVT-POLICY-BACKUP
+      id: 3
     - name: DTN-AVT-POLICY-DEFAULT
       id: 1
   policies:
@@ -391,6 +395,8 @@ router_adaptive_virtual_topology:
     matches:
     - application_profile: VOICE
       avt_profile: DTN-AVT-POLICY-VOICE
+    - application_profile: BACKUP
+      avt_profile: DTN-AVT-POLICY-BACKUP
     - application_profile: default
       avt_profile: DTN-AVT-POLICY-DEFAULT
 router_bfd:
@@ -452,6 +458,14 @@ router_path_selection:
     jitter: 20
     loss_rate: '0.3'
     lowest_hop_count: false
+  - name: LB-DTN-AVT-POLICY-BACKUP
+    path_groups:
+    - name: INET
+    - name: LAN_HA
+    latency: 220
+    jitter: 20
+    loss_rate: '10'
+    lowest_hop_count: false
   - name: LB-DTN-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
@@ -470,7 +484,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: voice-udpport
-    - name: erspan
+  - name: BACKUP
+    applications:
+    - name: bacnet_app
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -486,7 +502,7 @@ application_traffic_recognition:
     l4_ports:
     - name: RTP_PORT
       port_values:
-      - 1-65000
+      - '11000'
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
       prefix_values:
@@ -506,7 +522,7 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Dps1
       vrfs:
-      - name: customer1
+      - name: customer2
         vni: 2
       - name: default
         vni: 1

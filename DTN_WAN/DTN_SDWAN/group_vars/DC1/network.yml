@@ -1,6 +1,6 @@
 
 
-mgmt_interface: Management1/1
+mgmt_interface: Management1
 wan_router: # dynamic_key: node_type
   defaults:
     # cv_pathfinder_transit_mode: region
@@ -10,7 +10,7 @@ wan_router: # dynamic_key: node_type
     vtep_loopback_ipv4_pool: 10.1.0.64/26
     uplink_ipv4_pool: 10.99.0.0/22
     uplink_type: p2p-vrfs # uplink to local switch
-    uplink_interfaces: [ Ethernet1/13 ]
+    uplink_interfaces: [ Ethernet2 ]
     uplink_switches: [ dc1-leaf1 ]
     bgp_as: 65000
     filter:

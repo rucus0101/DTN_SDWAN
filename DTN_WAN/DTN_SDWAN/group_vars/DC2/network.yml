@@ -1,5 +1,5 @@
 
-mgmt_interface: Management1/1
+mgmt_interface: Management1
 
 wan_router: # dynamic_key: node_type
   defaults:
@@ -26,7 +26,7 @@ wan_router: # dynamic_key: node_type
       nodes:
         - name: dc2-wan1
           id: 1
-          mgmt_ip: 172.28.138.70/17
+          mgmt_ip: 172.28.143.241/20
           uplink_switch_interfaces: [ Ethernet47 ]
           l3_interfaces:
             - name: Ethernet1
@@ -41,7 +41,7 @@ wan_router: # dynamic_key: node_type
 
         - name: dc2-wan2
           id: 2
-          mgmt_ip: 172.28.138.71/17
+          mgmt_ip: 172.28.143.248/20
           uplink_switch_interfaces: [ Ethernet48 ]
           l3_interfaces:
             - name: Ethernet1

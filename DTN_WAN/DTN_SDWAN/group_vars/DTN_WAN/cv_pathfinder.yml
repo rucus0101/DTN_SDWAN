@@ -96,9 +96,12 @@ wan_virtual_topologies:
     - name: default
       policy: DEFAULT-AVT-POLICY
       wan_vni: 1
-    - name: customer1
+    - name: customer2
       policy: DTN-AVT-POLICY
       wan_vni: 2  
+    - name: customer3
+      policy: DTN-AVT-POLICY
+      wan_vni: 3  
    
 
 
@@ -109,23 +112,13 @@ wan_virtual_topologies:
         path_groups:
           - names: [INET]
             preference: preferred
-    # - name: CUSTOMER1-AVT-POLICY
-    #   default_virtual_topology:
-    #     path_groups:
-    #       - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
-    #         preference: preferred
-    # - name: CUSTOMER2-AVT-POLICY
-    #   default_virtual_topology:
-    #     path_groups:
-    #       - names: [rmpls1,rmpls2,rmpls3,rmpls4,gmpls1,gmpls2]
-    #         preference: preferred
     - name: DTN-AVT-POLICY
       default_virtual_topology:
         path_groups:
           - names: [INET]
             preference: preferred
       application_virtual_topologies:
-        - application_profile: VOICE 
+        - application_profile: VOICE
           # if you enable lowest hop count it will disable FRR
           lowest_hop_count: false
           path_groups:
@@ -136,22 +129,37 @@ wan_virtual_topologies:
             jitter: 20
             loss_rate: 0.3
           id: 2 
-
+        - application_profile: BACKUP
+          # if you enable lowest hop count it will disable FRR
+          lowest_hop_count: false
+          path_groups:
+            - names: [INET]
+              preference: preferred
+          constraints: 
+            latency: 220
+            jitter: 20
+            loss_rate: 10
+          id: 3 
 
 # Application traffic recognition configuration.
 application_classification:
   field_sets:
     l4_ports: 
     - name: RTP_PORT
-      port_values: [1-65000]
+      port_values: [11000]
   # Group of applications.
   application_profiles:
     - name: VOICE
-     
-     # Can be custom defined APP, or builtin Cosmos app
+      # Can be custom defined APP, or builtin Cosmos app
       applications:
         - name: voice-udpport
-        - name: erspan
+    - name: BACKUP
+      # Can be custom defined APP, or builtin Cosmos app
+      applications:
+        - name: bacnet_app
+       
+
+
 
 
       

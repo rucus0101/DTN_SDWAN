@@ -243,6 +243,8 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
   - name: DTN-AVT-POLICY-VOICE
     load_balance_policy: LB-DTN-AVT-POLICY-VOICE
+  - name: DTN-AVT-POLICY-BACKUP
+    load_balance_policy: LB-DTN-AVT-POLICY-BACKUP
   - name: DTN-AVT-POLICY-DEFAULT
     load_balance_policy: LB-DTN-AVT-POLICY-DEFAULT
   vrfs:
@@ -253,11 +255,22 @@ router_adaptive_virtual_topology:
       id: 254
     - name: DEFAULT-AVT-POLICY-DEFAULT
       id: 1
-  - name: customer1
+  - name: customer2
     policy: DTN-AVT-POLICY
     profiles:
     - name: DTN-AVT-POLICY-VOICE
       id: 2
+    - name: DTN-AVT-POLICY-BACKUP
+      id: 3
+    - name: DTN-AVT-POLICY-DEFAULT
+      id: 1
+  - name: customer3
+    policy: DTN-AVT-POLICY
+    profiles:
+    - name: DTN-AVT-POLICY-VOICE
+      id: 2
+    - name: DTN-AVT-POLICY-BACKUP
+      id: 3
     - name: DTN-AVT-POLICY-DEFAULT
       id: 1
   policies:
@@ -271,6 +284,8 @@ router_adaptive_virtual_topology:
     matches:
     - application_profile: VOICE
       avt_profile: DTN-AVT-POLICY-VOICE
+    - application_profile: BACKUP
+      avt_profile: DTN-AVT-POLICY-BACKUP
     - application_profile: default
       avt_profile: DTN-AVT-POLICY-DEFAULT
 router_bfd:
@@ -316,6 +331,14 @@ router_path_selection:
     jitter: 20
     loss_rate: '0.3'
     lowest_hop_count: false
+  - name: LB-DTN-AVT-POLICY-BACKUP
+    path_groups:
+    - name: INET
+    - name: LAN_HA
+    latency: 220
+    jitter: 20
+    loss_rate: '10'
+    lowest_hop_count: false
   - name: LB-DTN-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
@@ -331,7 +354,9 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: voice-udpport
-    - name: erspan
+  - name: BACKUP
+    applications:
+    - name: bacnet_app
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
@@ -347,7 +372,7 @@ application_traffic_recognition:
     l4_ports:
     - name: RTP_PORT
       port_values:
-      - 1-65000
+      - '11000'
     ipv4_prefixes:
     - name: PFX-LOCAL-VTEP-IP
       prefix_values:
@@ -368,8 +393,10 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-      - name: customer1
+      - name: customer2
         vni: 2
+      - name: customer3
+        vni: 3
 flow_tracking:
   hardware:
     trackers:
@@ -459,7 +486,7 @@ metadata:
           preference: preferred
         - name: LAN_HA
           preference: preferred
-    - name: customer1
+    - name: customer2
       vni: 2
       avts:
       - constraints:
@@ -468,6 +495,49 @@ metadata:
           lossrate: 0.3
         id: 2
         name: DTN-AVT-POLICY-VOICE
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - constraints:
+          jitter: 20
+          latency: 220
+          lossrate: 10.0
+        id: 3
+        name: DTN-AVT-POLICY-BACKUP
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - id: 1
+        name: DTN-AVT-POLICY-DEFAULT
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+    - name: customer3
+      vni: 3
+      avts:
+      - constraints:
+          jitter: 20
+          latency: 120
+          lossrate: 0.3
+        id: 2
+        name: DTN-AVT-POLICY-VOICE
+        pathgroups:
+        - name: INET
+          preference: preferred
+        - name: LAN_HA
+          preference: preferred
+      - constraints:
+          jitter: 20
+          latency: 220
+          lossrate: 10.0
+        id: 3
+        name: DTN-AVT-POLICY-BACKUP
         pathgroups:
         - name: INET
           preference: preferred
